@@ -24,11 +24,11 @@ public class IntenetReceiver extends BroadcastReceiver {
         boolean isMobileConn = networkInfo.isConnected();
 
         if (isWifiConn){
-            Settings.networkType = Constants.NETWORK_TYPE_WIFI;
+            Settings.sNetworkType = Constants.NETWORK_TYPE_WIFI;
         } else if (isMobileConn){
-            Settings.networkType = Constants.NETWORK_TYPE_MOBILE;
+            Settings.sNetworkType = Constants.NETWORK_TYPE_MOBILE;
         } else {
-            Settings.networkType = Constants.NETWORK_TYPE_NO_NETWORK;
+            Settings.sNetworkType = Constants.NETWORK_TYPE_NO_NETWORK;
         }
     }
 }
