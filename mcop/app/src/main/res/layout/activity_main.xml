@@ -1,0 +1,149 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none" >
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Extracting Stats"
+                android:id="@+id/btnStartExtracting"
+                android:onClick="onClickStart"
+                android:layout_above="@+id/InnerRelativeLayout"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show Mockup GUI"
+                android:id="@+id/btnShowMockupGUI"
+                android:onClick="onClickShowGUI"
+                android:layout_above="@+id/btnUsageAccess"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/linearLayout2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Details"
+                    android:id="@+id/textView6" />
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/InnerRelativeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Warning:"
+                    android:id="@+id/tvWarning"
+                    android:layout_alignParentLeft="true"
+
+                    android:textColor="#ffff8422" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Please do not close application while collecting data."
+                    android:id="@+id/tvWarningText"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/tvWarning"
+                    />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/linearLayout3"
+                android:layout_below="@+id/linearLayout2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Session:"
+                    android:id="@+id/tvCounter"
+                    android:layout_below="@+id/tvStartTime"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="5dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="File size :"
+                android:id="@+id/tvFileSize"
+                android:layout_below="@+id/linearLayout3"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="ID :"
+                android:id="@+id/tvMacAddress"
+                android:layout_below="@+id/tvFileSize"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="เวลาที่ส่งไฟล์ล่าสุด :"
+                android:id="@+id/tvLastTime"
+                android:layout_below="@+id/tvMacAddress"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Turn On User Access"
+                android:id="@+id/btnUsageAccess"
+                android:layout_above="@+id/btnStartExtracting"
+                android:layout_centerHorizontal="true"
+                android:onClick="onClickTurnOnUserAccess" />
+
+        </RelativeLayout>>
+    </LinearLayout>
+</ScrollView>
