@@ -28,6 +28,7 @@ public class Settings {
     public static String sWifiInterfaceName;
     public static String sMacAddress;
     public static String sOutputFileName;
+    public static String sHashFilePath;
     public static boolean sIsUsageAccessGranted;
 
     public static void loadSetting(Context context){
@@ -37,6 +38,7 @@ public class Settings {
         sWifiInterfaceName = getWifiInterfaceName();
         sMacAddress = getMacAddress(context);
         sApplicationPath = context.getCacheDir().toString() + "/BU-Stat-Collector/";
+        sHashFilePath = sApplicationPath + "hashData";
         sOutputFileName = sMacAddress.replace(":", "-") + ".stats";
     }
 
