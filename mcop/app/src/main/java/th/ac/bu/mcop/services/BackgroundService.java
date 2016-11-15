@@ -1,18 +1,30 @@
 package th.ac.bu.mcop.services;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import th.ac.bu.mcop.R;
+import th.ac.bu.mcop.activities.MainActivity;
 import th.ac.bu.mcop.modules.StatsFileManager;
+import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
 /**
@@ -29,10 +41,12 @@ public class BackgroundService extends Service {
     private PowerManager mPowerManager;
     private PowerManager.WakeLock mWakeLock;
     private Context mContext;
-    private Handler mHandler;
+    private final Handler mHandler = new Handler();
     private Runnable mRunnable;
+    private boolean mIsForeground;
+    private DateFormat mDateFormat;
 
-    public static int counter = 0;
+    public static int sCounter = 0;
 
     @Nullable
     @Override
@@ -52,7 +66,25 @@ public class BackgroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("emji", "onStartCommand");
-        return super.onStartCommand(intent, flags, startId);
+
+        boolean retry = true;
+        int networkErrorCount = 0;
+        int intenalCounter = 0;
+        Date currentDate = new Date();
+
+        mHandler.postDelayed(mRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+            
+
+            }
+        }, Settings.sInterval * 1000);
+
+
+        startAsForeground();
+
+        return START_STICKY;
     }
 
     @Override
@@ -112,10 +144,12 @@ public class BackgroundService extends Service {
 
     private void initValue(){
         mContext = this;
+        sCounter = 0;
         sIsServiceRunning = true;
         sStopRequest = false;
+        mIsForeground = false;
         mDate = new Date();
-        mHandler = new Handler();
+        mDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     }
 
     private void initPowerManager(){
@@ -135,5 +169,37 @@ public class BackgroundService extends Service {
         if (!file.exists()){
             new StatsFileManager(mContext).createNewFile();
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void startAsForeground() {
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        //TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        int icon = R.mipmap.ic_launcher;
+
+        mBuilder.setContentTitle("Stats Collector")
+                .setContentText("Started: " + mDateFormat.format(mDate))
+                .setSubText("Session: " + sCounter)
+                .setContentInfo("Interval: " + Settings.sInterval)
+                .setSmallIcon(icon)
+                .setColor(Color.parseColor("#78909C"))
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .setPriority(Notification.PRIORITY_LOW)
+
+                .setContentIntent(resultPendingIntent);
+
+        startForeground(Constants.ONGOING_NOTIFICATION_ID, mBuilder.build());
+
+        mIsForeground = true;
     }
 }

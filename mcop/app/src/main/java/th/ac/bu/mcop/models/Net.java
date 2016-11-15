@@ -62,4 +62,68 @@ public class Net {
         bgDownWifi  = "-1";
         fgDownWifi  = "-1";
     }
+
+    public  String getBgUpData() {
+        return bgUpData;
+    }
+
+    public void   setBgUpData(String bgUpData) {
+        this.bgUpData = bgUpData;
+    }
+
+    public String getFgUpData() {
+        return fgUpData;
+    }
+
+    public void   setFgUpData(String fgUpData) {
+        this.fgUpData = fgUpData;
+    }
+
+    public String getBgUpWifi() {
+        return bgUpWifi;
+    }
+
+    public void   setBgUpWifi(String bgUpWifi) {
+        this.bgUpWifi = bgUpWifi;
+    }
+
+    public String getFgUpWifi() {
+        return fgUpWifi;
+    }
+
+    public void   setFgUpWifi(String fgUpWifi) {
+        this.fgUpWifi = fgUpWifi;
+    }
+
+    public String getBgDownData() {
+        return bgDownData;
+    }
+
+    public void   setBgDownData(String bgDownData) {
+        this.bgDownData = bgDownData;
+    }
+
+    public String getFgDownData() {
+        return fgDownData;
+    }
+
+    public void   setFgDownData(String fgDownData) {
+        this.fgDownData = fgDownData;
+    }
+
+    public String getBgDownWifi() {
+        return bgDownWifi;
+    }
+
+    public void   setBgDownWifi(String bgDownWifi) {
+        this.bgDownWifi = bgDownWifi;
+    }
+
+    public String getFgDownWifi() {
+        return fgDownWifi;
+    }
+
+    public void   setFgDownWifi(String fgDownWifi) {
+        this.fgDownWifi = fgDownWifi;
+    }
 }

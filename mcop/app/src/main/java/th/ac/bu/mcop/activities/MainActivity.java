@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.net.NetworkInterface;
 
 import th.ac.bu.mcop.R;
+import th.ac.bu.mcop.modules.HashGen;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Constants;
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setCounter() {
 
         try {
-            mCounterTextView.setText("Session: " + Integer.toString(BackgroundService.counter));
+            mCounterTextView.setText("Session: " + Integer.toString(BackgroundService.sCounter));
             mFileSizeTextView.setText("File Size: " + Long.toString(StatsFileManager.getFileSize()) + " KB");
             mLastTimeTextView.setText("เวลาที่ส่งไฟล์ล่าสุด: " + SharePrefs.getPreferenceString(mContext, "las_time_upload", ""));
 
@@ -174,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
 
-                    mCounterTextView.setText("Session: " + Integer.toString(BackgroundService.counter));
+                    mCounterTextView.setText("Session: " + Integer.toString(BackgroundService.sCounter));
                     mFileSizeTextView.setText("File Size: " + Long.toString(StatsFileManager.getFileSize()) + " KB");
                     mLastTimeTextView.setText("เวลาที่ส่งไฟล์ล่าสุด: " + SharePrefs.getPreferenceString(mContext, "las_time_upload", ""));
                     mHandler.postDelayed(this, Settings.sInterval * 1000);
@@ -236,9 +237,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new Thread(new Runnable() {
                 public void run() {
                     SharePrefs.setPreference(mContext, "firstTime", true);
-
-                   // HashGen hashGen = new HashGen();
-                   // hashGen.getAllAppInfo(mContext);
+                    HashGen hashGen = new HashGen();
+                    hashGen.getAllAppInfo(mContext);
 
                 }
             }).start();

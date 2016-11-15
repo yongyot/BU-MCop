@@ -6,9 +6,15 @@ package th.ac.bu.mcop.utils;
 
 public class Constants {
 
-    public static int NETWORK_TYPE_NO_NETWORK = 0;
-    public static int NETWORK_TYPE_MOBILE = 1;
-    public static int NETWORK_TYPE_WIFI = 2;
+    public static final int NETWORK_TYPE_NO_NETWORK = 0;
+    public static final int NETWORK_TYPE_MOBILE = 1;
+    public static final int NETWORK_TYPE_WIFI = 2;
 
-    public static String INTENT_FILTER = "updateUI";
+    public static final int STATE_BACKGROUND=0;
+    public static final int STATE_FOREGROUND=1;
+
+    public static final int ONGOING_NOTIFICATION_ID = 2147483;
+
+    public static final String INTENT_FILTER = "updateUI";
+
 }
