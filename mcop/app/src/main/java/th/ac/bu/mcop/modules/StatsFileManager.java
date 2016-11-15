@@ -1,4 +1,4 @@
-package th.ac.bu.mcop.models;
+package th.ac.bu.mcop.modules;
 
 import android.content.Context;
 import android.util.Log;

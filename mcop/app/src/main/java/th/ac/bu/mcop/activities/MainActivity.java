@@ -18,7 +18,7 @@ import android.widget.TextView;
 import java.net.NetworkInterface;
 
 import th.ac.bu.mcop.R;
-import th.ac.bu.mcop.models.StatsFileManager;
+import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
@@ -166,8 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setCounter() {
 
         try {
-
-
             mCounterTextView.setText("Session: " + Integer.toString(BackgroundService.counter));
             mFileSizeTextView.setText("File Size: " + Long.toString(StatsFileManager.getFileSize()) + " KB");
             mLastTimeTextView.setText("เวลาที่ส่งไฟล์ล่าสุด: " + SharePrefs.getPreferenceString(mContext, "las_time_upload", ""));

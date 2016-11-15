@@ -12,7 +12,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.Date;
 
-import th.ac.bu.mcop.models.StatsFileManager;
+import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.utils.Settings;
 
 /**
@@ -65,7 +65,7 @@ public class BackgroundService extends Service {
             if (!sStopRequest){
                 sendBroadcast(new Intent("YouWillNeverKillMe"));
             }
-
+            /*code for stpe down*/ //unregisterReceiver(mybroadcast);
             if(mWakeLock.isHeld()){
                 mWakeLock.release();
             }
