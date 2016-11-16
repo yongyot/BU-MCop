@@ -10,23 +10,21 @@ import java.io.FileInputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
-import th.ac.bu.mcop.utils.SharePrefs;
 
 /**
  * Created by jeeraphan on 11/16/16.
  */
 
-public class FileUploader extends AsyncTask<String, Void, String> {
+public class HashFileUploader extends AsyncTask <String, Void, String>{
 
     private Context mContext;
-    public static volatile boolean sIsUploading;
+    private int mServerCode;
+    public static boolean sIsUploading;
 
-    public FileUploader(Context context){
+    public HashFileUploader(Context context){
         mContext = context;
     }
 
@@ -34,39 +32,46 @@ public class FileUploader extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
 
         if (Settings.sNetworkType != Constants.NETWORK_TYPE_NO_NETWORK){
-
             sIsUploading = true;
 
-            StatsFileManager.compressFile(mContext);
-            String path = Settings.sApplicationPath + Settings.sOutputFileName + ".zip";
-            int serverCode = uploadFile(path);
+            String path = Settings.sHashFilePath;
 
-            if (serverCode == 200){
-                new StatsFileManager(mContext).createNewFile();
-            } else if (serverCode == 404){
-                Log.d("emji", "Can not connect to server.");
-            } else if (serverCode == -1){
-                Log.d("emji", "Source file does not exist.11");
-            } else if (serverCode == 504){
-                Log.d("emji", "Gateway Timeout.");
+            //mServerCode
+
+            if (mServerCode == 200){
+                File file = new File(path);
+                file.delete();
+            } else if (mServerCode == 404){
+                Log.d("emji", "Can not connect to server. Hash file can not be uploaded");
+            } else if (mServerCode == -1){
+                Log.d("emji", "Hash file does not exist.");
+            } else if (mServerCode == 504){
+                Log.d("emji", "Gateway Timeout. Couldn't upload hash file");
+            } else if (mServerCode == 0){
+                Log.d("emji", "Can not reach to server with this network.");
             } else {
-                Log.d("emji", "Unhandled server code. " + serverCode);
+                Log.d("emji", "Unhandled server code. Couldn't upload hash file" + mServerCode);
             }
-
-            File file = new File(path);
-            file.delete();
+        } else {
+            Log.d("emji", "No internet access. Couldn't upload hash file");
         }
-
-        sIsUploading = false;
 
         return null;
     }
 
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        if(mServerCode == 200) {
+            File file = new File(Settings.sHashFilePath);
+            file.delete();
+        }
+    }
+
     synchronized public int uploadFile(String sourceFileUrl){
+        String upLoadServerUri =  "http://mobile-monitoring.bu.ac.th//hash.aspx";
 
         int serverResponseCode = 0;
-
-        String upLoadServerUrl = "http://mobile-monitoring.bu.ac.th//default.aspx?id=" + Settings.sOutputFileName;
         String fileName = sourceFileUrl;
 
         HttpURLConnection conn;
@@ -77,15 +82,15 @@ public class FileUploader extends AsyncTask<String, Void, String> {
         int maxBufferSize = 1 * 1024 * 1024;
         File sourceFile = new File(sourceFileUrl);
 
-        //file not found
-        if (!sourceFile.isFile()){
-            return  -1;
+        if (!sourceFile.isFile()) {
+            Log.d("stats-results", "Error uploading file. Details:  Source File not exist :");
+            return -1;
         }
 
-        try {
+        try{
 
             FileInputStream fileInputStream = new FileInputStream(sourceFile);
-            URL url = new URL(upLoadServerUrl);
+            URL url = new URL(upLoadServerUri);
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setDoInput(true); // Allow Inputs
@@ -112,27 +117,23 @@ public class FileUploader extends AsyncTask<String, Void, String> {
                 bytesAvailable = fileInputStream.available();
                 bufferSize = Math.min(bytesAvailable, maxBufferSize);
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
             }
 
             serverResponseCode = conn.getResponseCode();
             String serverResponseMessage = conn.getResponseMessage();
-            Log.d("emji", "HTTP Response is : "+ serverResponseMessage + ": " + serverResponseCode);
 
-            //close the streams //
+            Log.d("emji", "HTTP Response for hash file is : "+ serverResponseMessage + ": " + serverResponseCode);
+
             fileInputStream.close();
             dos.flush();
             dos.close();
 
-            // cache last time
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            String currentDateandTime = sdf.format(new Date());
-            SharePrefs.setPreference(mContext, "las_time_upload", currentDateandTime);
-
         } catch (MalformedURLException ex){
             ex.printStackTrace();
-            Log.d("emji", "Error uploading file. Details: " + ex.getMessage(), ex);
+            Log.d("emji", "Error uploading hash file. Details: " + ex.getMessage(), ex);
         } catch (Exception e){
-            Log.d("emji", "Error uploading file. Details:  "+ e.getMessage());
+            Log.d("emji", "Error hash uploading file. Details:  "+ e.getMessage());
         }
 
         return serverResponseCode;
