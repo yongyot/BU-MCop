@@ -2,6 +2,7 @@ package th.ac.bu.mcop.services;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.TaskStackBuilder;
@@ -19,10 +20,14 @@ import android.util.Log;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.MainActivity;
+import th.ac.bu.mcop.models.Stats;
+import th.ac.bu.mcop.modules.HashGen;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
@@ -45,6 +50,7 @@ public class BackgroundService extends Service {
     private Runnable mRunnable;
     private boolean mIsForeground;
     private DateFormat mDateFormat;
+    private Date mCurrentDate;
 
     public static int sCounter = 0;
 
@@ -67,22 +73,50 @@ public class BackgroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("emji", "onStartCommand");
 
+        startAsForeground();
+
         boolean retry = true;
         int networkErrorCount = 0;
         int intenalCounter = 0;
-        Date currentDate = new Date();
 
         mHandler.postDelayed(mRunnable = new Runnable() {
             @Override
             public void run() {
 
-            
+                ArrayList<Stats> listStats;
+
+                if (mIsForeground){
+
+                    //below lollipop we need to remove the notification by stop foreground and restart the notification
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+                        stopForeground(true);
+                        updateNotification();
+                    } else {
+                        stopForeground(false);
+                    }
+
+                    mIsForeground = false;
+
+                    //this code generates the hash code every midnight.s
+                    if (compare(mCurrentDate, new Date()) != 0){
+                        mCurrentDate = new Date();
+
+                        //creates hashcode file for every app
+                        HashGen hashGen = new HashGen();
+                        hashGen.getAllAppInfo(mContext);
+                    }
+
+                    //scheduler for uploading hashcode
+                    File file = new File(Settings.sHashFilePath);
+
+                    //if hash file exist upload it to server..
+                    if (file.exists() && !HashGen.sIsGenerating){
+
+                    }
+                }
 
             }
         }, Settings.sInterval * 1000);
-
-
-        startAsForeground();
 
         return START_STICKY;
     }
@@ -201,5 +235,51 @@ public class BackgroundService extends Service {
         startForeground(Constants.ONGOING_NOTIFICATION_ID, mBuilder.build());
 
         mIsForeground = true;
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void updateNotification() {
+        NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        int icon = R.mipmap.ic_launcher;
+
+        mBuilder.setContentTitle("Stats Collector")
+                .setContentText("Started: " + mDateFormat.format(mDate))
+                .setSubText("Session: " + sCounter)
+                .setContentInfo("Interval: " + Settings.sInterval)
+                .setSmallIcon(icon)
+                .setColor(Color.parseColor("#78909C"))
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .setPriority(Notification.PRIORITY_LOW)
+
+                .setContentIntent(resultPendingIntent);
+        notifyManager.notify(Constants.ONGOING_NOTIFICATION_ID, mBuilder.build());
+    }
+
+    public int compare(Date d1, Date d2) {
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(d1);
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar1.setTime(d2);
+
+        if (calendar1.YEAR != calendar2.YEAR)
+            return calendar1.YEAR - calendar2.YEAR;
+
+        if (calendar1.MONTH != calendar2.MONTH)
+            return calendar1.MONTH - calendar2.MONTH;
+
+        return calendar1.DATE - calendar2.DATE;
+
     }
 }

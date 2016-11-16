@@ -26,7 +26,7 @@ import th.ac.bu.mcop.utils.Settings;
 
 public class HashGen {
 
-    public volatile static boolean sIsGenerating = false;
+    public volatile static boolean sIsGenerating;
 
     private  void writeToFile(String data, boolean append) {
 
