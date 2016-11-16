@@ -36,7 +36,7 @@ public class HashFileUploader extends AsyncTask <String, Void, String>{
 
             String path = Settings.sHashFilePath;
 
-            //mServerCode
+            mServerCode = uploadFile(path);
 
             if (mServerCode == 200){
                 File file = new File(path);

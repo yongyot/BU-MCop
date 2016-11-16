@@ -27,6 +27,8 @@ import java.util.Date;
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.MainActivity;
 import th.ac.bu.mcop.models.Stats;
+import th.ac.bu.mcop.modules.FileUploader;
+import th.ac.bu.mcop.modules.HashFileUploader;
 import th.ac.bu.mcop.modules.HashGen;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.utils.Constants;
@@ -77,13 +79,18 @@ public class BackgroundService extends Service {
 
         boolean retry = true;
         int networkErrorCount = 0;
-        int intenalCounter = 0;
+        final int intenalCounter = 0;
+        mCurrentDate = new Date();
 
         mHandler.postDelayed(mRunnable = new Runnable() {
             @Override
             public void run() {
 
+                Log.d("emji", "run");
+
                 ArrayList<Stats> listStats;
+                ArrayList<Stats> listOldStats;
+                ArrayList<Stats> listNewStats;
 
                 if (mIsForeground){
 
@@ -99,7 +106,6 @@ public class BackgroundService extends Service {
 
                     //this code generates the hash code every midnight.s
                     if (compare(mCurrentDate, new Date()) != 0){
-                        mCurrentDate = new Date();
 
                         //creates hashcode file for every app
                         HashGen hashGen = new HashGen();
@@ -108,11 +114,36 @@ public class BackgroundService extends Service {
 
                     //scheduler for uploading hashcode
                     File file = new File(Settings.sHashFilePath);
+                    boolean isExist = file.exists();
 
                     //if hash file exist upload it to server..
-                    if (file.exists() && !HashGen.sIsGenerating){
-
+                    if (isExist && !HashGen.sIsGenerating && !HashFileUploader.sIsUploading){
+                        HashFileUploader hashFileUploader = new HashFileUploader(mContext);
+                        hashFileUploader.execute();
                     }
+
+                    //make sure file does not exist.
+                    isExist = file.exists();
+
+                    if (isExist && StatsFileManager.getFileSize() >= Settings.sUploadSize && HashGen.sIsGenerating){
+                        FileUploader fileUploader = new FileUploader(mContext);
+                        fileUploader.execute();
+                    }
+
+                    if (!FileUploader.sIsUploading){
+
+                        // get the stats for the first time.
+                        if (intenalCounter == 0){
+                            Log.d("emji", "oldStats = Stats.getStats(context);");
+                        } else if (intenalCounter > Settings.sNetInterval){
+                            Log.d("emji", "newStats = Stats.getStats(context);");
+                        }
+
+                        Log.d("emji", "Stats.NETDifference(oldStats, newStats);");
+                    }
+
+                    sCounter++;
+                    mHandler.postDelayed(this, Settings.sInterval * 1000);
                 }
 
             }

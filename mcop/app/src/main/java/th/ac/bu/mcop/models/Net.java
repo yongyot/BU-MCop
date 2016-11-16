@@ -18,6 +18,8 @@ public class Net {
     private String bgDownWifi;
     private String fgDownWifi;
 
+    public boolean sError = false;
+
     public Net(){
         bgUpData    = "0";
         fgUpData    = "0";

@@ -24,6 +24,8 @@ public class Settings {
 
     public static int sNetworkType;
     public static int sInterval;
+    public static int sNetInterval;
+    public static int sUploadSize;
     public static String sApplicationPath;
     public static String sWifiInterfaceName;
     public static String sMacAddress;
@@ -34,6 +36,8 @@ public class Settings {
     public static void loadSetting(Context context){
 
         sInterval = 5;
+        sNetInterval = 1;
+        sUploadSize = 512;
         sIsUsageAccessGranted = isUsageAccessGranted(context);
         sWifiInterfaceName = getWifiInterfaceName();
         sMacAddress = getMacAddress(context);
