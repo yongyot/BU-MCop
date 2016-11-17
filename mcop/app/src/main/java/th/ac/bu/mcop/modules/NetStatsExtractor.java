@@ -27,7 +27,7 @@ public class NetStatsExtractor {
         mDataInterface = "rmnet0";
     }
 
-    public ArrayList<Stats> collectNetStats(ArrayList<Stats> appsList) {
+    public ArrayList<Stats> collectNetStats(ArrayList<Stats> listStats) {
 
         //In this method we will go through each application we found in Top command and we will set the network data in appList.net for each application
         //Some applications can have multiple processes. So when there is a multiple process we will read the data for it just once.
@@ -38,16 +38,16 @@ public class NetStatsExtractor {
             return null;
         }
 
-        for(int i=0;i<appsList.size();i++) {
-            if(appsList.get(i).isMainProcess()) {
+        for(int i = 0; i < listStats.size();i++) {
+            if(listStats.get(i).isMainProcess()) {
 
-                Net net = getNetStats(appsList.get(i).getUid(), unFilteredStats);
-                appsList.get(i).getNet().copyNet(net);
+                Net net = getNetStats(listStats.get(i).getUid(), unFilteredStats);
+                listStats.get(i).getNet().copyNet(net);
             } else {
-                appsList.get(i).getNet().setEmtpy();
+                listStats.get(i).getNet().setEmtpy();
             }
         }
-        return appsList;
+        return listStats;
     }
 
     public ArrayList<Stats> collectEmptyNetStats(ArrayList<Stats> appsList) {
@@ -104,6 +104,8 @@ public class NetStatsExtractor {
                         net.setBgDownData(dataBg[RX_BYTES]);
                         net.setFgUpData(dataFg[TX_BYTES]);
                         net.setFgDownData(dataFg[RX_BYTES]);
+
+                        dataFound = true;
                     }
                 }
 

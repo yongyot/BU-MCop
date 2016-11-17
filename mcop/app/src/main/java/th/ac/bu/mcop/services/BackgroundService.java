@@ -88,7 +88,7 @@ public class BackgroundService extends Service {
 
                 Log.d("emji", "run");
 
-                ArrayList<Stats> listStats;
+                ArrayList<Stats> listDiffStats;
                 ArrayList<Stats> listOldStats;
                 ArrayList<Stats> listNewStats;
 
@@ -134,12 +134,13 @@ public class BackgroundService extends Service {
 
                         // get the stats for the first time.
                         if (intenalCounter == 0){
-                            Log.d("emji", "oldStats = Stats.getStats(context);");
-                        } else if (intenalCounter > Settings.sNetInterval){
-                            Log.d("emji", "newStats = Stats.getStats(context);");
-                        }
+                            listOldStats = Stats.getStats(mContext);
 
-                        Log.d("emji", "Stats.NETDifference(oldStats, newStats);");
+                        } else if (intenalCounter > Settings.sNetInterval){
+
+                            listNewStats = Stats.getStats(mContext);
+                            listDiffStats = Stats.netDifference(listOldStats, listNewStats);
+                        }
                     }
 
                     sCounter++;
