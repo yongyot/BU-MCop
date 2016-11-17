@@ -73,7 +73,7 @@ public class StatsFileManager {
             fos.close();
 
         } catch (IOException ex) {
-            Log.d("emji", "Error occurred while compressing file. Details: " + ex.toString());
+            Log.d(Settings.TAG, "Error occurred while compressing file. Details: " + ex.toString());
             ex.printStackTrace();
             NotificationView.show(context, "Data compression error.");
         }

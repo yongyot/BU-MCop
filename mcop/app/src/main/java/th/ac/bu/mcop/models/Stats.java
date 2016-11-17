@@ -13,15 +13,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.SortedMap;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 import th.ac.bu.mcop.modules.NetStatsExtractor;
 import th.ac.bu.mcop.utils.Constants;
+import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.widgets.NotificationView;
 
 /**
@@ -291,7 +296,7 @@ public class Stats {
         } catch (PackageManager.NameNotFoundException ex) {
             ex.printStackTrace();
         } catch (Exception e) {
-            Log.d("emji","Unknown error occurred while checking package type in CPUStatsExtractor class.. Details: "+e.toString());
+            Log.d(Settings.TAG,"Unknown error occurred while checking package type in CPUStatsExtractor class.. Details: "+e.toString());
         }
 
         return -1;
@@ -327,6 +332,32 @@ public class Stats {
         }
 
         return false;
+    }
+
+    public String getStringData() {
+        Calendar calTime = Calendar.getInstance(Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm:ss:SSS", Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String date = sdf.format(calTime.getTime());
+
+        //date
+        String formatStr = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s";
+        return  String.format(formatStr
+                , date
+                , uid
+                , packageName
+                , isMainProcess()
+                , isInteracting
+                , state
+                , net.getBgUpData()
+                , net.getBgDownData()
+                , net.getFgUpData()
+                , net.getFgDownData()
+                , net.getBgUpWifi()
+                , net.getBgDownWifi()
+                , net.getFgUpWifi()
+                , net.getFgDownWifi());
     }
 
     static class PackageNameComparator implements Comparator<Stats> {

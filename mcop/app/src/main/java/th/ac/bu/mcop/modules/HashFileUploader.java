@@ -42,18 +42,18 @@ public class HashFileUploader extends AsyncTask <String, Void, String>{
                 File file = new File(path);
                 file.delete();
             } else if (mServerCode == 404){
-                Log.d("emji", "Can not connect to server. Hash file can not be uploaded");
+                Log.d(Settings.TAG, "Can not connect to server. Hash file can not be uploaded");
             } else if (mServerCode == -1){
-                Log.d("emji", "Hash file does not exist.");
+                Log.d(Settings.TAG, "Hash file does not exist.");
             } else if (mServerCode == 504){
-                Log.d("emji", "Gateway Timeout. Couldn't upload hash file");
+                Log.d(Settings.TAG, "Gateway Timeout. Couldn't upload hash file");
             } else if (mServerCode == 0){
-                Log.d("emji", "Can not reach to server with this network.");
+                Log.d(Settings.TAG, "Can not reach to server with this network.");
             } else {
-                Log.d("emji", "Unhandled server code. Couldn't upload hash file" + mServerCode);
+                Log.d(Settings.TAG, "Unhandled server code. Couldn't upload hash file" + mServerCode);
             }
         } else {
-            Log.d("emji", "No internet access. Couldn't upload hash file");
+            Log.d(Settings.TAG, "No internet access. Couldn't upload hash file");
         }
 
         return null;
@@ -123,7 +123,7 @@ public class HashFileUploader extends AsyncTask <String, Void, String>{
             serverResponseCode = conn.getResponseCode();
             String serverResponseMessage = conn.getResponseMessage();
 
-            Log.d("emji", "HTTP Response for hash file is : "+ serverResponseMessage + ": " + serverResponseCode);
+            Log.d(Settings.TAG, "HTTP Response for hash file is : "+ serverResponseMessage + ": " + serverResponseCode);
 
             fileInputStream.close();
             dos.flush();
@@ -131,9 +131,9 @@ public class HashFileUploader extends AsyncTask <String, Void, String>{
 
         } catch (MalformedURLException ex){
             ex.printStackTrace();
-            Log.d("emji", "Error uploading hash file. Details: " + ex.getMessage(), ex);
+            Log.d(Settings.TAG, "Error uploading hash file. Details: " + ex.getMessage(), ex);
         } catch (Exception e){
-            Log.d("emji", "Error hash uploading file. Details:  "+ e.getMessage());
+            Log.d(Settings.TAG, "Error hash uploading file. Details:  "+ e.getMessage());
         }
 
         return serverResponseCode;

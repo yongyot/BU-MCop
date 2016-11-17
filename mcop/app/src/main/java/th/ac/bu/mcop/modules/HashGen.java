@@ -44,7 +44,7 @@ public class HashGen {
             fos.write(data.getBytes());
             fos.close();
         }  catch (Exception e) {
-            Log.d("emji", "Unable to write hash info in file. Details:\n" + e.toString());
+            Log.d(Settings.TAG, "Unable to write hash info in file. Details:\n" + e.toString());
         }
     }
 
@@ -89,7 +89,7 @@ public class HashGen {
             return appInfo;
 
         } catch (Exception ex) {
-            Log.d("emji","Error occurred in getPackageInfo method. Details: "+ ex.toString());
+            Log.d(Settings.TAG,"Error occurred in getPackageInfo method. Details: "+ ex.toString());
         }
         return null;
     }
@@ -111,7 +111,7 @@ public class HashGen {
 
             return convertByteArrayToHexString(hashedBytes);
         } catch (Exception ex) {
-            Log.d("emji","Error while generating hashcode. Details: " + ex.toString());
+            Log.d(Settings.TAG,"Error while generating hashcode. Details: " + ex.toString());
         }
         return null;
     }

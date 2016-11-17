@@ -116,7 +116,7 @@ public class NetStatsExtractor {
 
         }catch (Exception e){
             net.sError = true;
-            Log.d("emji", "Might be malformed proc file from net stats extractor. Details: " + e.toString());
+            Log.d(Settings.TAG, "Might be malformed proc file from net stats extractor. Details: " + e.toString());
         }
 
         return net;

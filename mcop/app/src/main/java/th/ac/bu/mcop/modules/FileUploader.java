@@ -44,13 +44,13 @@ public class FileUploader extends AsyncTask<String, Void, String> {
             if (serverCode == 200){
                 new StatsFileManager(mContext).createNewFile();
             } else if (serverCode == 404){
-                Log.d("emji", "Can not connect to server.");
+                Log.d(Settings.TAG, "Can not connect to server.");
             } else if (serverCode == -1){
-                Log.d("emji", "Source file does not exist.11");
+                Log.d(Settings.TAG, "Source file does not exist.11");
             } else if (serverCode == 504){
-                Log.d("emji", "Gateway Timeout.");
+                Log.d(Settings.TAG, "Gateway Timeout.");
             } else {
-                Log.d("emji", "Unhandled server code. " + serverCode);
+                Log.d(Settings.TAG, "Unhandled server code. " + serverCode);
             }
 
             File file = new File(path);
@@ -116,7 +116,7 @@ public class FileUploader extends AsyncTask<String, Void, String> {
 
             serverResponseCode = conn.getResponseCode();
             String serverResponseMessage = conn.getResponseMessage();
-            Log.d("emji", "HTTP Response is : "+ serverResponseMessage + ": " + serverResponseCode);
+            Log.d(Settings.TAG, "HTTP Response is : "+ serverResponseMessage + ": " + serverResponseCode);
 
             //close the streams //
             fileInputStream.close();
@@ -130,9 +130,9 @@ public class FileUploader extends AsyncTask<String, Void, String> {
 
         } catch (MalformedURLException ex){
             ex.printStackTrace();
-            Log.d("emji", "Error uploading file. Details: " + ex.getMessage(), ex);
+            Log.d(Settings.TAG, "Error uploading file. Details: " + ex.getMessage(), ex);
         } catch (Exception e){
-            Log.d("emji", "Error uploading file. Details:  "+ e.getMessage());
+            Log.d(Settings.TAG, "Error uploading file. Details:  "+ e.getMessage());
         }
 
         return serverResponseCode;

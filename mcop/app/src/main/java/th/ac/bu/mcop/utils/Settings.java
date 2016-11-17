@@ -22,6 +22,8 @@ import th.ac.bu.mcop.widgets.NotificationView;
 
 public class Settings {
 
+    public static final String TAG = "BU-MCOP";
+
     public static int sNetworkType;
     public static int sInterval;
     public static int sNetInterval;
@@ -57,7 +59,7 @@ public class Settings {
                 return "eth1";
             }
         } catch (Exception e){
-            Log.d("emji","Can not get wifi network interface name.");
+            Log.d(Settings.TAG,"Can not get wifi network interface name.");
         }
 
         return "";
@@ -87,7 +89,7 @@ public class Settings {
                     return res1.toString();
                 }
             } catch (Exception ex) {
-                Log.d("emji","Can not retrieve mac address on Marshmallow");
+                Log.d(Settings.TAG,"Can not retrieve mac address on Marshmallow");
                 NotificationView.show(context, "Error getting mac address.");
             }
 

@@ -73,7 +73,7 @@ public class BackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("emji", "onStartCommand");
+        Log.d(Settings.TAG, "onStartCommand");
 
         startAsForeground();
 
@@ -85,8 +85,6 @@ public class BackgroundService extends Service {
         mHandler.postDelayed(mRunnable = new Runnable() {
             @Override
             public void run() {
-
-                Log.d("emji", "run");
 
                 ArrayList<Stats> listDiffStats;
                 ArrayList<Stats> listOldStats;
@@ -132,6 +130,8 @@ public class BackgroundService extends Service {
 
                     if (!FileUploader.sIsUploading){
 
+                        String data = "";
+
                         // get the stats for the first time.
                         if (intenalCounter == 0){
                             listOldStats = Stats.getStats(mContext);
@@ -140,6 +140,21 @@ public class BackgroundService extends Service {
 
                             listNewStats = Stats.getStats(mContext);
                             listDiffStats = Stats.netDifference(listOldStats, listNewStats);
+
+                            listOldStats = listNewStats;
+
+                            startAsForeground();
+
+                            boolean error = false;
+
+                            String networkType = Settings.sNetworkType + "";
+                            for (Stats stats : listDiffStats) {
+                                if (stats.getNet().sError) {
+                                    error = true;
+                                }
+
+                                data = data + stats.getStringData() + "|" + networkType +"\n";
+                            }
                         }
                     }
 
@@ -155,7 +170,7 @@ public class BackgroundService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Log.d("emji", "onTaskRemoved");
+        Log.d(Settings.TAG, "onTaskRemoved");
         super.onTaskRemoved(rootIntent);
 
         try {
@@ -174,13 +189,13 @@ public class BackgroundService extends Service {
 
             stopSelf();
         } catch (Exception ex) {
-            Log.d("emji", "error " + ex.toString());
+            Log.d(Settings.TAG, "error " + ex.toString());
         }
     }
 
     @Override
     public void onDestroy() {
-        Log.d("emji", "onDestroy");
+        Log.d(Settings.TAG, "onDestroy");
         super.onDestroy();
 
         try {
@@ -204,7 +219,7 @@ public class BackgroundService extends Service {
             }
 
         } catch (Exception ex) {
-            Log.d("emji","error " + ex.toString());
+            Log.d(Settings.TAG,"error " + ex.toString());
         }
     }
 

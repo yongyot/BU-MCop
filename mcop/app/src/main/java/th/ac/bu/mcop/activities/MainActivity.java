@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             unregisterReceiver(mMessageRecevier);
         } catch (Exception ex) {
-            Log.d("emji", ex.getMessage());
+            Log.d(Settings.TAG, ex.getMessage());
         }
 
         isAppPaused = true;
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     stopService(intent);
                 } catch (Exception ex) {
-                    Log.d("emji", ex.toString());
+                    Log.d(Settings.TAG, ex.toString());
                 }
 
                 startService(intent);
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     NotificationView.show(mContext, "Data interface error.");
                 }
             } catch(Exception ex) {
-                Log.d("emji", "Can not find data interface name. Details: " + ex.toString());
+                Log.d(Settings.TAG, "Can not find data interface name. Details: " + ex.toString());
             }
 
             new Thread(new Runnable() {
