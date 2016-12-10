@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.net.NetworkInterface;
+import java.util.Set;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.modules.HashGen;
@@ -174,6 +175,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mHandler.postDelayed(mRunnable = new Runnable() {
                 @Override
                 public void run() {
+
+                    Log.d(Settings.TAG, "MainActivity run");;
 
                     mCounterTextView.setText("Session: " + Integer.toString(BackgroundService.sCounter));
                     mFileSizeTextView.setText("File Size: " + Long.toString(StatsFileManager.getFileSize()) + " KB");

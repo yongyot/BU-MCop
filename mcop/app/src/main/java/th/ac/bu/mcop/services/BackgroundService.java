@@ -20,16 +20,12 @@ import android.util.Log;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.MainActivity;
-import th.ac.bu.mcop.models.Stats;
-import th.ac.bu.mcop.modules.FileUploader;
-import th.ac.bu.mcop.modules.HashFileUploader;
-import th.ac.bu.mcop.modules.HashGen;
+import th.ac.bu.mcop.modules.NetDataExtractor;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
@@ -73,7 +69,7 @@ public class BackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(Settings.TAG, "onStartCommand");
+        Log.d(Settings.TAG, "BackgroundService onStartCommand");
 
         startAsForeground();
 
@@ -85,8 +81,11 @@ public class BackgroundService extends Service {
         mHandler.postDelayed(mRunnable = new Runnable() {
             @Override
             public void run() {
+                Log.d(Settings.TAG, "BackgroundService run");
+                NetDataExtractor netDataExtractor = new NetDataExtractor(mContext);
+                netDataExtractor.getNetData();
 
-                ArrayList<Stats> listDiffStats;
+                /*ArrayList<Stats> listDiffStats;
                 ArrayList<Stats> listOldStats;
                 ArrayList<Stats> listNewStats;
 
@@ -160,7 +159,7 @@ public class BackgroundService extends Service {
 
                     sCounter++;
                     mHandler.postDelayed(this, Settings.sInterval * 1000);
-                }
+                }*/
 
             }
         }, Settings.sInterval * 1000);
@@ -170,7 +169,7 @@ public class BackgroundService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Log.d(Settings.TAG, "onTaskRemoved");
+        Log.d(Settings.TAG, "BackgroundService onTaskRemoved");
         super.onTaskRemoved(rootIntent);
 
         try {
@@ -195,7 +194,7 @@ public class BackgroundService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(Settings.TAG, "onDestroy");
+        Log.d(Settings.TAG, "BackgroundService onDestroy");
         super.onDestroy();
 
         try {
