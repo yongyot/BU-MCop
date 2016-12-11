@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/initialization_margig"
+        android:layout_margin="@dimen/initialization_margin"
         android:layout_weight="1"
         >
 
