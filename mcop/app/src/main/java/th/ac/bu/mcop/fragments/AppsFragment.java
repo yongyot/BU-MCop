@@ -18,7 +18,7 @@ import th.ac.bu.mcop.adapters.AppsRecycleViewAdapter;
  * Created by jeeraphan on 12/11/16.
  */
 
-public class AppsFragment extends Fragment {
+public class AppsFragment extends Fragment{
 
     private static ArrayList<ApplicationInfo> mApplicationInfos;
 
