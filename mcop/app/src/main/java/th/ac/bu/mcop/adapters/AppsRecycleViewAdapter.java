@@ -1,6 +1,7 @@
 package th.ac.bu.mcop.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,8 +22,13 @@ import th.ac.bu.mcop.utils.Settings;
 
 public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleViewAdapter.ViewHolder>{
 
+    public interface OnAppListener {
+        void onItemClickListener(int position);
+    }
+
     private ArrayList<ApplicationInfo> mApplicationInfos;
     private Context mContext;
+    private OnAppListener mOnAppListener;
 
     public AppsRecycleViewAdapter(Context context, ArrayList<ApplicationInfo> applicationInfos){
         mApplicationInfos = applicationInfos;
@@ -45,7 +51,9 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
         holder.containerAppsRelative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(Settings.TAG, "position: " + mApplicationInfos.get(position).packageName);
+                if (mOnAppListener != null){
+                    mOnAppListener.onItemClickListener(position);
+                }
             }
         });
     }
@@ -56,6 +64,10 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
             return mApplicationInfos.size();
         }
         return 0;
+    }
+
+    public void setOnAppListener(OnAppListener listener){
+        mOnAppListener = listener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

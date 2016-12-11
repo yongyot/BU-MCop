@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/colorPrimary"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_apps_info"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/title_text_size"
+            android:textStyle="bold"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_title_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navbar"
+        >
+
+        <ImageView
+            android:id="@+id/icon_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_imageview"
+            android:layout_centerVertical="true"
+            >
+
+            <TextView
+                android:id="@+id/app_name_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/row_title_text_size"
+                android:textStyle="bold"
+                android:text="App name"
+                />
+
+            <TextView
+                android:id="@+id/package_name_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/app_name_textview"
+                android:textSize="@dimen/row_desc_text_size"
+                android:text="Package name"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/version_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/container_title_relative"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="Version 1.0.0"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/status_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/version_textview"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="Status Safe"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/title_permission_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/status_textview"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:text="Permission"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/desc_permission_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_permission_textview"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="android.permission.ACCESS_NETWORK_STATE \nandroid.permission.WRITE_EXTERNAL_STORAGE \nandroid.permission.INTERNET \nandroid.permission.ACCESS_WIFI_STATE"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        >
+
+        <Button
+            android:id="@+id/ignore_button"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/label_ignore"
+            />
+
+        <Button
+            android:id="@+id/uninstall_app_button"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/label_uninstall"
+            android:layout_toRightOf="@+id/ignore_button"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

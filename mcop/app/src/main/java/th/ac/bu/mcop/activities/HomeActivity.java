@@ -1,6 +1,7 @@
 package th.ac.bu.mcop.activities;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import th.ac.bu.mcop.R;
+import th.ac.bu.mcop.modules.ApplicationInfoManager;
 
 /**
  * Created by jeeraphan on 12/10/16.
@@ -31,6 +35,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         mManageAppButton.setOnClickListener(this);
         mAboutButton.setOnClickListener(this);
+
+        ArrayList<ApplicationInfo> applicationInstalled = ApplicationInfoManager.getTotalApplication(this);
+        ArrayList<ApplicationInfo> applicationUsingInternet = ApplicationInfoManager.getTotalApplicationUsingInternet(this);
+
+        mTotalInstalledAppTextView.setText(applicationInstalled.size() + "");
+        mAppUsingInternetTextView.setText(applicationUsingInternet.size() + "");
     }
 
     /***********************************************

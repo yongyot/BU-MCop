@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.adapters.AppsViewPagerAdapter;
-import th.ac.bu.mcop.utils.Settings;
+import th.ac.bu.mcop.modules.ApplicationInfoManager;
 
 /**
  * Created by jeeraphan on 12/10/16.
@@ -32,7 +32,7 @@ public class ApplistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applist);
 
-        getTotalApplicationUsingInternet();
+        mApplicationInfosInstall = ApplicationInfoManager.getTotalApplicationUsingInternet(this);
 
         mViewPager = (ViewPager) findViewById(R.id.app_viewpager);
         mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -40,22 +40,5 @@ public class ApplistActivity extends AppCompatActivity {
         mAppsViewPagerAdapter = new AppsViewPagerAdapter(getSupportFragmentManager(), mApplicationInfosInstall);
         mViewPager.setAdapter(mAppsViewPagerAdapter);
         mPagerSlidingTabStrip.setViewPager(mViewPager);
-    }
-
-    private void getTotalApplicationUsingInternet(){
-
-        mApplicationInfosInstall = new ArrayList<>();
-
-        PackageManager packageManager = getPackageManager();
-        ArrayList<ApplicationInfo> applicationInfos = (ArrayList<ApplicationInfo>) packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
-
-        for (ApplicationInfo info : applicationInfos) {
-
-            if (packageManager.getLaunchIntentForPackage(info.packageName) != null) {
-                mApplicationInfosInstall.add(info);
-
-                Log.d(Settings.TAG, "info: " + info.packageName);
-            }
-        }
     }
 }

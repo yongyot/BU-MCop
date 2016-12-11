@@ -55,6 +55,7 @@
         <activity android:name=".activities.HomeActivity"/>
         <activity android:name=".activities.AboutActivity"/>
         <activity android:name=".activities.ApplistActivity"/>
+        <activity android:name=".activities.AppInfoActivity"/>
 
         <!-- ======== receiver ========== -->
         <receiver android:name=".broadcastreceiver.IntenetReceiver">

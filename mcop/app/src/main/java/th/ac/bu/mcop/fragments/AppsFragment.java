@@ -1,5 +1,6 @@
 package th.ac.bu.mcop.fragments;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,13 +13,14 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import th.ac.bu.mcop.R;
+import th.ac.bu.mcop.activities.AppInfoActivity;
 import th.ac.bu.mcop.adapters.AppsRecycleViewAdapter;
 
 /**
  * Created by jeeraphan on 12/11/16.
  */
 
-public class AppsFragment extends Fragment{
+public class AppsFragment extends Fragment implements AppsRecycleViewAdapter.OnAppListener{
 
     private static ArrayList<ApplicationInfo> mApplicationInfos;
 
@@ -41,8 +43,20 @@ public class AppsFragment extends Fragment{
         mRecyclerView.setLayoutManager(layoutManager);
 
         mAppsRecycleViewAdapter = new AppsRecycleViewAdapter(container.getContext(), mApplicationInfos);
+        mAppsRecycleViewAdapter.setOnAppListener(this);
         mRecyclerView.setAdapter(mAppsRecycleViewAdapter);
 
         return view;
+    }
+
+    /***********************************************
+     AppsRecycleViewAdapter.OnAppListener
+     ************************************************/
+
+    @Override
+    public void onItemClickListener(int position) {
+        Intent intent = new Intent(getActivity(), AppInfoActivity.class);
+        intent.putExtra("put_extra_package_name", mApplicationInfos.get(position).packageName);
+        startActivity(intent);
     }
 }
