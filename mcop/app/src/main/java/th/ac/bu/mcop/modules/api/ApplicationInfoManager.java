@@ -1,4 +1,4 @@
-package th.ac.bu.mcop.managers;
+package th.ac.bu.mcop.modules.api;
 
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;

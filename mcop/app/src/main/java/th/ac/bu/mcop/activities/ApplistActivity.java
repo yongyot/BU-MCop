@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.adapters.AppsViewPagerAdapter;
-import th.ac.bu.mcop.managers.ApplicationInfoManager;
+import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 
 /**
  * Created by jeeraphan on 12/10/16.
