@@ -1,19 +1,18 @@
 package th.ac.bu.mcop.activities;
 
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
 import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.adapters.AppsViewPagerAdapter;
-import th.ac.bu.mcop.modules.ApplicationInfoManager;
+import th.ac.bu.mcop.managers.ApplicationInfoManager;
 
 /**
  * Created by jeeraphan on 12/10/16.

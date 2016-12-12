@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import th.ac.bu.mcop.R;
-import th.ac.bu.mcop.modules.ApplicationInfoManager;
+import th.ac.bu.mcop.managers.ApplicationInfoManager;
 
 /**
  * Created by jeeraphan on 12/10/16.
