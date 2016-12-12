@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.File;
@@ -26,26 +27,15 @@ import th.ac.bu.mcop.utils.Settings;
 
 public class HashGen {
 
+    public interface OnHashGenListener {
+        void onHashGenFinished();
+    }
+
     public volatile static boolean sIsGenerating;
+    private OnHashGenListener mListener;
 
-    private  void writeToFile(String data, boolean append) {
-
-        data = Settings.sMacAddress + "\n" + data;
-        File statsDir;
-        statsDir = new File(Settings.sApplicationPath);
-
-        if(!statsDir.exists()){
-            statsDir.mkdirs();
-        }
-
-        try {
-            File file = new File(Settings.sHashFilePath);
-            FileOutputStream fos = new FileOutputStream(file, append);
-            fos.write(data.getBytes());
-            fos.close();
-        }  catch (Exception e) {
-            Log.d(Settings.TAG, "Unable to write hash info in file. Details:\n" + e.toString());
-        }
+    public void setOnHashGenListener(OnHashGenListener listener){
+        mListener = listener;
     }
 
     public void getAllAppInfo(Context context) {
@@ -123,5 +113,29 @@ public class HashGen {
                     .substring(1));
         }
         return stringBuffer.toString();
+    }
+
+    private  void writeToFile(String data, boolean append) {
+
+        data = Settings.sMacAddress + "\n" + data;
+        File statsDir;
+        statsDir = new File(Settings.sApplicationPath);
+
+        if(!statsDir.exists()){
+            statsDir.mkdirs();
+        }
+
+        try {
+            File file = new File(Settings.sHashFilePath);
+            FileOutputStream fos = new FileOutputStream(file, append);
+            fos.write(data.getBytes());
+            fos.close();
+        }  catch (Exception e) {
+            Log.d(Settings.TAG, "Unable to write hash info in file. Details:\n" + e.toString());
+        } finally {
+            if (mListener != null){
+                mListener.onHashGenFinished();
+            }
+        }
     }
 }

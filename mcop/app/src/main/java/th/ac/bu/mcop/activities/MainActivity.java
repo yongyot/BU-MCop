@@ -227,6 +227,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initHasFile(){
 
+        Log.d(Settings.TAG, "initHasFile");
+        Log.d(Settings.TAG, "Settings.sMacAddress: " + Settings.sMacAddress);
+
         if(Settings.sMacAddress != null) {
 
             try {
@@ -239,10 +242,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             new Thread(new Runnable() {
                 public void run() {
+                    Log.d(Settings.TAG, "run before hashGen");
                     SharePrefs.setPreference(mContext, "firstTime", true);
                     HashGen hashGen = new HashGen();
                     hashGen.getAllAppInfo(mContext);
-
+                    Log.d(Settings.TAG, "run after hashGen");
                 }
             }).start();
         }
