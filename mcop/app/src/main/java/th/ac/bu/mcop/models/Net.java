@@ -128,4 +128,74 @@ public class Net {
     public void   setFgDownWifi(String fgDownWifi) {
         this.fgDownWifi = fgDownWifi;
     }
+
+    public int getUpDataInByte(){
+
+        int bgUpData = 0;
+        int fgUpData = 0;
+        int bgUpWifi = 0;
+        int fgUpWifi = 0;
+
+        try {
+            bgUpData = Integer.parseInt(getBgUpData());
+
+        } catch (NumberFormatException e){
+            bgUpData = 0;
+        }
+
+        try {
+            fgUpData = Integer.parseInt(getFgUpData());
+        } catch (NumberFormatException e){
+            fgUpData = 0;
+        }
+
+        try {
+            bgUpWifi = Integer.parseInt(getBgUpWifi());
+        } catch (NumberFormatException e){
+            bgUpWifi = 0;
+        }
+
+        try {
+            fgUpWifi = Integer.parseInt(getFgUpWifi());
+        } catch (NumberFormatException e){
+            fgUpWifi = 0;
+        }
+
+        return bgUpData + fgUpData + bgUpWifi + fgUpWifi;
+    }
+
+    public int getDownDataInByte(){
+
+        int bgDownData = 0;
+        int fgDownData = 0;
+        int bgDownWifi = 0;
+        int fgDownWifi = 0;
+
+        try {
+            bgDownData = Integer.parseInt(getBgDownData());
+
+        } catch (NumberFormatException e){
+            bgDownData = 0;
+        }
+
+        try {
+            fgDownData = Integer.parseInt(getFgDownData());
+        } catch (NumberFormatException e){
+            fgDownData = 0;
+        }
+
+        try {
+            bgDownWifi = Integer.parseInt(getBgDownWifi());
+        } catch (NumberFormatException e){
+            bgDownWifi = 0;
+        }
+
+        try {
+            fgDownWifi = Integer.parseInt(getFgDownWifi());
+        } catch (NumberFormatException e){
+            fgDownWifi = 0;
+        }
+
+        return bgDownData + fgDownData + bgDownWifi + fgDownWifi;
+    }
 }

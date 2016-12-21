@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.io.File;
@@ -25,6 +26,8 @@ import java.util.Date;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.MainActivity;
+import th.ac.bu.mcop.modules.HashFileUploader;
+import th.ac.bu.mcop.modules.HashGen;
 import th.ac.bu.mcop.modules.NetDataExtractor;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.utils.Constants;
@@ -81,86 +84,89 @@ public class BackgroundService extends Service {
         mHandler.postDelayed(mRunnable = new Runnable() {
             @Override
             public void run() {
-                Log.d(Settings.TAG, "BackgroundService run");
+                sendBroadcast();
+                checkUpdateHashGen();
+
                 NetDataExtractor netDataExtractor = new NetDataExtractor(mContext);
                 netDataExtractor.getNetData();
+//                ArrayList<Stats> listDiffStats;
+//                ArrayList<Stats> listOldStats;
+//                ArrayList<Stats> listNewStats;
+//                if (mIsForeground){
+//                    //below lollipop we need to remove the notification by stop foreground and restart the notification
+//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+//                        stopForeground(true);
+//                        updateNotification();
+//                    } else {
+//                        stopForeground(false);
+//                    }
+//
+//                    mIsForeground = false;
+//
+//                    //this code generates the hash code every midnight.s
+//                    if (compare(mCurrentDate, new Date()) != 0){
+//
+//                        //creates hashcode file for every app
+//                        HashGen hashGen = new HashGen();
+//                        hashGen.getAllAppInfo(mContext);
+//                    }
+//
+//                    //scheduler for uploading hashcode
+//                    File file = new File(Settings.sHashFilePath);
+//                    boolean isExist = file.exists();
+//
+//                    //if hash file exist upload it to server..
+//                    if (isExist && !HashGen.sIsGenerating && !HashFileUploader.sIsUploading){
+//                        HashFileUploader hashFileUploader = new HashFileUploader(mContext);
+//                        hashFileUploader.execute();
+//                    }
+//
+//                    //make sure file does not exist.
+//                    isExist = file.exists();
+//
+//                    if (isExist && StatsFileManager.getFileSize() >= Settings.sUploadSize && HashGen.sIsGenerating){
+//                        FileUploader fileUploader = new FileUploader(mContext);
+//                        fileUploader.execute();
+//                    }
+//
+//                    if (!FileUploader.sIsUploading){
+//
+//                        String data = "";
+//
+//                        // get the stats for the first time.
+//                        if (intenalCounter == 0){
+//                            listOldStats = Stats.getStats(mContext);
+//
+//                        } else if (intenalCounter > Settings.sNetInterval){
+//
+//                            listNewStats = Stats.getStats(mContext);
+//                            listDiffStats = Stats.netDifference(listOldStats, listNewStats);
+//
+//                            listOldStats = listNewStats;
+//
+//                            startAsForeground();
+//
+//                            boolean error = false;
+//
+//                            String networkType = Settings.sNetworkType + "";
+//                            for (Stats stats : listDiffStats) {
+//                                if (stats.getNet().sError) {
+//                                    error = true;
+//                                }
+//
+//                                data = data + stats.getStringData() + "|" + networkType +"\n";
+//                            }
+//                        }
+//                    }
+//
+//                    startAsForeground();
+//                    sCounter++;
+//                    mHandler.postDelayed(this, Settings.sInterval * 1000);
+//                }
 
-                /*ArrayList<Stats> listDiffStats;
-                ArrayList<Stats> listOldStats;
-                ArrayList<Stats> listNewStats;
-
-                if (mIsForeground){
-
-                    //below lollipop we need to remove the notification by stop foreground and restart the notification
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
-                        stopForeground(true);
-                        updateNotification();
-                    } else {
-                        stopForeground(false);
-                    }
-
-                    mIsForeground = false;
-
-                    //this code generates the hash code every midnight.s
-                    if (compare(mCurrentDate, new Date()) != 0){
-
-                        //creates hashcode file for every app
-                        HashGen hashGen = new HashGen();
-                        hashGen.getAllAppInfo(mContext);
-                    }
-
-                    //scheduler for uploading hashcode
-                    File file = new File(Settings.sHashFilePath);
-                    boolean isExist = file.exists();
-
-                    //if hash file exist upload it to server..
-                    if (isExist && !HashGen.sIsGenerating && !HashFileUploader.sIsUploading){
-                        HashFileUploader hashFileUploader = new HashFileUploader(mContext);
-                        hashFileUploader.execute();
-                    }
-
-                    //make sure file does not exist.
-                    isExist = file.exists();
-
-                    if (isExist && StatsFileManager.getFileSize() >= Settings.sUploadSize && HashGen.sIsGenerating){
-                        FileUploader fileUploader = new FileUploader(mContext);
-                        fileUploader.execute();
-                    }
-
-                    if (!FileUploader.sIsUploading){
-
-                        String data = "";
-
-                        // get the stats for the first time.
-                        if (intenalCounter == 0){
-                            listOldStats = Stats.getStats(mContext);
-
-                        } else if (intenalCounter > Settings.sNetInterval){
-
-                            listNewStats = Stats.getStats(mContext);
-                            listDiffStats = Stats.netDifference(listOldStats, listNewStats);
-
-                            listOldStats = listNewStats;
-
-                            startAsForeground();
-
-                            boolean error = false;
-
-                            String networkType = Settings.sNetworkType + "";
-                            for (Stats stats : listDiffStats) {
-                                if (stats.getNet().sError) {
-                                    error = true;
-                                }
-
-                                data = data + stats.getStringData() + "|" + networkType +"\n";
-                            }
-                        }
-                    }
-
-                    sCounter++;
-                    mHandler.postDelayed(this, Settings.sInterval * 1000);
-                }*/
-
+                startAsForeground();
+                sCounter++;
+                mHandler.postDelayed(this, Settings.sInterval * 1000);
             }
         }, Settings.sInterval * 1000);
 
@@ -267,7 +273,7 @@ public class BackgroundService extends Service {
 
         int icon = R.mipmap.ic_launcher;
 
-        mBuilder.setContentTitle("Stats Collector")
+        mBuilder.setContentTitle("mCOP Stats Collector")
                 .setContentText("Started: " + mDateFormat.format(mDate))
                 .setSubText("Session: " + sCounter)
                 .setContentInfo("Interval: " + Settings.sInterval)
@@ -309,6 +315,34 @@ public class BackgroundService extends Service {
 
                 .setContentIntent(resultPendingIntent);
         notifyManager.notify(Constants.ONGOING_NOTIFICATION_ID, mBuilder.build());
+    }
+
+    private void sendBroadcast(){
+        Intent intentUpdateUI = new Intent(Constants.INTENT_FILTER_UPDATE_UI);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intentUpdateUI);
+
+        Intent intentUpdateInternet = new Intent(Constants.INTENT_FILTER_INTERNET);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intentUpdateInternet);
+    }
+
+    private void checkUpdateNetData(){
+
+    }
+
+    private void checkUpdateHashGen(){
+
+        if (compare(mCurrentDate, new Date()) != 0){
+
+            HashGen hashGen = new HashGen();
+            hashGen.getAllAppInfo(mContext);
+
+            File file = new File(Settings.sHashFilePath);
+            boolean isExist = file.exists();
+            if (isExist && !HashGen.sIsGenerating && !HashFileUploader.sIsUploading){
+                HashFileUploader hashFileUploader = new HashFileUploader(mContext);
+                hashFileUploader.execute();
+            }
+        }
     }
 
     public int compare(Date d1, Date d2) {

@@ -19,6 +19,7 @@ import java.net.NetworkInterface;
 import java.util.Set;
 
 import th.ac.bu.mcop.R;
+import th.ac.bu.mcop.broadcastreceiver.IntenetReceiver;
 import th.ac.bu.mcop.modules.HashGen;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.services.BackgroundService;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static Context mContext;
     private Runnable mRunnable;
     private Handler mHandler;
+    private IntenetReceiver mIntenetReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +69,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mContext = getApplicationContext();
         mHandler = new Handler();
+        mIntenetReceiver = new IntenetReceiver();
     }
 
     @Override
     protected void onStart() {
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageRecevier, new IntentFilter(Constants.INTENT_FILTER));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageRecevier, new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mIntenetReceiver, new IntentFilter(Constants.INTENT_FILTER_INTERNET));
+
         isAppPaused = false;
         super.onStart();
 
@@ -87,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onPause();
         try {
             unregisterReceiver(mMessageRecevier);
+            unregisterReceiver(mIntenetReceiver);
         } catch (Exception ex) {
             Log.d(Settings.TAG, ex.getMessage());
         }
@@ -135,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private BroadcastReceiver mMessageRecevier = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             if(!isAppPaused) {
                 //update UI
                 if(isServiceRunning(BackgroundService.class)) {
@@ -175,8 +180,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mHandler.postDelayed(mRunnable = new Runnable() {
                 @Override
                 public void run() {
-
-                    Log.d(Settings.TAG, "MainActivity run");;
 
                     mCounterTextView.setText("Session: " + Integer.toString(BackgroundService.sCounter));
                     mFileSizeTextView.setText("File Size: " + Long.toString(StatsFileManager.getFileSize()) + " KB");

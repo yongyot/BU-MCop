@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.nfc.Tag;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ import java.util.TreeMap;
 import th.ac.bu.mcop.models.Net;
 import th.ac.bu.mcop.models.NetData;
 import th.ac.bu.mcop.models.Stats;
+import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
 /**
@@ -44,11 +46,47 @@ public class NetDataExtractor {
 
         String unFilteredStats = readProceFile();
         ArrayList<Stats> listAppRunning = getRunningApps();
-        ArrayList<Net> listNet = new ArrayList<>();
+
+        int totalSentInByte = 0;
+        int totalReceivedInByte = 0;
+
         for (Stats stats : listAppRunning){
             Net net = getNetWith(stats, unFilteredStats);
-            listNet.add(net);
+
+            totalSentInByte += net.getUpDataInByte();
+            totalReceivedInByte += net.getDownDataInByte();
         }
+
+        Log.d(Settings.TAG, "totalSentInByte: " + totalSentInByte);
+        Log.d(Settings.TAG, "totalReceivedInByte: " + totalReceivedInByte);
+
+        for (Stats stats : listAppRunning){
+
+            Net net = getNetWith(stats, unFilteredStats);
+            Log.d(Settings.TAG, "sent data in byte: " + net.getUpDataInByte());
+            Log.d(Settings.TAG, "received data in byte: " + net.getDownDataInByte());
+            float percentSentOfByte = (net.getUpDataInByte() / totalSentInByte) * 100;
+            float percentReceivedOfByte = (net.getDownDataInByte() / totalReceivedInByte)* 100;
+
+            // set NetData
+            NetData netData = new NetData();
+            netData.setPackageName(stats.getPackageName());
+            netData.setUid(stats.getUid());
+            netData.setNetWorkState(Settings.sNetworkType + "");
+            netData.setApplicationState(stats.getState() + "");
+            netData.setSentDataInBytePercentOfTotal(percentSentOfByte + "");
+            netData.setReceivedDataInBytePercentOfTotal(percentReceivedOfByte + "");
+
+            Log.d(Settings.TAG, "setPackageName: " + netData.getPackageName());
+            Log.d(Settings.TAG, "setUid: " + netData.getUid());
+            Log.d(Settings.TAG, "setNetWorkState: " + netData.getNetWorkState());
+            Log.d(Settings.TAG, "setApplicationState: " + netData.getApplicationState());
+            Log.d(Settings.TAG, "setSentDataInBytePercentOfTotal: " + netData.getSentDataInBytePercentOfTotal());
+            Log.d(Settings.TAG, "setReceivedDataInBytePercentOfTotal: " + netData.getReceivedDataInBytePercentOfTotal());
+            Log.d(Settings.TAG, "==========");
+        }
+
+        Log.d(Settings.TAG, "****************************************");
 
         return null;
     }
@@ -102,19 +140,24 @@ public class NetDataExtractor {
 
         for (String line : lines) {
 
-            String data[] = line.trim().split("\\s+");
+            String datas[] = line.trim().split("\\s+");
 
-            if(data.length < TOP_LENGTH) {
+            if(datas.length < TOP_LENGTH) {
                 continue;
             }
 
-            int uid = isSystemPackage(data[INDEX_OF_NAME]);
+            int uid = isSystemPackage(datas[INDEX_OF_NAME]);
             if(uid > 0) {
 
                 Stats stats = new Stats();
-                stats.setPackageName(data[INDEX_OF_NAME]);
-                stats.setInteracting(isInteractive(data[INDEX_OF_NAME]));
+                stats.setPackageName(datas[INDEX_OF_NAME]);
+                stats.setInteracting(isInteractive(datas[INDEX_OF_NAME]));
                 stats.setUid(uid + "");
+                if(datas[INDEX_OF_PCY].equalsIgnoreCase("fg")){
+                    stats.setState(Constants.STATE_FOREGROUND);
+                } else if(datas[INDEX_OF_PCY].equalsIgnoreCase("bg")) {
+                    stats.setState(Constants.STATE_BACKGROUND);
+                }
                 //stats.setNet();
 
                 listAppRunning.add(stats);
