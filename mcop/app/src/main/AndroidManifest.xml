@@ -76,7 +76,7 @@
 
         <receiver android:name=".broadcastreceiver.RestartServiceReceiver">
             <intent-filter>
-                <action android:name="YouWillNeverKillMe" />
+                <action android:name="@string/key_nerver_kill" />
             </intent-filter>
         </receiver>
 

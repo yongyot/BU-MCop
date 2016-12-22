@@ -33,17 +33,19 @@ import th.ac.bu.mcop.utils.Settings;
 
 public class NetDataExtractor {
 
-    public final String DATA_INTERFACE = "rmnet0";
-    private Context mContext;
+    public static final String DATA_INTERFACE = "rmnet0";
+    private static Context mContext;
 
-    public NetDataExtractor(Context context){
+    public static void logNetData(Context context){
         mContext = context;
-    }
-
-    public ArrayList<NetData> getNetData(){
-
+        
         String unFilteredStats = readProceFile();
         ArrayList<Stats> listAppRunning = getRunningApps();
+
+        saveLogToRealm(listAppRunning, unFilteredStats);
+    }
+
+    private static void saveLogToRealm(ArrayList<Stats> listAppRunning, String unFilteredStats){
 
         int totalSentInByte = 0;
         int totalReceivedInByte = 0;
@@ -63,6 +65,7 @@ public class NetDataExtractor {
         for (Stats stats : listAppRunning){
 
             Net net = getNetWith(stats, unFilteredStats);
+
 
             float sentDataInBytePercentOfToal = (net.getUpDataInByte() / totalSentInByte) * 100;
             float receivedDataInBytePercentOfTotal = (net.getDownDataInByte() / totalReceivedInByte)* 100;
@@ -86,13 +89,9 @@ public class NetDataExtractor {
 
         realm.copyFromRealm(netDataRealms);
         realm.commitTransaction();
-
-        Log.d(Settings.TAG, "****************************************");
-
-        return null;
     }
 
-    private String readProceFile(){
+    private static String readProceFile(){
 
         String procFileName="/proc/net/xt_qtaguid/stats";
         StringBuffer fileData = new StringBuffer();
@@ -120,7 +119,7 @@ public class NetDataExtractor {
         return fileData.toString();
     }
 
-    private ArrayList<Stats> getRunningApps(){
+    private static ArrayList<Stats> getRunningApps(){
 
         final int INDEX_OF_PR       = 1;
         final int INDEX_OF_CPU      = 2;
@@ -168,7 +167,7 @@ public class NetDataExtractor {
         return listAppRunning;
     }
 
-    private Net getNetWith(Stats stats, String unFilteredStats){
+    private static Net getNetWith(Stats stats, String unFilteredStats){
 
         if (stats.isMainProcess()){
             return getNetStats(stats.getUid(), unFilteredStats);
@@ -177,7 +176,7 @@ public class NetDataExtractor {
         return new Net();
     }
 
-    public String  getTopCommandData(){
+    public static String getTopCommandData(){
 
         StringBuffer topData = new StringBuffer();
         try {
@@ -200,7 +199,7 @@ public class NetDataExtractor {
         return data.substring(i+4);
     }
 
-    private int isSystemPackage(String packageName){
+    private static int isSystemPackage(String packageName){
 
         if(packageName.contains(":")){
 
@@ -224,7 +223,7 @@ public class NetDataExtractor {
         return -1;
     }
 
-    private boolean isInteractive(String packageName){
+    private static boolean isInteractive(String packageName){
 
         String currentApp = "NULL";
 
@@ -255,7 +254,7 @@ public class NetDataExtractor {
         return false;
     }
 
-    private Net getNetStats(String UID,String unFilteredStats) {
+    private static Net getNetStats(String UID,String unFilteredStats) {
 
         final int TAG       = 2;
         final int RX_BYTES  = 5;

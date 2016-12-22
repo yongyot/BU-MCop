@@ -76,19 +76,21 @@ public class BackgroundService extends Service {
 
         startAsForeground();
 
-        boolean retry = true;
-        int networkErrorCount = 0;
-        final int intenalCounter = 0;
         mCurrentDate = new Date();
+
 
         mHandler.postDelayed(mRunnable = new Runnable() {
             @Override
             public void run() {
+
                 sendBroadcast();
                 checkUpdateHashGen();
+                NetDataExtractor.logNetData(mContext);
 
-                NetDataExtractor netDataExtractor = new NetDataExtractor(mContext);
-                netDataExtractor.getNetData();
+                if (sCounter > 60){
+                    // save to text file
+                }
+
 //                ArrayList<Stats> listDiffStats;
 //                ArrayList<Stats> listOldStats;
 //                ArrayList<Stats> listNewStats;
@@ -165,7 +167,7 @@ public class BackgroundService extends Service {
 //                }
 
                 startAsForeground();
-                sCounter++;
+                sCounter += 5;
                 mHandler.postDelayed(this, Settings.sInterval * 1000);
             }
         }, Settings.sInterval * 1000);
@@ -181,7 +183,7 @@ public class BackgroundService extends Service {
         try {
 
             if (!sStopRequest){
-                sendBroadcast(new Intent("YouWillNeverKillMe"));
+                sendBroadcast(new Intent(getString(R.string.key_nerver_kill)));
             }
             /*code for stpe down*/ //unregisterReceiver(mybroadcast);
             if(mWakeLock.isHeld()){
@@ -206,7 +208,7 @@ public class BackgroundService extends Service {
         try {
 
             if (!sStopRequest){
-                sendBroadcast(new Intent("YouWillNeverKillMe"));
+                sendBroadcast(new Intent(getString(R.string.key_nerver_kill)));
             }
 
            /*code for stpe down*/ //unregisterReceiver(mybroadcast);
