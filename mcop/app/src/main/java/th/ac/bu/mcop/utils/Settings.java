@@ -45,7 +45,10 @@ public class Settings {
         sMacAddress = getMacAddress(context);
         sApplicationPath = context.getCacheDir().toString() + "/BU-Stat-Collector/";
         sHashFilePath = sApplicationPath + "hashData";
-        sOutputFileName = sMacAddress.replace(":", "-") + ".stats";
+        Log.d(Settings.TAG, "sMacAddress: " + sMacAddress);
+        if (sMacAddress != null){
+            sOutputFileName = sMacAddress.replace(":", "-") + ".stats";
+        }
     }
 
     public static String getWifiInterfaceName(){

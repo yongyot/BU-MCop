@@ -18,9 +18,12 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import io.realm.Realm;
+import io.realm.RealmList;
 import th.ac.bu.mcop.models.Net;
 import th.ac.bu.mcop.models.NetData;
 import th.ac.bu.mcop.models.Stats;
+import th.ac.bu.mcop.models.realm.NetDataRealm;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
@@ -39,11 +42,6 @@ public class NetDataExtractor {
 
     public ArrayList<NetData> getNetData(){
 
-        // get progfile (return string)
-        // get list app running (return list Stats)
-        // get data with app name (return list net)
-        // convert net to net data
-
         String unFilteredStats = readProceFile();
         ArrayList<Stats> listAppRunning = getRunningApps();
 
@@ -57,34 +55,37 @@ public class NetDataExtractor {
             totalReceivedInByte += net.getDownDataInByte();
         }
 
-        Log.d(Settings.TAG, "totalSentInByte: " + totalSentInByte);
-        Log.d(Settings.TAG, "totalReceivedInByte: " + totalReceivedInByte);
+        // Save to Realm
+        RealmList<NetDataRealm> netDataRealms = new RealmList<>();
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
 
         for (Stats stats : listAppRunning){
 
             Net net = getNetWith(stats, unFilteredStats);
-            Log.d(Settings.TAG, "sent data in byte: " + net.getUpDataInByte());
-            Log.d(Settings.TAG, "received data in byte: " + net.getDownDataInByte());
-            float percentSentOfByte = (net.getUpDataInByte() / totalSentInByte) * 100;
-            float percentReceivedOfByte = (net.getDownDataInByte() / totalReceivedInByte)* 100;
 
-            // set NetData
-            NetData netData = new NetData();
-            netData.setPackageName(stats.getPackageName());
-            netData.setUid(stats.getUid());
-            netData.setNetWorkState(Settings.sNetworkType + "");
-            netData.setApplicationState(stats.getState() + "");
-            netData.setSentDataInBytePercentOfTotal(percentSentOfByte + "");
-            netData.setReceivedDataInBytePercentOfTotal(percentReceivedOfByte + "");
+            float sentDataInBytePercentOfToal = (net.getUpDataInByte() / totalSentInByte) * 100;
+            float receivedDataInBytePercentOfTotal = (net.getDownDataInByte() / totalReceivedInByte)* 100;
 
-            Log.d(Settings.TAG, "setPackageName: " + netData.getPackageName());
-            Log.d(Settings.TAG, "setUid: " + netData.getUid());
-            Log.d(Settings.TAG, "setNetWorkState: " + netData.getNetWorkState());
-            Log.d(Settings.TAG, "setApplicationState: " + netData.getApplicationState());
-            Log.d(Settings.TAG, "setSentDataInBytePercentOfTotal: " + netData.getSentDataInBytePercentOfTotal());
-            Log.d(Settings.TAG, "setReceivedDataInBytePercentOfTotal: " + netData.getReceivedDataInBytePercentOfTotal());
-            Log.d(Settings.TAG, "==========");
+            Log.d(Settings.TAG, "getPackageName: " + stats.getPackageName());
+            Log.d(Settings.TAG, "getUpDataInByte: " + net.getUpDataInByte());
+            Log.d(Settings.TAG, "getDownDataInByte: " + net.getDownDataInByte());
+
+            NetDataRealm netDataRealm = realm.createObject(NetDataRealm.class);
+            netDataRealm.setPackageName(stats.getPackageName());
+            netDataRealm.setUid(stats.getUid());
+            netDataRealm.setNetWorkState(Settings.sNetworkType + "");
+            netDataRealm.setApplicationState(stats.getState() + "");
+            netDataRealm.setSentDataInByte(net.getUpDataInByte());
+            netDataRealm.setReceivedDataInByte(net.getDownDataInByte());
+            netDataRealm.setSentDataInBytePercentOfTotal(sentDataInBytePercentOfToal);
+            netDataRealm.setReceivedDataInBytePercentOfTotal(receivedDataInBytePercentOfTotal);
+
+            netDataRealms.add(netDataRealm);
         }
+
+        realm.copyFromRealm(netDataRealms);
+        realm.commitTransaction();
 
         Log.d(Settings.TAG, "****************************************");
 

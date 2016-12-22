@@ -17,14 +17,14 @@ public class NetData {
 
     // Data model
 
-    private String packageName; //
-    private String uid; //
+    private String packageName;
+    private String uid;
 
-    private String sentDataInBytePercentOfTotal; //
-    private String receivedDataInBytePercentOfTotal; //
-    private String netWorkState; //
+    private String sentDataInBytePercentOfTotal;
+    private String receivedDataInBytePercentOfTotal;
+    private String netWorkState;
     private String netWorkMode;
-    private String applicationState; //
+    private String applicationState;
 
     private String avgOfSentDataInByte;
     private String sdOfSentDataInByte;

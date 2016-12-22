@@ -16,10 +16,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.net.NetworkInterface;
+import java.util.ArrayList;
 import java.util.Set;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.broadcastreceiver.IntenetReceiver;
+import th.ac.bu.mcop.models.realm.NetDataRealm;
 import th.ac.bu.mcop.modules.HashGen;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.services.BackgroundService;
@@ -70,6 +72,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mContext = getApplicationContext();
         mHandler = new Handler();
         mIntenetReceiver = new IntenetReceiver();
+
+//        ArrayList<NetDataRealm> netDataRealms = NetDataRealm.getNetDatas();
+//        for (NetDataRealm netDataRealm : netDataRealms){
+//            Log.d(Settings.TAG, "getPackageName: " + netDataRealm.getPackageName());
+//            Log.d(Settings.TAG, "getSentDataInByte: " + netDataRealm.getSentDataInByte());
+//            Log.d(Settings.TAG, "getReceivedDataInByte: " + netDataRealm.getReceivedDataInByte());
+//            Log.d(Settings.TAG, "=====================");
+//        }
     }
 
     @Override
