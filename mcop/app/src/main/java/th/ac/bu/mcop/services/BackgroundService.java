@@ -52,7 +52,7 @@ public class BackgroundService extends Service {
     private boolean mIsForeground;
     private DateFormat mDateFormat;
 
-    public static int sCounter = 0;
+    public static int sCounter = 5;
 
     @Nullable
     @Override
@@ -79,7 +79,6 @@ public class BackgroundService extends Service {
             @Override
             public void run() {
 
-                sCounter += 5;
                 sendBroadcast();
                 checkUpdateHashGen();
                 startAsForeground();
@@ -87,11 +86,11 @@ public class BackgroundService extends Service {
 
                 Log.d(Settings.TAG, "sCounter: " + sCounter);
                 if (sCounter > 60){
-                    sCounter = 0;
+                    sCounter = 5;
                     StatsExtractor.saveNetData();
-                    Log.d(Settings.TAG, "Check size text file and check upload");
                 }
 
+                sCounter += 5;
                 mHandler.postDelayed(this, Settings.sInterval * 1000);
             }
         }, Settings.sInterval * 1000);

@@ -27,6 +27,8 @@ import th.ac.bu.mcop.utils.Settings;
 
 public class HashGenManager {
 
+
+
     public interface OnHashGenListener {
         void onHashGenFinished();
     }

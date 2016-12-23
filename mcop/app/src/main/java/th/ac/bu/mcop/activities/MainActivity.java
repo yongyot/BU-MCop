@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,11 +17,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.net.NetworkInterface;
+import java.util.ArrayList;
 
+import io.realm.Realm;
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.broadcastreceiver.IntenetReceiver;
+import th.ac.bu.mcop.models.AppsInfo;
+import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.StatsFileManager;
+import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
@@ -70,13 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mHandler = new Handler();
         mIntenetReceiver = new IntenetReceiver();
 
-//        ArrayList<NetDataRealm> netDataRealms = NetDataRealm.getNetDatas();
-//        for (NetDataRealm netDataRealm : netDataRealms){
-//            Log.d(Settings.TAG, "getPackageName: " + netDataRealm.getPackageName());
-//            Log.d(Settings.TAG, "getSentDataInByte: " + netDataRealm.getSentDataInByte());
-//            Log.d(Settings.TAG, "getReceivedDataInByte: " + netDataRealm.getReceivedDataInByte());
-//            Log.d(Settings.TAG, "=====================");
-//        }
+        insertAppsToRealm();
     }
 
     @Override
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         isAppPaused = false;
         super.onStart();
-
+        Settings.loadSetting(mContext);
         setView();
         boolean isFirstTime = SharePrefs.getPreferenceBoolean(mContext, "firstTime", false);
         if (!isFirstTime){
@@ -237,9 +237,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initHasFile(){
 
-        Log.d(Settings.TAG, "initHasFile");
-        Log.d(Settings.TAG, "Settings.sMacAddress: " + Settings.sMacAddress);
-
         if(Settings.sMacAddress != null) {
 
             try {
@@ -259,6 +256,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d(Settings.TAG, "run after hashGen");
                 }
             }).start();
+        }
+    }
+
+    private void insertAppsToRealm(){
+
+        ArrayList<AppRealm> appRealms = AppRealm.getAll();
+        if (appRealms.size() <= 0){
+
+            ArrayList<ApplicationInfo> applicationInfos = ApplicationInfoManager.getTotalApplicationUsingInternet(mContext);
+            ArrayList<AppsInfo> appsInfos = new ArrayList<>();
+            for (ApplicationInfo applicationInfo : applicationInfos){
+
+                AppsInfo appsInfo = new HashGenManager().getPackageInfo(applicationInfo.packageName, getBaseContext());
+                appsInfos.add(appsInfo);
+            }
+
+            AppRealm.save(appsInfos);
         }
     }
 }

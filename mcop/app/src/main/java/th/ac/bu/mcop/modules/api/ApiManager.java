@@ -2,6 +2,8 @@ package th.ac.bu.mcop.modules.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.File;
 import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +46,11 @@ public class ApiManager {
     public void getReport(Callback<ArrayList<VirusTotalResponse>> callback, ArrayList<String> resourceList){
 
         Call<ArrayList<VirusTotalResponse>> call = mApiService.getReport(API_KEY, resourceList);
+        call.enqueue(callback);
+    }
+
+    public void uploadHashGen(Callback<String> callback){
+        Call<String> call = mApiService.uploadHashGen("file_name", new File("path"));
         call.enqueue(callback);
     }
 }

@@ -1,6 +1,7 @@
 package th.ac.bu.mcop.modules.api;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
@@ -29,11 +30,11 @@ public class ApplicationInfoManager {
         return applicationInfosInstall;
     }
 
-    public static ArrayList<ApplicationInfo> getTotalApplicationUsingInternet(Activity activity){
+    public static ArrayList<ApplicationInfo> getTotalApplicationUsingInternet(Context context){
 
         ArrayList<ApplicationInfo> applicationInfosInstall = new ArrayList<>();
 
-        PackageManager packageManager = activity.getPackageManager();
+        PackageManager packageManager = context.getPackageManager();
         ArrayList<ApplicationInfo> applicationInfos = (ArrayList<ApplicationInfo>) packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
 
         for (ApplicationInfo info : applicationInfos) {

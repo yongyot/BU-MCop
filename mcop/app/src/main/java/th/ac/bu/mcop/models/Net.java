@@ -1,10 +1,12 @@
 package th.ac.bu.mcop.models;
 
+import io.realm.RealmObject;
+
 /**
  * Created by jeeraphan on 11/14/16.
  */
 
-public class Net {
+public class Net extends RealmObject{
 
     //up
     private String bgUpData;

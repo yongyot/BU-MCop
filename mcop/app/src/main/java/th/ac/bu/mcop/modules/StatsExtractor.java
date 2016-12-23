@@ -1,27 +1,18 @@
 package th.ac.bu.mcop.modules;
 
-import android.app.ActivityManager;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import io.realm.Realm;
-import io.realm.RealmList;
 import th.ac.bu.mcop.models.Net;
 import th.ac.bu.mcop.models.Stats;
-import th.ac.bu.mcop.models.realm.NetDataRealm;
+import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.models.realm.StatsRealm;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
@@ -35,54 +26,24 @@ public class StatsExtractor {
     private static Context mContext;
 
     public static void saveNetData(){
-        ArrayList<NetDataRealm> netDataRealms = NetDataRealm.getNetDatas();
-        for (NetDataRealm netDataRealm : netDataRealms){
-            Log.d(Settings.TAG, "Save to text file");
+
+        ArrayList<AppRealm> appRealms = AppRealm.getAll();
+        for (AppRealm app : appRealms){
+
+            ArrayList<StatsRealm> statses = StatsRealm.getStatsWithPackageName(app.getPackageName());
+            for (StatsRealm stats : statses){
+                Log.d(Settings.TAG, stats.getPackageName());
+            }
+            Log.d(Settings.TAG, "====================================");
         }
 
-        Log.d(Settings.TAG, "Delete stats from Realm");
-        NetDataRealm.delete();
+        StatsRealm.deleteAll();
     }
 
     public static void saveStats(Context context){
 
         mContext = context;
-        ArrayList<Stats> listAppRunning = getRunningApps();
-
-        int totalSentInByte = 0;
-        int totalReceivedInByte = 0;
-
-        for (Stats stats : listAppRunning){
-
-            totalSentInByte += stats.getNet().getUpDataInByte();
-            totalReceivedInByte += stats.getNet().getDownDataInByte();
-        }
-
-        // Save to Realm
-        RealmList<NetDataRealm> netDataRealms = new RealmList<>();
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-
-        for (Stats stats : listAppRunning){
-
-            float sentDataInBytePercentOfToal = (stats.getNet().getUpDataInByte() / totalSentInByte) * 100;
-            float receivedDataInBytePercentOfTotal = (stats.getNet().getDownDataInByte() / totalReceivedInByte)* 100;
-
-            NetDataRealm netDataRealm = realm.createObject(NetDataRealm.class);
-            netDataRealm.setPackageName(stats.getPackageName());
-            netDataRealm.setUid(stats.getUid());
-            netDataRealm.setNetWorkState(Settings.sNetworkType + "");
-            netDataRealm.setApplicationState(stats.getState() + "");
-            netDataRealm.setSentDataInByte(stats.getNet().getUpDataInByte());
-            netDataRealm.setReceivedDataInByte(stats.getNet().getDownDataInByte());
-            netDataRealm.setSentDataInBytePercentOfTotal(sentDataInBytePercentOfToal);
-            netDataRealm.setReceivedDataInBytePercentOfTotal(receivedDataInBytePercentOfTotal);
-
-            netDataRealms.add(netDataRealm);
-        }
-
-        realm.copyFromRealm(netDataRealms);
-        realm.commitTransaction();
+        StatsRealm.save(getRunningApps());
     }
 
     private static String readProceFile(){
