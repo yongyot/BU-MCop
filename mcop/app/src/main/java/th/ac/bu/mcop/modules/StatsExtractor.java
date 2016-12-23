@@ -29,7 +29,7 @@ import th.ac.bu.mcop.utils.Settings;
  * Created by jeeraphan on 11/22/16.
  */
 
-public class NetDataExtractor {
+public class StatsExtractor {
 
     public static final String DATA_INTERFACE = "rmnet0";
     private static Context mContext;
@@ -48,16 +48,14 @@ public class NetDataExtractor {
 
         mContext = context;
         ArrayList<Stats> listAppRunning = getRunningApps();
-        String unFilteredStats = readProceFile();
 
         int totalSentInByte = 0;
         int totalReceivedInByte = 0;
 
         for (Stats stats : listAppRunning){
-            Net net = getNetWith(stats, unFilteredStats);
 
-            totalSentInByte += net.getUpDataInByte();
-            totalReceivedInByte += net.getDownDataInByte();
+            totalSentInByte += stats.getNet().getUpDataInByte();
+            totalReceivedInByte += stats.getNet().getDownDataInByte();
         }
 
         // Save to Realm
@@ -67,18 +65,16 @@ public class NetDataExtractor {
 
         for (Stats stats : listAppRunning){
 
-            Net net = getNetWith(stats, unFilteredStats);
-
-            float sentDataInBytePercentOfToal = (net.getUpDataInByte() / totalSentInByte) * 100;
-            float receivedDataInBytePercentOfTotal = (net.getDownDataInByte() / totalReceivedInByte)* 100;
+            float sentDataInBytePercentOfToal = (stats.getNet().getUpDataInByte() / totalSentInByte) * 100;
+            float receivedDataInBytePercentOfTotal = (stats.getNet().getDownDataInByte() / totalReceivedInByte)* 100;
 
             NetDataRealm netDataRealm = realm.createObject(NetDataRealm.class);
             netDataRealm.setPackageName(stats.getPackageName());
             netDataRealm.setUid(stats.getUid());
             netDataRealm.setNetWorkState(Settings.sNetworkType + "");
             netDataRealm.setApplicationState(stats.getState() + "");
-            netDataRealm.setSentDataInByte(net.getUpDataInByte());
-            netDataRealm.setReceivedDataInByte(net.getDownDataInByte());
+            netDataRealm.setSentDataInByte(stats.getNet().getUpDataInByte());
+            netDataRealm.setReceivedDataInByte(stats.getNet().getDownDataInByte());
             netDataRealm.setSentDataInBytePercentOfTotal(sentDataInBytePercentOfToal);
             netDataRealm.setReceivedDataInBytePercentOfTotal(receivedDataInBytePercentOfTotal);
 
@@ -119,14 +115,7 @@ public class NetDataExtractor {
 
     private static ArrayList<Stats> getRunningApps(){
 
-        final int INDEX_OF_PR       = 1;
-        final int INDEX_OF_CPU      = 2;
-        final int INDEX_OF_STATUS   = 3;
-        final int INDEX_OF_THR      = 4;
-        final int INDEX_OF_VSS      = 5;
-        final int INDEX_OF_RSS      = 6;
         final int INDEX_OF_PCY      = 7;
-        final int INDEX_OF_UID      = 8;
         final int INDEX_OF_NAME     = 9;
         final int TOP_LENGTH        = 10;
 
@@ -149,14 +138,15 @@ public class NetDataExtractor {
 
                 Stats stats = new Stats();
                 stats.setPackageName(datas[INDEX_OF_NAME]);
-                stats.setInteracting(isInteractive(datas[INDEX_OF_NAME]));
                 stats.setUid(uid + "");
                 if(datas[INDEX_OF_PCY].equalsIgnoreCase("fg")){
                     stats.setState(Constants.STATE_FOREGROUND);
                 } else if(datas[INDEX_OF_PCY].equalsIgnoreCase("bg")) {
                     stats.setState(Constants.STATE_BACKGROUND);
                 }
-                //stats.setNet();
+
+                Net net = getNetWith(stats, readProceFile());
+                stats.setNet(net);
 
                 listAppRunning.add(stats);
             }
@@ -219,37 +209,6 @@ public class NetDataExtractor {
         }
 
         return -1;
-    }
-
-    private static boolean isInteractive(String packageName){
-
-        String currentApp = "NULL";
-
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-
-            UsageStatsManager usm = (UsageStatsManager) mContext.getSystemService(Context.USAGE_STATS_SERVICE);
-            long time = System.currentTimeMillis();
-            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,  time - 1000*60*60*50, time);
-
-            if (appList != null && appList.size() > 0) {
-                SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
-                for (UsageStats usageStats : appList) {
-                    mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
-                } if (mySortedMap != null && !mySortedMap.isEmpty()) {
-                    currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
-                }
-            }
-        } else {
-            ActivityManager am = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningAppProcessInfo> tasks = am.getRunningAppProcesses();
-            currentApp = tasks.get(0).processName;
-        }
-
-        if(currentApp.equals(packageName)){
-            return true;
-        }
-
-        return false;
     }
 
     private static Net getNetStats(String UID,String unFilteredStats) {

@@ -21,15 +21,13 @@ import android.util.Log;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.MainActivity;
 import th.ac.bu.mcop.modules.HashFileUploader;
-import th.ac.bu.mcop.modules.HashGen;
-import th.ac.bu.mcop.modules.NetDataExtractor;
+import th.ac.bu.mcop.modules.HashGenManager;
+import th.ac.bu.mcop.modules.StatsExtractor;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
@@ -85,12 +83,12 @@ public class BackgroundService extends Service {
                 sendBroadcast();
                 checkUpdateHashGen();
                 startAsForeground();
-                NetDataExtractor.saveStats(mContext);
+                StatsExtractor.saveStats(mContext);
 
                 Log.d(Settings.TAG, "sCounter: " + sCounter);
                 if (sCounter > 60){
                     sCounter = 0;
-                    NetDataExtractor.saveNetData();
+                    StatsExtractor.saveNetData();
                     Log.d(Settings.TAG, "Check size text file and check upload");
                 }
 
@@ -268,14 +266,14 @@ public class BackgroundService extends Service {
             SharePrefs.setPreference(mContext, Constants.KEY_CURRENT_DATE, currentDateString);
         }
 
-        if (isCurrentDate){
+        if (!isCurrentDate){
 
-            HashGen hashGen = new HashGen();
+            HashGenManager hashGen = new HashGenManager();
             hashGen.getAllAppInfo(mContext);
 
             File file = new File(Settings.sHashFilePath);
             boolean isExist = file.exists();
-            if (isExist && !HashGen.sIsGenerating && !HashFileUploader.sIsUploading){
+            if (isExist && !HashGenManager.sIsGenerating && !HashFileUploader.sIsUploading){
                 HashFileUploader hashFileUploader = new HashFileUploader(mContext);
                 hashFileUploader.execute();
             }

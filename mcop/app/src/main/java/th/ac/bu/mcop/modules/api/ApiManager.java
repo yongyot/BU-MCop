@@ -13,23 +13,23 @@ import th.ac.bu.mcop.modules.VirusTotalResponse;
  * Created by jeeraphan on 12/12/16.
  */
 
-public class ApiManger {
+public class ApiManager {
 
     private final String API_KEY = "78660282aeaedccc679bb9b2e33095916ff8d356be6e77d05ef04a284c42deff";;
     private final String BASE_API = "http://mobile-monitoring.bu.ac.th/api/";
-    private static ApiManger sApiManger;
+    private static ApiManager sApiManger;
     private Gson mGson;
     private Retrofit mRetrofit;
     private APIService mApiService;
 
-    public static ApiManger getInstance(){
+    public static ApiManager getInstance(){
         if (sApiManger == null){
-            sApiManger = new ApiManger();
+            sApiManger = new ApiManager();
         }
         return sApiManger;
     }
 
-    public ApiManger(){
+    public ApiManager(){
         mGson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .create();

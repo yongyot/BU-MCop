@@ -13,23 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
-
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.models.AppsInfo;
-import th.ac.bu.mcop.modules.HashGen;
+import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.VirusTotalResponse;
-import th.ac.bu.mcop.modules.api.ApiManger;
+import th.ac.bu.mcop.modules.api.ApiManager;
 import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.utils.SharePrefs;
 import th.ac.bu.mcop.widgets.NotificationView;
@@ -38,7 +33,7 @@ import th.ac.bu.mcop.widgets.NotificationView;
  * Created by jeeraphan on 12/10/16.
  */
 
-public class InitializationActivity extends AppCompatActivity implements HashGen.OnHashGenListener{
+public class InitializationActivity extends AppCompatActivity implements HashGenManager.OnHashGenListener{
 
     private ImageView mCircleImageview;
     private Handler mHandler = new Handler();
@@ -92,7 +87,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
             new Thread(new Runnable() {
                 public void run() {
                     SharePrefs.setPreference(getBaseContext(), "firstTime", true);
-                    HashGen hashGen = new HashGen();
+                    HashGenManager hashGen = new HashGenManager();
                     hashGen.setOnHashGenListener(InitializationActivity.this);
                     hashGen.getAllAppInfo(getBaseContext());
                 }
@@ -142,7 +137,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
 
 
-        ApiManger.getInstance().getReport(new Callback<ArrayList<VirusTotalResponse>>() {
+        ApiManager.getInstance().getReport(new Callback<ArrayList<VirusTotalResponse>>() {
             @Override
             public void onResponse(Call<ArrayList<VirusTotalResponse>> call, Response<ArrayList<VirusTotalResponse>> response) {
                 Log.d(Settings.TAG, "onResponse");
@@ -183,7 +178,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         for (ApplicationInfo appInfo : apps) {
             if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0 && !appInfo.packageName.equals(selfApk)) {
 
-                HashGen hashGen = new HashGen();
+                HashGenManager hashGen = new HashGenManager();
                 AppsInfo app = hashGen.getPackageInfo(appInfo.packageName, getBaseContext());
                 hashs.add(app.getHash());
             }

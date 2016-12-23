@@ -16,13 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.net.NetworkInterface;
-import java.util.ArrayList;
-import java.util.Set;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.broadcastreceiver.IntenetReceiver;
-import th.ac.bu.mcop.models.realm.NetDataRealm;
-import th.ac.bu.mcop.modules.HashGen;
+import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Constants;
@@ -257,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void run() {
                     Log.d(Settings.TAG, "run before hashGen");
                     SharePrefs.setPreference(mContext, "firstTime", true);
-                    HashGen hashGen = new HashGen();
+                    HashGenManager hashGen = new HashGenManager();
                     hashGen.getAllAppInfo(mContext);
                     Log.d(Settings.TAG, "run after hashGen");
                 }
