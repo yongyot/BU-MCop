@@ -1,5 +1,7 @@
 package th.ac.bu.mcop.models.realm;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import io.realm.Realm;
@@ -20,10 +22,10 @@ public class StatsRealm extends RealmObject{
     private String packageName;
     private String netWorkState;
     private String applicationState;
-    private float sentDataInByte;
-    private float receivedDataInByte;
-    private float sentDataInBytePercentOfTotal;
-    private float receivedDataInBytePercentOfTotal;
+    private int sentDataInByte;
+    private int receivedDataInByte;
+    private int sentDataInBytePercentOfTotal;
+    private int receivedDataInBytePercentOfTotal;
     private Net net;
 
     public String getUid() {
@@ -58,35 +60,35 @@ public class StatsRealm extends RealmObject{
         this.applicationState = applicationState;
     }
 
-    public float getSentDataInByte() {
+    public int getSentDataInByte() {
         return sentDataInByte;
     }
 
-    public void setSentDataInByte(float sentDataInByte) {
+    public void setSentDataInByte(int sentDataInByte) {
         this.sentDataInByte = sentDataInByte;
     }
 
-    public float getReceivedDataInByte() {
+    public int getReceivedDataInByte() {
         return receivedDataInByte;
     }
 
-    public void setReceivedDataInByte(float receivedDataInByte) {
+    public void setReceivedDataInByte(int receivedDataInByte) {
         this.receivedDataInByte = receivedDataInByte;
     }
 
-    public float getSentDataInBytePercentOfTotal() {
+    public int getSentDataInBytePercentOfTotal() {
         return sentDataInBytePercentOfTotal;
     }
 
-    public void setSentDataInBytePercentOfTotal(float sentDataInBytePercentOfTotal) {
+    public void setSentDataInBytePercentOfTotal(int sentDataInBytePercentOfTotal) {
         this.sentDataInBytePercentOfTotal = sentDataInBytePercentOfTotal;
     }
 
-    public float getReceivedDataInBytePercentOfTotal() {
+    public int getReceivedDataInBytePercentOfTotal() {
         return receivedDataInBytePercentOfTotal;
     }
 
-    public void setReceivedDataInBytePercentOfTotal(float receivedDataInBytePercentOfTotal) {
+    public void setReceivedDataInBytePercentOfTotal(int receivedDataInBytePercentOfTotal) {
         this.receivedDataInBytePercentOfTotal = receivedDataInBytePercentOfTotal;
     }
 
@@ -116,8 +118,8 @@ public class StatsRealm extends RealmObject{
 
         for (Stats stats : listAppRunning){
 
-            float sentDataInBytePercentOfToal = (stats.getNet().getUpDataInByte() / totalSentInByte) * 100;
-            float receivedDataInBytePercentOfTotal = (stats.getNet().getDownDataInByte() / totalReceivedInByte)* 100;
+            int sentDataInBytePercentOfToal = (stats.getNet().getUpDataInByte() / totalSentInByte) * 100;
+            int receivedDataInBytePercentOfTotal = (stats.getNet().getDownDataInByte() / totalReceivedInByte)* 100;
 
             StatsRealm statsRealm = realm.createObject(StatsRealm.class);
             statsRealm.setPackageName(stats.getPackageName());
@@ -130,6 +132,18 @@ public class StatsRealm extends RealmObject{
             statsRealm.setReceivedDataInBytePercentOfTotal(receivedDataInBytePercentOfTotal);
 
             statsRealms.add(statsRealm);
+
+            if (stats.getPackageName().equals("com.nianticlabs.pokemongo")){
+                Log.d(Settings.TAG, "getPackageName                     : " + stats.getPackageName());
+                Log.d(Settings.TAG, "getUid                             : " + stats.getUid());
+                Log.d(Settings.TAG, "NetworkType                        : " + Settings.sNetworkType + "");
+                Log.d(Settings.TAG, "ApplicationState                   : " + stats.getState() + "");
+                Log.d(Settings.TAG, "getUpDataInByte                    : " + stats.getNet().getUpDataInByte());
+                Log.d(Settings.TAG, "getDownDataInByte                  : " + stats.getNet().getDownDataInByte());
+                Log.d(Settings.TAG, "sentDataInBytePercentOfToal        : " + sentDataInBytePercentOfToal);
+                Log.d(Settings.TAG, "receivedDataInBytePercentOfTotal   : " + receivedDataInBytePercentOfTotal);
+                Log.d(Settings.TAG, "********************");
+            }
         }
 
         realm.copyFromRealm(statsRealms);

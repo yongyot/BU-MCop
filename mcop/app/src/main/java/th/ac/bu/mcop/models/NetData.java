@@ -23,11 +23,11 @@ public class NetData {
     private String sentDataInBytePercentOfTotal;
     private String receivedDataInBytePercentOfTotal;
     private String netWorkState;
-    private String netWorkMode;
+    private String netWorkMode;//
     private String applicationState;
 
     private String avgOfSentDataInByte;
-    private String sdOfSentDataInByte;
+    private String sdOfSentDataInByte;//
     private String minOfSentDataInByte;
     private String maxOfSentDataInByte;
 

@@ -83,6 +83,7 @@ public class BackgroundService extends Service {
                 checkUpdateHashGen();
                 startAsForeground();
                 StatsExtractor.saveStats(mContext);
+                sCounter += 5;
 
                 Log.d(Settings.TAG, "sCounter: " + sCounter);
                 if (sCounter > 60){
@@ -90,7 +91,6 @@ public class BackgroundService extends Service {
                     StatsExtractor.saveNetData();
                 }
 
-                sCounter += 5;
                 mHandler.postDelayed(this, Settings.sInterval * 1000);
             }
         }, Settings.sInterval * 1000);

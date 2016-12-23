@@ -25,21 +25,6 @@ public class StatsExtractor {
     public static final String DATA_INTERFACE = "rmnet0";
     private static Context mContext;
 
-    public static void saveNetData(){
-
-        ArrayList<AppRealm> appRealms = AppRealm.getAll();
-        for (AppRealm app : appRealms){
-
-            ArrayList<StatsRealm> statses = StatsRealm.getStatsWithPackageName(app.getPackageName());
-            for (StatsRealm stats : statses){
-                Log.d(Settings.TAG, stats.getPackageName());
-            }
-            Log.d(Settings.TAG, "====================================");
-        }
-
-        StatsRealm.deleteAll();
-    }
-
     public static void saveStats(Context context){
 
         mContext = context;
@@ -224,5 +209,218 @@ public class StatsExtractor {
         }
 
         return net;
+    }
+
+    public static void saveNetData(){
+
+        ArrayList<AppRealm> appRealms = AppRealm.getAll();
+        for (AppRealm app : appRealms){
+
+            ArrayList<StatsRealm> statses = StatsRealm.getStatsWithPackageName(app.getPackageName());
+
+            if (statses.size() > 0){
+                Log.d(Settings.TAG, "packageName                : " + statses.get(0).getPackageName());
+                Log.d(Settings.TAG, "uid                        : " + statses.get(0).getUid());
+                Log.d(Settings.TAG, "netWorkState               : " +  getNetWorkState(statses));
+                Log.d(Settings.TAG, "ApplicationState           : " + getApplicationState(statses));
+                Log.d(Settings.TAG, "AvgOfSentDataInByte        : " + getAvgOfSentDataInByte(statses));
+                Log.d(Settings.TAG, "MinOfSentDataInByte        : " + getMinOfSentDataInByte(statses));
+                Log.d(Settings.TAG, "MaxOfSentDataInByte        : " + getMaxOfSentDataInByte(statses));
+                Log.d(Settings.TAG, "AvgOfReceivedtDataInByte   : " + getAvgOfReceivedDataInByte(statses));
+                Log.d(Settings.TAG, "MinOfReceivedDataInByte    : " + getMinOfReceivedDataInByte(statses));
+                Log.d(Settings.TAG, "MaxOfReceivedDataInByte    : " + getMaxOfReceivedDataInByte(statses));
+                Log.d(Settings.TAG, "AvgOfSentDataInPercent     : " + getAvgOfSentDataInPercent(statses));
+                Log.d(Settings.TAG, "MinOfSentDataInPercent     : " + getMinOfSentDataInPercent(statses));
+                Log.d(Settings.TAG, "MaxOfSentDataInPercent     : " + getMaxOfSentDataInPercent(statses));
+                Log.d(Settings.TAG, "AvgOfReceivedDataInPercent : " + getAvgOfReceivedDataInPercent(statses));
+                Log.d(Settings.TAG, "MinOfReceivedDataInPercent : " + getMinOfReceivedDataInPercent(statses));
+                Log.d(Settings.TAG, "MaxOfReceivedDataInPercent : " + getMaxOfReceivedDataInPercent(statses));
+                Log.d(Settings.TAG, "==================================");
+            }
+        }
+
+        StatsRealm.deleteAll();
+    }
+
+    private static String getMaxOfReceivedDataInPercent(ArrayList<StatsRealm> statses){
+        float max = statses.get(0).getReceivedDataInBytePercentOfTotal();
+        for (StatsRealm stats : statses){
+
+            if (max < stats.getReceivedDataInBytePercentOfTotal()){
+                max = stats.getReceivedDataInBytePercentOfTotal();
+            }
+        }
+        return max + "";
+    }
+
+    private static String getMinOfReceivedDataInPercent(ArrayList<StatsRealm> statses){
+        float min = statses.get(0).getReceivedDataInBytePercentOfTotal();
+        for (StatsRealm stats : statses){
+
+            if (min > stats.getReceivedDataInBytePercentOfTotal()){
+                min = stats.getReceivedDataInBytePercentOfTotal();
+            }
+        }
+        return min + "";
+    }
+
+    private static String getAvgOfReceivedDataInPercent(ArrayList<StatsRealm> statses){
+        int totalReceivedDataInPercent = 0;
+        for (StatsRealm stats : statses){
+            totalReceivedDataInPercent += stats.getReceivedDataInBytePercentOfTotal();
+        }
+
+        return (totalReceivedDataInPercent / statses.size()) + "";
+    }
+
+    private static String getMaxOfSentDataInPercent(ArrayList<StatsRealm> statses){
+        float max = statses.get(0).getSentDataInBytePercentOfTotal();
+        for (StatsRealm stats : statses){
+
+            if (max < stats.getSentDataInBytePercentOfTotal()){
+                max = stats.getSentDataInBytePercentOfTotal();
+            }
+        }
+        return max + "";
+    }
+
+    private static String getMinOfSentDataInPercent(ArrayList<StatsRealm> statses){
+        float min = statses.get(0).getSentDataInBytePercentOfTotal();
+        for (StatsRealm stats : statses){
+
+            if (min > stats.getSentDataInBytePercentOfTotal()){
+                min = stats.getSentDataInBytePercentOfTotal();
+            }
+        }
+        return min + "";
+    }
+
+    private static String getAvgOfSentDataInPercent(ArrayList<StatsRealm> statses){
+        int totalSentDataInPercent = 0;
+        for (StatsRealm stats : statses){
+            totalSentDataInPercent += stats.getSentDataInBytePercentOfTotal();
+        }
+
+        return (totalSentDataInPercent / statses.size()) + "";
+    }
+
+    private static String getMaxOfReceivedDataInByte(ArrayList<StatsRealm> statses){
+        float max = statses.get(0).getReceivedDataInByte();
+        for (StatsRealm stats : statses){
+
+            if (max < stats.getReceivedDataInByte()){
+                max = stats.getReceivedDataInByte();
+            }
+        }
+        return max + "";
+    }
+
+    private static String getMinOfReceivedDataInByte(ArrayList<StatsRealm> statses){
+        float min = statses.get(0).getReceivedDataInByte();
+        for (StatsRealm stats : statses){
+
+            if (min > stats.getReceivedDataInByte()){
+                min = stats.getReceivedDataInByte();
+            }
+        }
+        return min + "";
+    }
+
+    private static String getAvgOfReceivedDataInByte(ArrayList<StatsRealm> statses){
+
+        int totalReceivedDataInByte = 0;
+        for (StatsRealm stats : statses){
+            totalReceivedDataInByte += stats.getReceivedDataInByte();
+        }
+
+        return (totalReceivedDataInByte / statses.size()) + "";
+    }
+
+    private static String getMaxOfSentDataInByte(ArrayList<StatsRealm> statses){
+        float max = statses.get(0).getSentDataInByte();
+        for (StatsRealm stats : statses){
+
+            if (max < stats.getSentDataInByte()){
+                max = stats.getSentDataInByte();
+            }
+        }
+        return max + "";
+    }
+
+    private static String getMinOfSentDataInByte(ArrayList<StatsRealm> statses){
+        float min = statses.get(0).getSentDataInByte();
+        for (StatsRealm stats : statses){
+
+            if (min > stats.getSentDataInByte()){
+                min = stats.getSentDataInByte();
+            }
+        }
+        return min + "";
+    }
+
+    private static String getAvgOfSentDataInByte(ArrayList<StatsRealm> statses){
+
+        int totalSentDataInByte = 0;
+        for (StatsRealm stats : statses){
+            totalSentDataInByte += stats.getSentDataInByte();
+        }
+
+        return (totalSentDataInByte / statses.size()) + "";
+    }
+
+    private static String getApplicationState(ArrayList<StatsRealm> statses){
+
+        int countFg = 0;
+        int countBg = 0;
+
+        for (StatsRealm stats : statses){
+            if (stats.getApplicationState().equals(Constants.STATE_FOREGROUND)){
+                countFg++;
+            } else if (stats.getApplicationState().equals(Constants.STATE_BACKGROUND)){
+                countBg++;
+            }
+        }
+
+        if (countFg > countBg){
+            return Constants.STATE_FOREGROUND + "";
+        }
+
+        return Constants.STATE_BACKGROUND + "";
+    }
+
+    private static String getNetWorkState(ArrayList<StatsRealm> statses) {
+
+        int countMobile = 0;
+        int countWifi = 0;
+        int countNone = 0;
+
+        for (StatsRealm stats : statses){
+
+            if (stats.getNetWorkState().equals(Constants.NETWORK_TYPE_MOBILE)){
+                countMobile++;
+            } else if (stats.getNetWorkState().equals(Constants.NETWORK_TYPE_WIFI)){
+                countWifi++;
+            } else if (stats.getNetWorkState().equals(Constants.NETWORK_TYPE_NO_NETWORK)){
+                countNone++;
+            }
+        }
+
+        if (countNone > 0){
+
+            if (countMobile > countNone){
+                return Constants.NETWORK_TYPE_MOBILE + "";
+            } else if (countWifi > countNone){
+                return Constants.NETWORK_TYPE_WIFI + "";
+            }
+
+            return Constants.NETWORK_TYPE_NO_NETWORK + "";
+
+        } else {
+
+            if (countMobile > countWifi){
+                return Constants.NETWORK_TYPE_MOBILE + "";
+            }
+            return Constants.NETWORK_TYPE_WIFI + "";
+        }
     }
 }
