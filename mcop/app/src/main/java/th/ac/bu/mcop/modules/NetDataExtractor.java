@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.nfc.Tag;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -21,7 +20,6 @@ import java.util.TreeMap;
 import io.realm.Realm;
 import io.realm.RealmList;
 import th.ac.bu.mcop.models.Net;
-import th.ac.bu.mcop.models.NetData;
 import th.ac.bu.mcop.models.Stats;
 import th.ac.bu.mcop.models.realm.NetDataRealm;
 import th.ac.bu.mcop.utils.Constants;
@@ -36,16 +34,21 @@ public class NetDataExtractor {
     public static final String DATA_INTERFACE = "rmnet0";
     private static Context mContext;
 
-    public static void logNetData(Context context){
-        mContext = context;
-        
-        String unFilteredStats = readProceFile();
-        ArrayList<Stats> listAppRunning = getRunningApps();
+    public static void saveNetData(){
+        ArrayList<NetDataRealm> netDataRealms = NetDataRealm.getNetDatas();
+        for (NetDataRealm netDataRealm : netDataRealms){
+            Log.d(Settings.TAG, "Save to text file");
+        }
 
-        saveLogToRealm(listAppRunning, unFilteredStats);
+        Log.d(Settings.TAG, "Delete stats from Realm");
+        NetDataRealm.delete();
     }
 
-    private static void saveLogToRealm(ArrayList<Stats> listAppRunning, String unFilteredStats){
+    public static void saveStats(Context context){
+
+        mContext = context;
+        ArrayList<Stats> listAppRunning = getRunningApps();
+        String unFilteredStats = readProceFile();
 
         int totalSentInByte = 0;
         int totalReceivedInByte = 0;
@@ -66,13 +69,8 @@ public class NetDataExtractor {
 
             Net net = getNetWith(stats, unFilteredStats);
 
-
             float sentDataInBytePercentOfToal = (net.getUpDataInByte() / totalSentInByte) * 100;
             float receivedDataInBytePercentOfTotal = (net.getDownDataInByte() / totalReceivedInByte)* 100;
-
-            Log.d(Settings.TAG, "getPackageName: " + stats.getPackageName());
-            Log.d(Settings.TAG, "getUpDataInByte: " + net.getUpDataInByte());
-            Log.d(Settings.TAG, "getDownDataInByte: " + net.getDownDataInByte());
 
             NetDataRealm netDataRealm = realm.createObject(NetDataRealm.class);
             netDataRealm.setPackageName(stats.getPackageName());

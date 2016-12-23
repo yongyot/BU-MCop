@@ -99,4 +99,12 @@ public class NetDataRealm extends RealmObject{
         return netDataRealms;
 
     }
+
+    public static void delete(){
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmResults<NetDataRealm> results = realm.where(NetDataRealm.class).findAll();
+        results.deleteAllFromRealm();
+        realm.commitTransaction();
+    }
 }

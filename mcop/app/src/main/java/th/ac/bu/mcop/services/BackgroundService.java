@@ -23,6 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.MainActivity;
@@ -32,6 +33,7 @@ import th.ac.bu.mcop.modules.NetDataExtractor;
 import th.ac.bu.mcop.modules.StatsFileManager;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
+import th.ac.bu.mcop.utils.SharePrefs;
 
 /**
  * Created by jeeraphan on 11/14/16.
@@ -51,7 +53,6 @@ public class BackgroundService extends Service {
     private Runnable mRunnable;
     private boolean mIsForeground;
     private DateFormat mDateFormat;
-    private Date mCurrentDate;
 
     public static int sCounter = 0;
 
@@ -76,98 +77,23 @@ public class BackgroundService extends Service {
 
         startAsForeground();
 
-        mCurrentDate = new Date();
-
-
         mHandler.postDelayed(mRunnable = new Runnable() {
             @Override
             public void run() {
 
+                sCounter += 5;
                 sendBroadcast();
                 checkUpdateHashGen();
-                NetDataExtractor.logNetData(mContext);
+                startAsForeground();
+                NetDataExtractor.saveStats(mContext);
 
+                Log.d(Settings.TAG, "sCounter: " + sCounter);
                 if (sCounter > 60){
-                    // save to text file
+                    sCounter = 0;
+                    NetDataExtractor.saveNetData();
+                    Log.d(Settings.TAG, "Check size text file and check upload");
                 }
 
-//                ArrayList<Stats> listDiffStats;
-//                ArrayList<Stats> listOldStats;
-//                ArrayList<Stats> listNewStats;
-//                if (mIsForeground){
-//                    //below lollipop we need to remove the notification by stop foreground and restart the notification
-//                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
-//                        stopForeground(true);
-//                        updateNotification();
-//                    } else {
-//                        stopForeground(false);
-//                    }
-//
-//                    mIsForeground = false;
-//
-//                    //this code generates the hash code every midnight.s
-//                    if (compare(mCurrentDate, new Date()) != 0){
-//
-//                        //creates hashcode file for every app
-//                        HashGen hashGen = new HashGen();
-//                        hashGen.getAllAppInfo(mContext);
-//                    }
-//
-//                    //scheduler for uploading hashcode
-//                    File file = new File(Settings.sHashFilePath);
-//                    boolean isExist = file.exists();
-//
-//                    //if hash file exist upload it to server..
-//                    if (isExist && !HashGen.sIsGenerating && !HashFileUploader.sIsUploading){
-//                        HashFileUploader hashFileUploader = new HashFileUploader(mContext);
-//                        hashFileUploader.execute();
-//                    }
-//
-//                    //make sure file does not exist.
-//                    isExist = file.exists();
-//
-//                    if (isExist && StatsFileManager.getFileSize() >= Settings.sUploadSize && HashGen.sIsGenerating){
-//                        FileUploader fileUploader = new FileUploader(mContext);
-//                        fileUploader.execute();
-//                    }
-//
-//                    if (!FileUploader.sIsUploading){
-//
-//                        String data = "";
-//
-//                        // get the stats for the first time.
-//                        if (intenalCounter == 0){
-//                            listOldStats = Stats.getStats(mContext);
-//
-//                        } else if (intenalCounter > Settings.sNetInterval){
-//
-//                            listNewStats = Stats.getStats(mContext);
-//                            listDiffStats = Stats.netDifference(listOldStats, listNewStats);
-//
-//                            listOldStats = listNewStats;
-//
-//                            startAsForeground();
-//
-//                            boolean error = false;
-//
-//                            String networkType = Settings.sNetworkType + "";
-//                            for (Stats stats : listDiffStats) {
-//                                if (stats.getNet().sError) {
-//                                    error = true;
-//                                }
-//
-//                                data = data + stats.getStringData() + "|" + networkType +"\n";
-//                            }
-//                        }
-//                    }
-//
-//                    startAsForeground();
-//                    sCounter++;
-//                    mHandler.postDelayed(this, Settings.sInterval * 1000);
-//                }
-
-                startAsForeground();
-                sCounter += 5;
                 mHandler.postDelayed(this, Settings.sInterval * 1000);
             }
         }, Settings.sInterval * 1000);
@@ -327,13 +253,22 @@ public class BackgroundService extends Service {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intentUpdateInternet);
     }
 
-    private void checkUpdateNetData(){
-
-    }
-
     private void checkUpdateHashGen(){
 
-        if (compare(mCurrentDate, new Date()) != 0){
+        boolean isCurrentDate = false;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String cacheDateString = SharePrefs.getPreferenceString(mContext, Constants.KEY_CURRENT_DATE, "");
+        String currentDateString = sdf.format(date);
+
+        // check current date
+        if (cacheDateString.equals(currentDateString)){
+            isCurrentDate = true;
+        } else {
+            SharePrefs.setPreference(mContext, Constants.KEY_CURRENT_DATE, currentDateString);
+        }
+
+        if (isCurrentDate){
 
             HashGen hashGen = new HashGen();
             hashGen.getAllAppInfo(mContext);
@@ -345,23 +280,5 @@ public class BackgroundService extends Service {
                 hashFileUploader.execute();
             }
         }
-    }
-
-    public int compare(Date d1, Date d2) {
-
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.setTime(d1);
-
-        Calendar calendar2 = Calendar.getInstance();
-        calendar1.setTime(d2);
-
-        if (calendar1.YEAR != calendar2.YEAR)
-            return calendar1.YEAR - calendar2.YEAR;
-
-        if (calendar1.MONTH != calendar2.MONTH)
-            return calendar1.MONTH - calendar2.MONTH;
-
-        return calendar1.DATE - calendar2.DATE;
-
     }
 }

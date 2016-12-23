@@ -18,4 +18,6 @@ public class Constants {
     public static final String INTENT_FILTER_UPDATE_UI = "intent_filter_update_ui";
     public static final String INTENT_FILTER_INTERNET = "intent_filter_internet";
 
+    public static final String KEY_CURRENT_DATE = "key_current_date";
+
 }
