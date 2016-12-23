@@ -22,10 +22,10 @@ public class StatsRealm extends RealmObject{
     private String packageName;
     private String netWorkState;
     private String applicationState;
-    private int sentDataInByte;
-    private int receivedDataInByte;
-    private int sentDataInBytePercentOfTotal;
-    private int receivedDataInBytePercentOfTotal;
+    private double sentDataInByte;
+    private double receivedDataInByte;
+    private double sentDataInBytePercentOfTotal;
+    private double receivedDataInBytePercentOfTotal;
     private Net net;
 
     public String getUid() {
@@ -60,7 +60,7 @@ public class StatsRealm extends RealmObject{
         this.applicationState = applicationState;
     }
 
-    public int getSentDataInByte() {
+    public double getSentDataInByte() {
         return sentDataInByte;
     }
 
@@ -68,7 +68,7 @@ public class StatsRealm extends RealmObject{
         this.sentDataInByte = sentDataInByte;
     }
 
-    public int getReceivedDataInByte() {
+    public double getReceivedDataInByte() {
         return receivedDataInByte;
     }
 
@@ -76,7 +76,7 @@ public class StatsRealm extends RealmObject{
         this.receivedDataInByte = receivedDataInByte;
     }
 
-    public int getSentDataInBytePercentOfTotal() {
+    public double getSentDataInBytePercentOfTotal() {
         return sentDataInBytePercentOfTotal;
     }
 
@@ -84,7 +84,7 @@ public class StatsRealm extends RealmObject{
         this.sentDataInBytePercentOfTotal = sentDataInBytePercentOfTotal;
     }
 
-    public int getReceivedDataInBytePercentOfTotal() {
+    public double getReceivedDataInBytePercentOfTotal() {
         return receivedDataInBytePercentOfTotal;
     }
 

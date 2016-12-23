@@ -20,14 +20,14 @@ public class NetData {
     private String packageName;
     private String uid;
 
-    private String sentDataInBytePercentOfTotal;
-    private String receivedDataInBytePercentOfTotal;
+    private String sentDataInBytePercentOfTotal;//
+    private String receivedDataInBytePercentOfTotal;//
     private String netWorkState;
     private String netWorkMode;//
     private String applicationState;
 
     private String avgOfSentDataInByte;
-    private String sdOfSentDataInByte;//
+    private String sdOfSentDataInByte;
     private String minOfSentDataInByte;
     private String maxOfSentDataInByte;
 
@@ -46,8 +46,8 @@ public class NetData {
     private String minOfReceivedDataInPercent;
     private String maxOfReceivedDataInPercent;
 
-    private String sentBetween;
-    private String receivedBetween;
+    private String sentBetween;//
+    private String receivedBetween;//
 
     public String getPackageName() {
         return packageName;
