@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -101,6 +102,7 @@ public class StatsFileManager {
     }
 
     public void createNewFile() {
+        Log.d(Settings.TAG, "createNewFile");
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm:ss:SSS", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -109,33 +111,42 @@ public class StatsFileManager {
 
         String metaInfo = "File Name: " + Settings.sOutputFileName + "\r\n" +
                 "Extraction Started: " + createtime + "\r\n";
-        String formatStr = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s";
-        String title = String.format(formatStr, "LogTime"
+        String formatStr = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s";
+        String title = String.format(formatStr
+                , "LOG_TIME"
+                , "PACKAGE_NAME"
                 , "UID"
-                , "PackageName"
-                , "isMainProcess"
-                , "isInteracting"
-                , "Status"
-                , "CPU%"
-                , "VSS"
-                , "RSS"
-                , "THREADS"
-                , "Priority"
-                , "Status"
-                , "BG_UP_DATA"
-                , "BG_DOWN_DATA"
-                , "FG_UP_DATA"
-                , "FG_DOWN_DATA"
-                , "BG_UP_WiFi"
-                , "BG_DOWN_WiFi"
-                , "FG_UP_WiFi"
-                , "FG_DOWN_WiFi");
+                , "SENT%"
+                , "RECEIVED%"
+                , "NETWORK_STATE"
+                , "MODE"
+                , "APP_STATES"
+                , "AVG_SENT"
+                , "SD_SENT"
+                , "MIN_SENT"
+                , "MAX_SENT"
+                , "AVG_RECEIVED"
+                , "SD_RECEIVED"
+                , "MIN_RECEIVED"
+                , "MAX_RECEIVED"
+                , "AVG_SENT%"
+                , "SD_SENT%"
+                , "MIN_SENT%"
+                , "MAX_SENT%"
+                , "AVG_RECEIVED%"
+                , "SD_RECEIVED%"
+                , "MIN_RECEIVED%"
+                , "MAX_RECEIVED%"
+                , "SENT_BETWEEN"
+                , "RECEIVED_BETWEEN"
+                );
 
         String line = "";
         for (int i = 0; i <= title.length() + 48; i++)
             line = line + "-";
 
         String head = metaInfo + line + "\r\n" + title + "\r\n" + line + "\r\n";
+        Log.d(Settings.TAG, head);
         writeToFile(head, false);
     }
 }

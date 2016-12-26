@@ -174,9 +174,11 @@ public class BackgroundService extends Service {
     }
 
     private void initPathFile(){
-
+        Log.d(Settings.TAG, "initPathFile");
         String path = Settings.sApplicationPath + Settings.sApplicationPath;
+        Log.d(Settings.TAG, "path: " + path);
         File file = new File(path);
+        Log.d(Settings.TAG, "file.exists(): " + file.exists());
         if (!file.exists()){
             new StatsFileManager(mContext).createNewFile();
         }
