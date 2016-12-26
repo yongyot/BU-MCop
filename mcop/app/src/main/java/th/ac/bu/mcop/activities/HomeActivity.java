@@ -1,18 +1,36 @@
 package th.ac.bu.mcop.activities;
 
+import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.net.NetworkInterface;
 import java.util.ArrayList;
 
 import th.ac.bu.mcop.R;
+import th.ac.bu.mcop.broadcastreceiver.IntenetReceiver;
+import th.ac.bu.mcop.models.AppsInfo;
+import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
+import th.ac.bu.mcop.services.BackgroundService;
+import th.ac.bu.mcop.utils.Constants;
+import th.ac.bu.mcop.utils.Settings;
+import th.ac.bu.mcop.utils.SharePrefs;
+import th.ac.bu.mcop.widgets.NotificationView;
 
 /**
  * Created by jeeraphan on 12/10/16.
@@ -20,8 +38,13 @@ import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button mAboutButton, mManageAppButton;
-    private TextView mTotalInstalledAppTextView, mAppUsingInternetTextView;
+    private Button mAboutButton, mManageAppButton, mStartLogButton;
+    private TextView mTotalInstalledAppTextView, mAppUsingInternetTextView, mMessageTextView;
+
+    private boolean isAppPaused = false;
+    private Runnable mRunnable;
+    private Handler mHandler;
+    private IntenetReceiver mIntenetReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,15 +55,49 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mAppUsingInternetTextView = (TextView) findViewById(R.id.number_app_using_internet_textview);
         mAboutButton = (Button) findViewById(R.id.about_button);
         mManageAppButton = (Button) findViewById(R.id.manage_app_button);
+        mStartLogButton = (Button) findViewById(R.id.start_log_button);
+        mMessageTextView = (TextView) findViewById(R.id.message_textview);
 
         mManageAppButton.setOnClickListener(this);
         mAboutButton.setOnClickListener(this);
+        mStartLogButton.setOnClickListener(this);
 
         ArrayList<ApplicationInfo> applicationInstalled = ApplicationInfoManager.getTotalApplication(this);
         ArrayList<ApplicationInfo> applicationUsingInternet = ApplicationInfoManager.getTotalApplicationUsingInternet(this);
 
         mTotalInstalledAppTextView.setText(applicationInstalled.size() + "");
         mAppUsingInternetTextView.setText(applicationUsingInternet.size() + "");
+
+        mHandler = new Handler();
+        mIntenetReceiver = new IntenetReceiver();
+        insertAppsToRealm();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageRecevier, new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mIntenetReceiver, new IntentFilter(Constants.INTENT_FILTER_INTERNET));
+
+        isAppPaused = false;
+        super.onStart();
+        Settings.loadSetting(this);
+        setView();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        try {
+            unregisterReceiver(mMessageRecevier);
+            unregisterReceiver(mIntenetReceiver);
+        } catch (Exception ex) {
+            Log.d(Settings.TAG, ex.getMessage());
+        }
+
+        isAppPaused = true;
     }
 
     /***********************************************
@@ -50,11 +107,102 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.about_button){
+
             Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
+
         } else if (view.getId() == R.id.manage_app_button){
+
             Intent intent = new Intent(this, ApplistActivity.class);
             startActivity(intent);
+
+        } else if (view.getId() == R.id.start_log_button){
+
+            if(Settings.isUsageAccessGranted(this)){
+                if(!isServiceRunning(BackgroundService.class)) { //service is stopped. Start it.
+                    Intent intent = new Intent(this, BackgroundService.class);
+                    try {
+                        stopService(intent);
+                    } catch (Exception ex) {
+                        Log.d(Settings.TAG, ex.toString());
+                    }
+
+                    startService(intent);
+
+                } else {
+                    stopService(new Intent(this,BackgroundService.class));
+                    BackgroundService.sStopRequest = true;
+
+                    mHandler.removeCallbacks(mRunnable);
+                }
+            } else {
+
+                Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                startActivity(intent);
+            }
+
+            setView();
+        }
+    }
+
+    private void setView(){
+
+        if(Settings.isUsageAccessGranted(this)){
+
+            if(isServiceRunning(BackgroundService.class)){
+
+                mStartLogButton.setText("Stop Collecting Data");
+                mMessageTextView.setText("Collecting data....");
+                mMessageTextView.setTextColor(Color.GREEN);
+
+            } else {
+
+                mStartLogButton.setText("Start Collecting Data");
+                mMessageTextView.setText("Ready for Collection.");
+                mMessageTextView.setTextColor(Color.parseColor("#FFA500")); //orange color
+            }
+        } else {
+
+            mStartLogButton.setText("Turn on");
+            mMessageTextView.setText("Please turn on usage access first.");
+            mMessageTextView.setTextColor(Color.RED);
+        }
+
+    }
+
+    private BroadcastReceiver mMessageRecevier = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(!isAppPaused) {
+                setView();
+            }
+        }
+    };
+
+    private boolean isServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void insertAppsToRealm(){
+
+        ArrayList<AppRealm> appRealms = AppRealm.getAll();
+        if (appRealms.size() <= 0){
+
+            ArrayList<ApplicationInfo> applicationInfos = ApplicationInfoManager.getTotalApplicationUsingInternet(this);
+            ArrayList<AppsInfo> appsInfos = new ArrayList<>();
+            for (ApplicationInfo applicationInfo : applicationInfos){
+
+                AppsInfo appsInfo = new HashGenManager().getPackageInfo(applicationInfo.packageName, getBaseContext());
+                appsInfos.add(appsInfo);
+            }
+
+            AppRealm.save(appsInfos);
         }
     }
 }

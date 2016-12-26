@@ -33,6 +33,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_below="@+id/navbar"
+        android:layout_above="@+id/start_log_button"
         >
 
         <RelativeLayout
@@ -114,4 +115,24 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/start_log_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_above="@+id/message_textview"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        />
+    <TextView
+        android:id="@+id/message_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
+
 </RelativeLayout>

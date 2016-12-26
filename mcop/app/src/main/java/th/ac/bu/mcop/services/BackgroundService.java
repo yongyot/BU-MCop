@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import th.ac.bu.mcop.R;
-import th.ac.bu.mcop.activities.MainActivity;
+import th.ac.bu.mcop.activities.HomeActivity;
 import th.ac.bu.mcop.modules.HashFileUploader;
 import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.StatsExtractor;
@@ -187,10 +187,10 @@ public class BackgroundService extends Service {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
 
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, HomeActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         //TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addParentStack(HomeActivity.class);
 
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
@@ -219,9 +219,9 @@ public class BackgroundService extends Service {
         NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
 
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, HomeActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addParentStack(HomeActivity.class);
 
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
