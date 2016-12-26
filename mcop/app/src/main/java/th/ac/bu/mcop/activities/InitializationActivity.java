@@ -22,6 +22,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.models.AppsInfo;
+import th.ac.bu.mcop.models.response.ReportHeaderModel;
+import th.ac.bu.mcop.models.response.ReportModel;
+import th.ac.bu.mcop.models.response.ResponseModel;
 import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.VirusTotalResponse;
 import th.ac.bu.mcop.modules.api.ApiManager;
@@ -47,7 +50,9 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         animateScal();
 
         Settings.loadSetting(this);
-        initHasFile();
+        //initHasFile();
+
+        startHomeActivity();
     }
 
     private void animateScal(){
@@ -73,6 +78,8 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
     }
 
     private void initHasFile(){
+
+        Log.d(Settings.TAG, "initHasFile: " + Settings.sMacAddress);
 
         if(Settings.sMacAddress != null) {
 
@@ -101,6 +108,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
     @Override
     public void onHashGenFinished() {
+        Log.d(Settings.TAG, "onHashGenFinished");
         getReport();
     }
 
@@ -137,30 +145,17 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
 
 
-        ApiManager.getInstance().getReport(new Callback<ArrayList<VirusTotalResponse>>() {
+        ApiManager.getInstance().getReport(new Callback<ResponseModel<ReportHeaderModel<ReportModel>>>() {
             @Override
-            public void onResponse(Call<ArrayList<VirusTotalResponse>> call, Response<ArrayList<VirusTotalResponse>> response) {
+            public void onResponse(Call<ResponseModel<ReportHeaderModel<ReportModel>>> call, Response<ResponseModel<ReportHeaderModel<ReportModel>>> response) {
                 Log.d(Settings.TAG, "onResponse");
                 Log.d(Settings.TAG, response.body().toString());
 
-                for (VirusTotalResponse virus : response.body()){
-                    Log.d(Settings.TAG, "response_code: " + virus.getResponse_code());
-                    Log.d(Settings.TAG, "msg: " + virus.getVerbose_msg());
-                    Log.d(Settings.TAG, "resource: " + virus.getResource());
-                    Log.d(Settings.TAG, "=======================");
-                }
-
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        Intent intent = new  Intent(InitializationActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }, 2000);
+                startHomeActivity();
             }
 
             @Override
-            public void onFailure(Call<ArrayList<VirusTotalResponse>> call, Throwable t) {
+            public void onFailure(Call<ResponseModel<ReportHeaderModel<ReportModel>>> call, Throwable t) {
                 Log.d(Settings.TAG, "onFailure");
                 Log.d(Settings.TAG, call.toString());
             }
@@ -185,5 +180,15 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         }
 
         return hashs;
+    }
+
+    private void startHomeActivity(){
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                Intent intent = new  Intent(InitializationActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 2000);
     }
 }

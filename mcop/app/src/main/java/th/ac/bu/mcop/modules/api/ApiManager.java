@@ -9,6 +9,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import th.ac.bu.mcop.models.response.ReportHeaderModel;
+import th.ac.bu.mcop.models.response.ReportModel;
+import th.ac.bu.mcop.models.response.ResponseModel;
 import th.ac.bu.mcop.modules.VirusTotalResponse;
 
 /**
@@ -43,9 +46,9 @@ public class ApiManager {
         mApiService = mRetrofit.create(APIService.class);
     }
 
-    public void getReport(Callback<ArrayList<VirusTotalResponse>> callback, ArrayList<String> resourceList){
+    public void getReport(Callback<ResponseModel<ReportHeaderModel<ReportModel>>> callback, ArrayList<String> resourceList){
 
-        Call<ArrayList<VirusTotalResponse>> call = mApiService.getReport(API_KEY, resourceList);
+        Call<ResponseModel<ReportHeaderModel<ReportModel>>> call = mApiService.getReport(API_KEY, resourceList);
         call.enqueue(callback);
     }
 
