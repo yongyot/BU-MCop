@@ -9,7 +9,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import th.ac.bu.mcop.models.Net;
+import th.ac.bu.mcop.models.NetData;
 import th.ac.bu.mcop.models.Stats;
 import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.models.realm.StatsRealm;
@@ -214,42 +218,130 @@ public class StatsExtractor {
     public static void saveNetData(){
 
         ArrayList<AppRealm> appRealms = AppRealm.getAll();
+
         for (AppRealm app : appRealms){
 
             ArrayList<StatsRealm> statses = StatsRealm.getStatsWithPackageName(app.getPackageName());
 
             if (statses.size() > 0){
-                Log.d(Settings.TAG, "packageName                : " + statses.get(0).getPackageName());
-                Log.d(Settings.TAG, "uid                        : " + statses.get(0).getUid());
 
-                Log.d(Settings.TAG, "netWorkState               : " +  getNetWorkState(statses));
-                Log.d(Settings.TAG, "ApplicationState           : " + getApplicationState(statses));
+                Log.d(Settings.TAG, "packageName                    : " + statses.get(0).getPackageName());
+                Log.d(Settings.TAG, "uid                            : " + statses.get(0).getUid());
 
-                Log.d(Settings.TAG, "AvgOfSentDataInByte        : " + getAvgOfSentDataInByte(statses));
-                Log.d(Settings.TAG, "SDOfSentDataInByte         : " + getSDOfSentDataInByte(statses));
-                Log.d(Settings.TAG, "MinOfSentDataInByte        : " + getMinOfSentDataInByte(statses));
-                Log.d(Settings.TAG, "MaxOfSentDataInByte        : " + getMaxOfSentDataInByte(statses));
+                Log.d(Settings.TAG, "netWorkState                   : " +  getNetWorkState(statses));
+                Log.d(Settings.TAG, "ApplicationState               : " + getApplicationState(statses));
 
-                Log.d(Settings.TAG, "AvgOfReceivedtDataInByte   : " + getAvgOfReceivedDataInByte(statses));
-                Log.d(Settings.TAG, "SDOfReceivedDataInByte     : " + getSDOfReceivedDataInByte(statses));
-                Log.d(Settings.TAG, "MinOfReceivedDataInByte    : " + getMinOfReceivedDataInByte(statses));
-                Log.d(Settings.TAG, "MaxOfReceivedDataInByte    : " + getMaxOfReceivedDataInByte(statses));
+                Log.d(Settings.TAG, "AvgOfSentDataInByte            : " + getAvgOfSentDataInByte(statses));
+                Log.d(Settings.TAG, "SDOfSentDataInByte             : " + getSDOfSentDataInByte(statses));
+                Log.d(Settings.TAG, "MinOfSentDataInByte            : " + getMinOfSentDataInByte(statses));
+                Log.d(Settings.TAG, "MaxOfSentDataInByte            : " + getMaxOfSentDataInByte(statses));
 
-                Log.d(Settings.TAG, "AvgOfSentDataInPercent     : " + getAvgOfSentDataInPercent(statses));
-                Log.d(Settings.TAG, "SDOfSentDataInPercent      : " + getSDOfSentDataInPercent(statses));
-                Log.d(Settings.TAG, "MinOfSentDataInPercent     : " + getMinOfSentDataInPercent(statses));
-                Log.d(Settings.TAG, "MaxOfSentDataInPercent     : " + getMaxOfSentDataInPercent(statses));
+                Log.d(Settings.TAG, "AvgOfReceivedtDataInByte       : " + getAvgOfReceivedDataInByte(statses));
+                Log.d(Settings.TAG, "SDOfReceivedDataInByte         : " + getSDOfReceivedDataInByte(statses));
+                Log.d(Settings.TAG, "MinOfReceivedDataInByte        : " + getMinOfReceivedDataInByte(statses));
+                Log.d(Settings.TAG, "MaxOfReceivedDataInByte        : " + getMaxOfReceivedDataInByte(statses));
 
-                Log.d(Settings.TAG, "AvgOfReceivedDataInPercent : " + getAvgOfReceivedDataInPercent(statses));
-                Log.d(Settings.TAG, "SDOfReceivedDataInPercent  : " + getSDOfReceivedDataInPercent(statses));
-                Log.d(Settings.TAG, "MinOfReceivedDataInPercent : " + getMinOfReceivedDataInPercent(statses));
-                Log.d(Settings.TAG, "MaxOfReceivedDataInPercent : " + getMaxOfReceivedDataInPercent(statses));
+                Log.d(Settings.TAG, "AvgOfSentDataInPercent         : " + getAvgOfSentDataInPercent(statses));
+                Log.d(Settings.TAG, "SDOfSentDataInPercent          : " + getSDOfSentDataInPercent(statses));
+                Log.d(Settings.TAG, "MinOfSentDataInPercent         : " + getMinOfSentDataInPercent(statses));
+                Log.d(Settings.TAG, "MaxOfSentDataInPercent         : " + getMaxOfSentDataInPercent(statses));
+
+                Log.d(Settings.TAG, "AvgOfReceivedDataInPercent     : " + getAvgOfReceivedDataInPercent(statses));
+                Log.d(Settings.TAG, "SDOfReceivedDataInPercent      : " + getSDOfReceivedDataInPercent(statses));
+                Log.d(Settings.TAG, "MinOfReceivedDataInPercent     : " + getMinOfReceivedDataInPercent(statses));
+                Log.d(Settings.TAG, "MaxOfReceivedDataInPercent     : " + getMaxOfReceivedDataInPercent(statses));
+
+                Log.d(Settings.TAG, "SentBetween                    : " + getSentBetween(statses));
+                Log.d(Settings.TAG, "ReceivedBetween                : " + getReceivedBetween(statses));
+
+                Log.d(Settings.TAG, "SentDataInPercentOfTotal       : " + getSentDataInPercentOfTotal(appRealms, statses.get(0).getPackageName()));
+                Log.d(Settings.TAG, "ReceivedDataInPercentOfTotal   : " + getReceivedDataInPercentOfTotal(appRealms, statses.get(0).getPackageName()));
 
                 Log.d(Settings.TAG, "==================================");
             }
         }
 
         StatsRealm.deleteAll();
+    }
+
+    private static int getReceivedDataInPercentOfTotal(ArrayList<AppRealm> appRealms, String packageName){
+
+        int totalReceivedDataAllApp = 0;
+        int totalReceivedDataThisApp = 0;
+
+        for (AppRealm app : appRealms){
+            ArrayList<StatsRealm> statses = StatsRealm.getStatsWithPackageName(app.getPackageName());
+
+            if (statses.size() > 0){
+
+                for (StatsRealm stats : statses){
+                    totalReceivedDataAllApp += stats.getSentDataInByte();
+
+                    if (packageName.equals(stats.getPackageName())){
+                        totalReceivedDataThisApp += stats.getSentDataInByte();
+                    }
+                }
+            }
+        }
+
+        return (totalReceivedDataThisApp / totalReceivedDataAllApp) * 100;
+    }
+
+    private static int getSentDataInPercentOfTotal(ArrayList<AppRealm> appRealms, String packageName){
+
+        int totalSentDataAllApp = 0;
+        int totalSentDataThisApp = 0;
+
+        for (AppRealm app : appRealms){
+            ArrayList<StatsRealm> statses = StatsRealm.getStatsWithPackageName(app.getPackageName());
+
+            if (statses.size() > 0){
+
+                for (StatsRealm stats : statses){
+                    totalSentDataAllApp += stats.getSentDataInByte();
+
+                    if (packageName.equals(stats.getPackageName())){
+                        totalSentDataThisApp += stats.getSentDataInByte();
+                    }
+                }
+            }
+        }
+
+        return (totalSentDataThisApp / totalSentDataAllApp) * 100;
+    }
+
+    private static String getReceivedBetween(ArrayList<StatsRealm> statses){
+
+        int countReceivedData = 0;
+
+        for (StatsRealm stats : statses){
+            if (stats.getSentDataInByte() > 0){
+                countReceivedData++;
+            }
+        }
+
+        if (countReceivedData > 6){ // assume per 60 s
+            return NetData.BETWEEN_INNER;
+        }
+
+        return NetData.BETWEEN_OUTER;
+    }
+
+    private static String getSentBetween(ArrayList<StatsRealm> statses){
+
+        int countSentData = 0;
+
+        for (StatsRealm stats : statses){
+            if (stats.getSentDataInByte() > 0){
+                countSentData++;
+            }
+        }
+
+        if (countSentData > 6){ // assume per 60 s
+            return NetData.BETWEEN_INNER;
+        }
+
+        return NetData.BETWEEN_OUTER;
     }
 
     private static double getSDOfReceivedDataInPercent(ArrayList<StatsRealm> statses){

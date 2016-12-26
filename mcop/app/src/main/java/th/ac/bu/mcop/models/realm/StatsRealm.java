@@ -118,8 +118,16 @@ public class StatsRealm extends RealmObject{
 
         for (Stats stats : listAppRunning){
 
-            int sentDataInBytePercentOfToal = (stats.getNet().getUpDataInByte() / totalSentInByte) * 100;
-            int receivedDataInBytePercentOfTotal = (stats.getNet().getDownDataInByte() / totalReceivedInByte)* 100;
+            int sentDataInBytePercentOfToal = 0;
+            int receivedDataInBytePercentOfTotal = 0;
+
+            if (totalSentInByte > 0){
+                sentDataInBytePercentOfToal = (stats.getNet().getUpDataInByte() / totalSentInByte) * 100;
+            }
+
+            if (totalSentInByte > 0){
+                receivedDataInBytePercentOfTotal = (stats.getNet().getDownDataInByte() / totalReceivedInByte)* 100;
+            }
 
             StatsRealm statsRealm = realm.createObject(StatsRealm.class);
             statsRealm.setPackageName(stats.getPackageName());
