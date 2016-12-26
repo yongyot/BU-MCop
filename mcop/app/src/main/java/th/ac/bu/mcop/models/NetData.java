@@ -46,8 +46,8 @@ public class NetData {
     private String minOfReceivedDataInPercent;
     private String maxOfReceivedDataInPercent;
 
-    private String sentBetween;//
-    private String receivedBetween;//
+    private String sentBetween;
+    private String receivedBetween;
 
     public String getPackageName() {
         return packageName;

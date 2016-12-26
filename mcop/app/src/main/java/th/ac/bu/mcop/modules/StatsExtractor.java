@@ -9,8 +9,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import th.ac.bu.mcop.models.Net;
 import th.ac.bu.mcop.models.NetData;
@@ -229,6 +227,8 @@ public class StatsExtractor {
                 Log.d(Settings.TAG, "uid                            : " + statses.get(0).getUid());
 
                 Log.d(Settings.TAG, "netWorkState                   : " +  getNetWorkState(statses));
+                Log.d(Settings.TAG, "getNetWorkMode                 : " +  getNetWorkMode(statses));
+
                 Log.d(Settings.TAG, "ApplicationState               : " + getApplicationState(statses));
 
                 Log.d(Settings.TAG, "AvgOfSentDataInByte            : " + getAvgOfSentDataInByte(statses));
@@ -262,6 +262,15 @@ public class StatsExtractor {
         }
 
         StatsRealm.deleteAll();
+    }
+
+    private static String getNetWorkMode(ArrayList<StatsRealm> statses){
+
+        if (statses.size() > 1){
+            return NetData.NETWORK_MODE_EVENTUAL;
+        }
+
+        return NetData.NETWORK_MODE_CONTINUOUS;
     }
 
     private static int getReceivedDataInPercentOfTotal(ArrayList<AppRealm> appRealms, String packageName){
@@ -320,7 +329,7 @@ public class StatsExtractor {
             }
         }
 
-        if (countReceivedData > 6){ // assume per 60 s
+        if (countReceivedData > 1){ // assume per 60 s
             return NetData.BETWEEN_INNER;
         }
 
@@ -337,7 +346,7 @@ public class StatsExtractor {
             }
         }
 
-        if (countSentData > 6){ // assume per 60 s
+        if (countSentData > 1){ // assume per 60 s
             return NetData.BETWEEN_INNER;
         }
 
