@@ -28,6 +28,7 @@ import th.ac.bu.mcop.models.response.ResponseModel;
 import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.VirusTotalResponse;
 import th.ac.bu.mcop.modules.api.ApiManager;
+import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.utils.SharePrefs;
 import th.ac.bu.mcop.widgets.NotificationView;
@@ -93,7 +94,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
             new Thread(new Runnable() {
                 public void run() {
-                    SharePrefs.setPreference(getBaseContext(), "firstTime", true);
+                    SharePrefs.setPreference(getBaseContext(), Constants.KEY_FIRST_TIME, true);
                     HashGenManager hashGen = new HashGenManager();
                     hashGen.setOnHashGenListener(InitializationActivity.this);
                     hashGen.getAllAppInfo(getBaseContext());

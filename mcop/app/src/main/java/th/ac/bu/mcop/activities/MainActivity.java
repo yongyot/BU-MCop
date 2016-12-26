@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         Settings.loadSetting(mContext);
         setView();
-        boolean isFirstTime = SharePrefs.getPreferenceBoolean(mContext, "firstTime", false);
+        boolean isFirstTime = SharePrefs.getPreferenceBoolean(mContext, Constants.KEY_FIRST_TIME, false);
         if (!isFirstTime){
             initHasFile();
         }
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new Thread(new Runnable() {
                 public void run() {
                     Log.d(Settings.TAG, "run before hashGen");
-                    SharePrefs.setPreference(mContext, "firstTime", true);
+                    SharePrefs.setPreference(mContext, Constants.KEY_FIRST_TIME, true);
                     HashGenManager hashGen = new HashGenManager();
                     hashGen.getAllAppInfo(mContext);
                     Log.d(Settings.TAG, "run after hashGen");

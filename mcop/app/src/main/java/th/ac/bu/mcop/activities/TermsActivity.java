@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import th.ac.bu.mcop.R;
+import th.ac.bu.mcop.utils.Constants;
+import th.ac.bu.mcop.utils.SharePrefs;
 
 /**
  * Created by jeeraphan on 12/10/16.
@@ -25,6 +27,10 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms);
 
+        if (SharePrefs.getPreferenceBoolean(this, Constants.KEY_ACCEPT_TERM, false)){
+            startHomeActivity();
+        }
+
         mAccpetCheckBox = (CheckBox) findViewById(R.id.accept_checkbox);
         mAccpetCheckBox.setOnCheckedChangeListener(this);
 
@@ -39,9 +45,8 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.start_monitoring_button){
-            Intent intent = new Intent(this, InitializationActivity.class);
-            startActivity(intent);
-            finish();
+            SharePrefs.setPreference(this, Constants.KEY_ACCEPT_TERM, true);
+            InitializationActivity();
         }
     }
 
@@ -52,5 +57,17 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
         } else {
             mStartMonitoringButton.setEnabled(false);
         }
+    }
+
+    private void InitializationActivity(){
+        Intent intent = new Intent(this, InitializationActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void startHomeActivity(){
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
