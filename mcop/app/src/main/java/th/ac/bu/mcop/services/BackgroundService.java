@@ -94,9 +94,6 @@ public class BackgroundService extends Service {
             }
         }, Settings.sInterval * 1000);
 
-        if(sStopRequest){
-            return START_NOT_STICKY;
-        }
         return START_STICKY;
     }
 
@@ -108,7 +105,7 @@ public class BackgroundService extends Service {
         try {
 
             if (!sStopRequest){
-                sendBroadcast(new Intent("YouWillNeverKillMe"));
+                sendBroadcast(new Intent(getString(R.string.key_nerver_kill)));
             }
             /*code for stpe down*/ //unregisterReceiver(mybroadcast);
             if(mWakeLock.isHeld()){
@@ -133,7 +130,7 @@ public class BackgroundService extends Service {
         try {
 
             if (!sStopRequest){
-                sendBroadcast(new Intent("YouWillNeverKillMe"));
+                sendBroadcast(new Intent(getString(R.string.key_nerver_kill)));
             }
 
            /*code for stpe down*/ //unregisterReceiver(mybroadcast);
