@@ -49,7 +49,6 @@ public class BackgroundService extends Service {
     private Context mContext;
     private final Handler mHandler = new Handler();
     private Runnable mRunnable;
-    private boolean mIsForeground;
     private DateFormat mDateFormat;
 
     public static int sCounter = 5;
@@ -95,6 +94,9 @@ public class BackgroundService extends Service {
             }
         }, Settings.sInterval * 1000);
 
+        if(sStopRequest){
+            return START_NOT_STICKY;
+        }
         return START_STICKY;
     }
 
@@ -106,7 +108,7 @@ public class BackgroundService extends Service {
         try {
 
             if (!sStopRequest){
-                sendBroadcast(new Intent(getString(R.string.key_nerver_kill)));
+                sendBroadcast(new Intent("YouWillNeverKillMe"));
             }
             /*code for stpe down*/ //unregisterReceiver(mybroadcast);
             if(mWakeLock.isHeld()){
@@ -131,7 +133,7 @@ public class BackgroundService extends Service {
         try {
 
             if (!sStopRequest){
-                sendBroadcast(new Intent(getString(R.string.key_nerver_kill)));
+                sendBroadcast(new Intent("YouWillNeverKillMe"));
             }
 
            /*code for stpe down*/ //unregisterReceiver(mybroadcast);
@@ -158,7 +160,6 @@ public class BackgroundService extends Service {
         sCounter = 0;
         sIsServiceRunning = true;
         sStopRequest = false;
-        mIsForeground = false;
         mDate = new Date();
         mDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     }
@@ -212,8 +213,6 @@ public class BackgroundService extends Service {
                 .setContentIntent(resultPendingIntent);
 
         startForeground(Constants.ONGOING_NOTIFICATION_ID, mBuilder.build());
-
-        mIsForeground = true;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
