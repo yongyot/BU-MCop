@@ -258,6 +258,42 @@ public class StatsExtractor {
                 Log.d(Settings.TAG, "ReceivedDataInPercentOfTotal   : " + getReceivedDataInPercentOfTotal(appRealms, statses.get(0).getPackageName()));
 
                 Log.d(Settings.TAG, "==================================");
+
+                NetData netData = new NetData();
+                netData.setPackageName(statses.get(0).getPackageName());
+                netData.setUid(statses.get(0).getUid());
+                netData.setNetWorkState(getNetWorkState(statses)+"");
+                netData.setNetWorkMode(getNetWorkMode(statses));
+                netData.setApplicationState(getApplicationState(statses)+"");
+
+                netData.setAvgOfSentDataInByte(getAvgOfSentDataInByte(statses)+"");
+                netData.setSdOfSentDataInByte(getSDOfSentDataInByte(statses)+"");
+                netData.setMinOfSentDataInByte(getMinOfSentDataInByte(statses)+"");
+                netData.setMaxOfSentDataInByte(getMaxOfSentDataInByte(statses)+"");
+
+                netData.setAvgOfReceivedDataInByte(getAvgOfReceivedDataInByte(statses)+"");
+                netData.setSdOfReceivedDataInByte(getSDOfReceivedDataInByte(statses)+"");
+                netData.setMinOfReceivedDataInByte(getMinOfReceivedDataInByte(statses)+"");
+                netData.setMaxOfReceivedDataInByte(getMaxOfReceivedDataInByte(statses)+"");
+
+                netData.setAvgOfSentDataInPercent(getAvgOfSentDataInPercent(statses)+"");
+                netData.setSdOfSentDataInPercent(getSDOfSentDataInPercent(statses)+"");
+                netData.setMinOfSentDataInPercent(getMinOfSentDataInPercent(statses)+"");
+                netData.setMaxOfSentDataInPercent(getMaxOfSentDataInPercent(statses)+"");
+
+                netData.setAvgOfReceivedDataInPercent(getAvgOfReceivedDataInPercent(statses)+"");
+                netData.setSdOfReceivedDataInPercent(getSDOfReceivedDataInPercent(statses)+"");
+                netData.setMinOfReceivedDataInPercent(getMinOfReceivedDataInPercent(statses)+"");
+                netData.setMaxOfReceivedDataInPercent(getMaxOfReceivedDataInPercent(statses)+"");
+
+                netData.setSentBetween(getSentBetween(statses));
+                netData.setReceivedBetween(getReceivedBetween(statses));
+
+                netData.setSentDataInBytePercentOfTotal(getSentDataInPercentOfTotal(appRealms, statses.get(0).getPackageName())+"");
+                netData.setReceivedDataInBytePercentOfTotal(getReceivedDataInPercentOfTotal(appRealms, statses.get(0).getPackageName())+"");
+
+
+                StatsFileManager.writeToFile(netData.getStringNetData(), true);
             }
         }
 

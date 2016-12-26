@@ -30,7 +30,9 @@ public class StatsFileManager {
         mContext = context;
     }
 
-    public synchronized void writeToFile(String data, boolean append) {
+    public static synchronized void writeToFile(String data, boolean append) {
+
+        Log.d(Settings.TAG, "data: " + data);
 
         File statsDir;
         statsDir = new File(Settings.sApplicationPath);

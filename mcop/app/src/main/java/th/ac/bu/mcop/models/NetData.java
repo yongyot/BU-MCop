@@ -1,5 +1,10 @@
 package th.ac.bu.mcop.models;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
 /**
  * Created by jeeraphan on 11/22/16.
  */
@@ -247,5 +252,44 @@ public class NetData {
 
     public void setReceivedBetween(String receivedBetween) {
         this.receivedBetween = receivedBetween;
+    }
+
+    public String getStringNetData() {
+        Calendar calTime = Calendar.getInstance(Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm:ss:SSS", Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String date = sdf.format(calTime.getTime());
+
+        //date
+        String formatStr = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s";
+        return  String.format(formatStr
+                , date
+                , packageName
+                , uid
+                , sentDataInBytePercentOfTotal
+                , receivedDataInBytePercentOfTotal
+                , netWorkState
+                , netWorkMode
+                , applicationState
+                , avgOfSentDataInByte
+                , sdOfSentDataInByte
+                , minOfSentDataInByte
+                , maxOfSentDataInByte
+                , avgOfReceivedDataInByte
+                , sdOfReceivedDataInByte
+                , minOfReceivedDataInByte
+                , maxOfReceivedDataInByte
+                , avgOfSentDataInPercent
+                , sdOfSentDataInPercent
+                , minOfSentDataInPercent
+                , maxOfSentDataInPercent
+                , avgOfReceivedDataInPercent
+                , sdOfReceivedDataInPercent
+                , minOfReceivedDataInPercent
+                , maxOfReceivedDataInPercent
+                , sentBetween
+                , receivedBetween
+        );
     }
 }
