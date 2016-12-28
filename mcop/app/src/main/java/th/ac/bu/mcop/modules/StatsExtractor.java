@@ -302,8 +302,31 @@ public class StatsExtractor {
 
     private static String getNetWorkMode(ArrayList<StatsRealm> statses){
 
-        if (statses.size() > 1){
-            return NetData.NETWORK_MODE_EVENTUAL;
+        if (statses.size() < 2){
+            return NetData.NETWORK_MODE_CONTINUOUS;
+        }
+
+        String lastTimeString = statses.get(statses.size() - 1).getCreateDate();
+        String beforeLastTime = statses.get(statses.size() - 2).getCreateDate();
+
+        // format HH:mm
+        String[] lastTimeArray = lastTimeString.split(":");
+        String[] beforeLastTimeArray = beforeLastTime.split(":");
+
+        int hourLastTimeInt = Integer.parseInt(lastTimeArray[0]);
+        int hourBeforeLastTimeInt = Integer.parseInt(lastTimeArray[0]);
+
+        int minuteLastTimeInt = Integer.parseInt(lastTimeArray[1]);
+        int minuteBeforeLastTimeInt = Integer.parseInt(beforeLastTimeArray[1]);
+
+        if (hourLastTimeInt == hourBeforeLastTimeInt){
+            if ((minuteLastTimeInt - minuteBeforeLastTimeInt) <= 30){
+                return NetData.NETWORK_MODE_EVENTUAL;
+            }
+        } else {
+            if (((60 - minuteLastTimeInt) - minuteBeforeLastTimeInt) < 30){
+                return NetData.NETWORK_MODE_EVENTUAL;
+            }
         }
 
         return NetData.NETWORK_MODE_CONTINUOUS;
@@ -329,7 +352,11 @@ public class StatsExtractor {
             }
         }
 
-        return (totalReceivedDataThisApp / totalReceivedDataAllApp) * 100;
+        if (totalReceivedDataAllApp > 0){
+            return (totalReceivedDataThisApp / totalReceivedDataAllApp) * 100;
+        }
+
+        return 0;
     }
 
     private static int getSentDataInPercentOfTotal(ArrayList<AppRealm> appRealms, String packageName){
@@ -352,7 +379,11 @@ public class StatsExtractor {
             }
         }
 
-        return (totalSentDataThisApp / totalSentDataAllApp) * 100;
+        if (totalSentDataAllApp > 0){
+            return (totalSentDataThisApp / totalSentDataAllApp) * 100;
+        }
+
+        return 0;
     }
 
     private static String getReceivedBetween(ArrayList<StatsRealm> statses){

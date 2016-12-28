@@ -22,7 +22,7 @@ import th.ac.bu.mcop.widgets.NotificationView;
 
 public class Settings {
 
-    public static final String TAG = "BU-MCOP";
+    public static final String TAG = "log-mcop";
 
     public static int sNetworkType;
     public static int sInterval;

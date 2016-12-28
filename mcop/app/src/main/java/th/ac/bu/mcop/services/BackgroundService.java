@@ -90,6 +90,10 @@ public class BackgroundService extends Service {
                     StatsExtractor.saveNetData();
                 }
 
+                if (StatsFileManager.getFileSize() > Settings.sUploadSize){
+                    // upload
+                }
+
                 mHandler.postDelayed(this, Settings.sInterval * 1000);
             }
         }, Settings.sInterval * 1000);

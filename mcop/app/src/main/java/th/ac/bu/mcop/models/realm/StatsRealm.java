@@ -2,7 +2,11 @@ package th.ac.bu.mcop.models.realm;
 
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -26,6 +30,7 @@ public class StatsRealm extends RealmObject{
     private double receivedDataInByte;
     private double sentDataInBytePercentOfTotal;
     private double receivedDataInBytePercentOfTotal;
+    private String createDate;
     private Net net;
 
     public String getUid() {
@@ -92,6 +97,14 @@ public class StatsRealm extends RealmObject{
         this.receivedDataInBytePercentOfTotal = receivedDataInBytePercentOfTotal;
     }
 
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
     public Net getNet() {
         return net;
     }
@@ -139,6 +152,11 @@ public class StatsRealm extends RealmObject{
             statsRealm.setSentDataInBytePercentOfTotal(sentDataInBytePercentOfToal);
             statsRealm.setReceivedDataInBytePercentOfTotal(receivedDataInBytePercentOfTotal);
 
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            String createtime = sdf.format(new Date());
+            statsRealm.setCreateDate(createtime);
+
             statsRealms.add(statsRealm);
 
             if (stats.getPackageName().equals("com.nianticlabs.pokemongo")){
@@ -150,6 +168,7 @@ public class StatsRealm extends RealmObject{
                 Log.d(Settings.TAG, "getDownDataInByte                  : " + stats.getNet().getDownDataInByte());
                 Log.d(Settings.TAG, "sentDataInBytePercentOfToal        : " + sentDataInBytePercentOfToal);
                 Log.d(Settings.TAG, "receivedDataInBytePercentOfTotal   : " + receivedDataInBytePercentOfTotal);
+                Log.d(Settings.TAG, "create date                        : " + createtime);
                 Log.d(Settings.TAG, "********************");
             }
         }
