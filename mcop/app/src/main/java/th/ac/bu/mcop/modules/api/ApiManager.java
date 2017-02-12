@@ -3,16 +3,23 @@ package th.ac.bu.mcop.modules.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import th.ac.bu.mcop.models.request.UploadRequest;
 import th.ac.bu.mcop.models.response.ReportHeaderModel;
 import th.ac.bu.mcop.models.response.ReportModel;
 import th.ac.bu.mcop.models.response.ResponseModel;
-import th.ac.bu.mcop.modules.VirusTotalResponse;
+import th.ac.bu.mcop.models.response.ResponseUpload;
 
 /**
  * Created by jeeraphan on 12/12/16.
@@ -52,8 +59,8 @@ public class ApiManager {
         call.enqueue(callback);
     }
 
-    public void uploadHashGen(Callback<String> callback){
-        Call<String> call = mApiService.uploadHashGen("file_name", new File("path"));
+    public void uploadNetDataByte(Callback<ResponseUpload> callback, RequestBody requestBody){
+        Call<ResponseUpload> call = mApiService.uploadNetDataByte(requestBody);
         call.enqueue(callback);
     }
 }

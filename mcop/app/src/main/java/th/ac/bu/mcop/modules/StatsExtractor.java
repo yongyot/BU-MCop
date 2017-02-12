@@ -220,44 +220,43 @@ public class StatsExtractor {
         for (AppRealm app : appRealms){
 
             ArrayList<StatsRealm> statses = StatsRealm.getStatsWithPackageName(app.getPackageName());
-
+//            Log.d(Settings.TAG, app.getPackageName() + " size: " + statses.size());
             if (statses.size() > 0){
+//                Log.d(Settings.TAG, "____Start log net data___");
+//                Log.d(Settings.TAG, "packageName                    : " + statses.get(0).getPackageName());
+//                Log.d(Settings.TAG, "uid                            : " + statses.get(0).getUid());
+//
+//                Log.d(Settings.TAG, "netWorkState                   : " +  getNetWorkState(statses));
+//                Log.d(Settings.TAG, "getNetWorkMode                 : " +  getNetWorkMode(statses));
+//
+//                Log.d(Settings.TAG, "ApplicationState               : " + getApplicationState(statses));
+//
+//                Log.d(Settings.TAG, "AvgOfSentDataInByte            : " + String.format("%d", (int)getAvgOfSentDataInByte(statses)));
+//                Log.d(Settings.TAG, "SDOfSentDataInByte             : " + String.format("%d", (int)getSDOfSentDataInByte(statses)));
+//                Log.d(Settings.TAG, "MinOfSentDataInByte            : " + String.format("%d", (int)getMinOfSentDataInByte(statses)));
+//                Log.d(Settings.TAG, "MaxOfSentDataInByte            : " + String.format("%d", (int)getMaxOfSentDataInByte(statses)));
+//
+//                Log.d(Settings.TAG, "AvgOfReceivedtDataInByte       : " + String.format("%d", (int)getAvgOfReceivedDataInByte(statses)));
+//                Log.d(Settings.TAG, "SDOfReceivedDataInByte         : " + String.format("%d", (int)getSDOfReceivedDataInByte(statses)));
+//                Log.d(Settings.TAG, "MinOfReceivedDataInByte        : " + String.format("%d", (int)getMinOfReceivedDataInByte(statses)));
+//                Log.d(Settings.TAG, "MaxOfReceivedDataInByte        : " + String.format("%d", (int)getMaxOfReceivedDataInByte(statses)));
+//
+//                Log.d(Settings.TAG, "AvgOfSentDataInPercent         : " + String.format("%.4f", getAvgOfSentDataInPercent(statses)));
+//                Log.d(Settings.TAG, "SDOfSentDataInPercent          : " + String.format("%.4f", getSDOfSentDataInPercent(statses)));
+//                Log.d(Settings.TAG, "MinOfSentDataInPercent         : " + String.format("%.4f", getMinOfSentDataInPercent(statses)));
+//                Log.d(Settings.TAG, "MaxOfSentDataInPercent         : " + String.format("%.4f", getMaxOfSentDataInPercent(statses)));
+//
+//                Log.d(Settings.TAG, "AvgOfReceivedDataInPercent     : " + String.format("%.4f", getAvgOfReceivedDataInPercent(statses)));
+//                Log.d(Settings.TAG, "SDOfReceivedDataInPercent      : " + String.format("%.4f", getSDOfReceivedDataInPercent(statses)));
+//                Log.d(Settings.TAG, "MinOfReceivedDataInPercent     : " + String.format("%.4f", getMinOfReceivedDataInPercent(statses)));
+//                Log.d(Settings.TAG, "MaxOfReceivedDataInPercent     : " + String.format("%.4f", getMaxOfReceivedDataInPercent(statses)));
+//
+//                Log.d(Settings.TAG, "SentBetween                    : " + getSentBetween(statses));
+//                Log.d(Settings.TAG, "ReceivedBetween                : " + getReceivedBetween(statses));
+//
+//                Log.d(Settings.TAG, "SentDataInPercentOfTotal       : " + String.format("%.4f", getSentDataInPercentOfTotal(appRealms, statses.get(0).getPackageName())));
+//                Log.d(Settings.TAG, "ReceivedDataInPercentOfTotal   : " + String.format("%.4f", getReceivedDataInPercentOfTotal(appRealms, statses.get(0).getPackageName())));
 
-                Log.d(Settings.TAG, "packageName                    : " + statses.get(0).getPackageName());
-                Log.d(Settings.TAG, "uid                            : " + statses.get(0).getUid());
-
-                Log.d(Settings.TAG, "netWorkState                   : " +  getNetWorkState(statses));
-                Log.d(Settings.TAG, "getNetWorkMode                 : " +  getNetWorkMode(statses));
-
-                Log.d(Settings.TAG, "ApplicationState               : " + getApplicationState(statses));
-
-                Log.d(Settings.TAG, "AvgOfSentDataInByte            : " + getAvgOfSentDataInByte(statses));
-                Log.d(Settings.TAG, "SDOfSentDataInByte             : " + getSDOfSentDataInByte(statses));
-                Log.d(Settings.TAG, "MinOfSentDataInByte            : " + getMinOfSentDataInByte(statses));
-                Log.d(Settings.TAG, "MaxOfSentDataInByte            : " + getMaxOfSentDataInByte(statses));
-
-                Log.d(Settings.TAG, "AvgOfReceivedtDataInByte       : " + getAvgOfReceivedDataInByte(statses));
-                Log.d(Settings.TAG, "SDOfReceivedDataInByte         : " + getSDOfReceivedDataInByte(statses));
-                Log.d(Settings.TAG, "MinOfReceivedDataInByte        : " + getMinOfReceivedDataInByte(statses));
-                Log.d(Settings.TAG, "MaxOfReceivedDataInByte        : " + getMaxOfReceivedDataInByte(statses));
-
-                Log.d(Settings.TAG, "AvgOfSentDataInPercent         : " + getAvgOfSentDataInPercent(statses));
-                Log.d(Settings.TAG, "SDOfSentDataInPercent          : " + getSDOfSentDataInPercent(statses));
-                Log.d(Settings.TAG, "MinOfSentDataInPercent         : " + getMinOfSentDataInPercent(statses));
-                Log.d(Settings.TAG, "MaxOfSentDataInPercent         : " + getMaxOfSentDataInPercent(statses));
-
-                Log.d(Settings.TAG, "AvgOfReceivedDataInPercent     : " + getAvgOfReceivedDataInPercent(statses));
-                Log.d(Settings.TAG, "SDOfReceivedDataInPercent      : " + getSDOfReceivedDataInPercent(statses));
-                Log.d(Settings.TAG, "MinOfReceivedDataInPercent     : " + getMinOfReceivedDataInPercent(statses));
-                Log.d(Settings.TAG, "MaxOfReceivedDataInPercent     : " + getMaxOfReceivedDataInPercent(statses));
-
-                Log.d(Settings.TAG, "SentBetween                    : " + getSentBetween(statses));
-                Log.d(Settings.TAG, "ReceivedBetween                : " + getReceivedBetween(statses));
-
-                Log.d(Settings.TAG, "SentDataInPercentOfTotal       : " + getSentDataInPercentOfTotal(appRealms, statses.get(0).getPackageName()));
-                Log.d(Settings.TAG, "ReceivedDataInPercentOfTotal   : " + getReceivedDataInPercentOfTotal(appRealms, statses.get(0).getPackageName()));
-
-                Log.d(Settings.TAG, "==================================");
 
                 NetData netData = new NetData();
                 netData.setPackageName(statses.get(0).getPackageName());
@@ -295,6 +294,8 @@ public class StatsExtractor {
 
                 StatsFileManager.writeToFile(netData.getStringNetData(), true);
             }
+
+//            Log.d(Settings.TAG, "+++++++++++++++++++++ End Net Data ++++++++++++++++++++++++++++++++++");
         }
 
         StatsRealm.deleteAll();
@@ -332,7 +333,7 @@ public class StatsExtractor {
         return NetData.NETWORK_MODE_CONTINUOUS;
     }
 
-    private static int getReceivedDataInPercentOfTotal(ArrayList<AppRealm> appRealms, String packageName){
+    private static double getReceivedDataInPercentOfTotal(ArrayList<AppRealm> appRealms, String packageName){
 
         int totalReceivedDataAllApp = 0;
         int totalReceivedDataThisApp = 0;
@@ -359,7 +360,7 @@ public class StatsExtractor {
         return 0;
     }
 
-    private static int getSentDataInPercentOfTotal(ArrayList<AppRealm> appRealms, String packageName){
+    private static double getSentDataInPercentOfTotal(ArrayList<AppRealm> appRealms, String packageName){
 
         int totalSentDataAllApp = 0;
         int totalSentDataThisApp = 0;

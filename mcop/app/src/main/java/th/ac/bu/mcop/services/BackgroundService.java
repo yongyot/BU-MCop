@@ -9,6 +9,7 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -18,17 +19,38 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.HomeActivity;
+import th.ac.bu.mcop.models.response.ReportHeaderModel;
+import th.ac.bu.mcop.models.response.ReportModel;
+import th.ac.bu.mcop.models.response.ResponseModel;
+import th.ac.bu.mcop.models.response.ResponseUpload;
 import th.ac.bu.mcop.modules.HashFileUploader;
 import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.StatsExtractor;
 import th.ac.bu.mcop.modules.StatsFileManager;
+import th.ac.bu.mcop.modules.api.APIService;
+import th.ac.bu.mcop.modules.api.ApiManager;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.utils.SharePrefs;
@@ -78,20 +100,22 @@ public class BackgroundService extends Service {
             @Override
             public void run() {
 
-                sendBroadcast();
-                checkUpdateHashGen();
-                startAsForeground();
-                StatsExtractor.saveStats(mContext);
                 sCounter += 5;
 
-                Log.d(Settings.TAG, "sCounter: " + sCounter);
                 if (sCounter > 60){
                     sCounter = 5;
                     StatsExtractor.saveNetData();
                 }
 
+                sendBroadcast();
+                checkUpdateHashGen();
+                startAsForeground();
+                StatsExtractor.saveStats(mContext);
+                Log.d(Settings.TAG, "File size: " + StatsFileManager.getFileSize());
                 if (StatsFileManager.getFileSize() > Settings.sUploadSize){
-                    // upload
+
+                    //uploadNetDataFile();
+                    uploadNetDataByte();
                 }
 
                 mHandler.postDelayed(this, Settings.sInterval * 1000);
@@ -99,6 +123,106 @@ public class BackgroundService extends Service {
         }, Settings.sInterval * 1000);
 
         return START_STICKY;
+    }
+
+    private void uploadNetDataByte() {
+
+        String path = Settings.sApplicationPath + Settings.sOutputFileName;
+        String osVersion = "5.0";//Build.VERSION.BASE_OS + "";
+        String deviceModel = Build.MODEL;
+        final File file = new File(path);
+
+        try {
+            byte[] arrayByte = fullyReadFileToBytes(file);
+
+            JSONObject object = new JSONObject();
+            object.put("device_mac", Settings.getMacAddress(mContext));
+            object.put("os_version", osVersion);
+            object.put("device_model", deviceModel);
+            object.put("file", arrayByte);
+
+            JSONObject jsonObject = new JSONObject(new Gson().toJson(object));
+            String bodyPostJson = jsonObject.getString("nameValuePairs");
+            Log.d(Settings.TAG, "bodyPost: " + bodyPostJson);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),bodyPostJson);
+            Log.d(Settings.TAG, "requestBody: " + requestBody);
+            ApiManager.getInstance().uploadNetDataByte(new Callback<ResponseUpload>() {
+                @Override
+                public void onResponse(Call<ResponseUpload> call, Response<ResponseUpload> response) {
+                    Log.d(Settings.TAG, "upload byte success");
+                    Log.d(Settings.TAG, response + "");
+                    if (response != null){
+                        Log.d(Settings.TAG, "body: " + response.body());
+                        Log.d(Settings.TAG, "isCompleted: " + response.body().getIsCompleted());
+                        Log.d(Settings.TAG, "Message: " + response.body().getMessage());
+                    }
+
+                    file.delete();
+                    initPathFile();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseUpload> call, Throwable t) {
+                    Log.d(Settings.TAG, "upload byte fail");
+                    Log.d(Settings.TAG, t.getMessage());
+                }
+            }, requestBody);
+
+            /*
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), arrayByte);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+            ApiManager.getInstance().uploadNetDataByte(new Callback<JSONObject>() {
+                @Override
+                public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                    Log.d(Settings.TAG, "upload byte success");
+                    Log.d(Settings.TAG, response + "");
+                    Log.d(Settings.TAG, response.body() + "");
+
+                    file.delete();
+
+                    initPathFile();
+                }
+
+                @Override
+                public void onFailure(Call<JSONObject> call, Throwable t) {
+                    Log.d(Settings.TAG, "upload byte fail");
+                    Log.d(Settings.TAG, t.getMessage());
+                }
+            }, Settings.getMacAddress(mContext), osVersion, deviceModel, body);
+            */
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private byte[] fullyReadFileToBytes(File f) throws IOException {
+        int size = (int) f.length();
+        byte bytes[] = new byte[size];
+        byte tmpBuff[] = new byte[size];
+
+        FileInputStream fis= new FileInputStream(f);;
+        try {
+
+            int read = fis.read(bytes, 0, size);
+            if (read < size) {
+                int remain = size - read;
+                while (remain > 0) {
+                    read = fis.read(tmpBuff, 0, remain);
+                    System.arraycopy(tmpBuff, 0, bytes, size - remain, read);
+                    remain -= read;
+                }
+            }
+        }  catch (IOException e){
+            throw e;
+        } finally {
+            fis.close();
+        }
+
+        return bytes;
     }
 
     @Override

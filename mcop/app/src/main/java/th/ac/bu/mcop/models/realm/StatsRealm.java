@@ -14,6 +14,7 @@ import io.realm.RealmObject;
 import io.realm.RealmResults;
 import th.ac.bu.mcop.models.Net;
 import th.ac.bu.mcop.models.Stats;
+import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Settings;
 
 /**
@@ -159,18 +160,17 @@ public class StatsRealm extends RealmObject{
 
             statsRealms.add(statsRealm);
 
-            if (stats.getPackageName().equals("com.nianticlabs.pokemongo")){
-                Log.d(Settings.TAG, "getPackageName                     : " + stats.getPackageName());
-                Log.d(Settings.TAG, "getUid                             : " + stats.getUid());
-                Log.d(Settings.TAG, "NetworkType                        : " + Settings.sNetworkType + "");
-                Log.d(Settings.TAG, "ApplicationState                   : " + stats.getState() + "");
-                Log.d(Settings.TAG, "getUpDataInByte                    : " + stats.getNet().getUpDataInByte());
-                Log.d(Settings.TAG, "getDownDataInByte                  : " + stats.getNet().getDownDataInByte());
-                Log.d(Settings.TAG, "sentDataInBytePercentOfToal        : " + sentDataInBytePercentOfToal);
-                Log.d(Settings.TAG, "receivedDataInBytePercentOfTotal   : " + receivedDataInBytePercentOfTotal);
-                Log.d(Settings.TAG, "create date                        : " + createtime);
-                Log.d(Settings.TAG, "********************");
-            }
+//            Log.d(Settings.TAG, "Timer: " + BackgroundService.sCounter);
+//            Log.d(Settings.TAG, "getPackageName                     : " + stats.getPackageName());
+//            Log.d(Settings.TAG, "getUid                             : " + stats.getUid());
+//            Log.d(Settings.TAG, "NetworkType                        : " + Settings.sNetworkType + "");
+//            Log.d(Settings.TAG, "ApplicationState                   : " + stats.getState() + "");
+//            Log.d(Settings.TAG, "getUpDataInByte                    : " + stats.getNet().getUpDataInByte());
+//            Log.d(Settings.TAG, "getDownDataInByte                  : " + stats.getNet().getDownDataInByte());
+//            Log.d(Settings.TAG, "sentDataInBytePercentOfToal        : " + sentDataInBytePercentOfToal);
+//            Log.d(Settings.TAG, "receivedDataInBytePercentOfTotal   : " + receivedDataInBytePercentOfTotal);
+//            Log.d(Settings.TAG, "create date                        : " + createtime);
+//            Log.d(Settings.TAG, "********************");
         }
 
         realm.copyFromRealm(statsRealms);

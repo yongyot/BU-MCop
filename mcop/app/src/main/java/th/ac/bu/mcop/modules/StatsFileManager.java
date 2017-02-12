@@ -32,7 +32,7 @@ public class StatsFileManager {
 
     public static synchronized void writeToFile(String data, boolean append) {
 
-        Log.d(Settings.TAG, "data: " + data);
+        Log.d(Settings.TAG, data);
 
         File statsDir;
         statsDir = new File(Settings.sApplicationPath);
