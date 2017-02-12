@@ -59,6 +59,11 @@ public class ApiManager {
         call.enqueue(callback);
     }
 
+    public void uploadHashCodeByte(Callback<ResponseUpload> callback, RequestBody requestBody){
+        Call<ResponseUpload> call = mApiService.uploadHashCodeByte(requestBody);
+        call.enqueue(callback);
+    }
+
     public void uploadNetDataByte(Callback<ResponseUpload> callback, RequestBody requestBody){
         Call<ResponseUpload> call = mApiService.uploadNetDataByte(requestBody);
         call.enqueue(callback);

@@ -149,7 +149,7 @@ public class BackgroundService extends Service {
             ApiManager.getInstance().uploadNetDataByte(new Callback<ResponseUpload>() {
                 @Override
                 public void onResponse(Call<ResponseUpload> call, Response<ResponseUpload> response) {
-                    Log.d(Settings.TAG, "upload byte success");
+                    Log.d(Settings.TAG, "upload net date byte success");
                     Log.d(Settings.TAG, response + "");
                     if (response != null){
                         Log.d(Settings.TAG, "body: " + response.body());
@@ -167,30 +167,6 @@ public class BackgroundService extends Service {
                     Log.d(Settings.TAG, t.getMessage());
                 }
             }, requestBody);
-
-            /*
-            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), arrayByte);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-
-            ApiManager.getInstance().uploadNetDataByte(new Callback<JSONObject>() {
-                @Override
-                public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                    Log.d(Settings.TAG, "upload byte success");
-                    Log.d(Settings.TAG, response + "");
-                    Log.d(Settings.TAG, response.body() + "");
-
-                    file.delete();
-
-                    initPathFile();
-                }
-
-                @Override
-                public void onFailure(Call<JSONObject> call, Throwable t) {
-                    Log.d(Settings.TAG, "upload byte fail");
-                    Log.d(Settings.TAG, t.getMessage());
-                }
-            }, Settings.getMacAddress(mContext), osVersion, deviceModel, body);
-            */
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -223,6 +199,55 @@ public class BackgroundService extends Service {
         }
 
         return bytes;
+    }
+
+    private void uploadHashCodeByte() {
+
+        String osVersion = "5.0";//Build.VERSION.BASE_OS + "";
+        String deviceModel = Build.MODEL;
+        final File file = new File(Settings.sHashFilePath);
+
+        try {
+            byte[] arrayByte = fullyReadFileToBytes(file);
+
+            JSONObject object = new JSONObject();
+            object.put("device_mac", Settings.getMacAddress(mContext));
+            object.put("os_version", osVersion);
+            object.put("device_model", deviceModel);
+            object.put("file", arrayByte);
+
+            JSONObject jsonObject = new JSONObject(new Gson().toJson(object));
+            String bodyPostJson = jsonObject.getString("nameValuePairs");
+            Log.d(Settings.TAG, "bodyPost: " + bodyPostJson);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyPostJson);
+            Log.d(Settings.TAG, "requestBody: " + requestBody);
+            ApiManager.getInstance().uploadHashCodeByte(new Callback<ResponseUpload>() {
+                @Override
+                public void onResponse(Call<ResponseUpload> call, Response<ResponseUpload> response) {
+                    Log.d(Settings.TAG, "upload hash code byte success");
+                    Log.d(Settings.TAG, response + "");
+                    if (response != null) {
+                        Log.d(Settings.TAG, "body: " + response.body());
+                        Log.d(Settings.TAG, "isCompleted: " + response.body().getIsCompleted());
+                        Log.d(Settings.TAG, "Message: " + response.body().getMessage());
+                    }
+
+                    file.delete();
+                    initPathFile();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseUpload> call, Throwable t) {
+                    Log.d(Settings.TAG, "upload byte fail");
+                    Log.d(Settings.TAG, t.getMessage());
+                }
+            }, requestBody);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -394,12 +419,14 @@ public class BackgroundService extends Service {
             HashGenManager hashGen = new HashGenManager();
             hashGen.getAllAppInfo(mContext);
 
-            File file = new File(Settings.sHashFilePath);
-            boolean isExist = file.exists();
-            if (isExist && !HashGenManager.sIsGenerating && !HashFileUploader.sIsUploading){
-                HashFileUploader hashFileUploader = new HashFileUploader(mContext);
-                hashFileUploader.execute();
-            }
+            uploadHashCodeByte();
+
+//            File file = new File(Settings.sHashFilePath);
+//            boolean isExist = file.exists();
+//            if (isExist && !HashGenManager.sIsGenerating && !HashFileUploader.sIsUploading){
+//                HashFileUploader hashFileUploader = new HashFileUploader(mContext);
+//                hashFileUploader.execute();
+//            }
         }
     }
 }
