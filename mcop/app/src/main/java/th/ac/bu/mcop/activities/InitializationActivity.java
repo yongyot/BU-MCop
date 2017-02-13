@@ -51,9 +51,9 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         animateScal();
 
         Settings.loadSetting(this);
-        //initHasFile();
+        initHasFile();
 
-        startHomeActivity();
+        //startHomeActivity();
     }
 
     private void animateScal(){
@@ -114,7 +114,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
     }
 
     private void getReport(){
-        ArrayList<String> mockups = new ArrayList<>();
+        /*ArrayList<String> mockups = new ArrayList<>();
         mockups.add("d1f3cd0f2b963d8fb9f527d1b3a60063");
         mockups.add("74c7e83af4ec0d4db0cbc02e4a148d98");
         mockups.add("e59208c6241720955338a8c0d37b3f15");
@@ -142,15 +142,22 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         mockups.add("8dbd1e2e93aaa25cc10131d86e6c4408");
         mockups.add("70e1da00449457fdf8dce7b67294bc1b");
         mockups.add("d185de75d4108759ecc8717361a0dfd1");
-        mockups.add("2d1ed21673068cc953c2416832e24ed6");
+        mockups.add("2d1ed21673068cc953c2416832e24ed6");*/
 
 
+        ArrayList<String> temps = getAllHashReport();
+        Log.d(Settings.TAG, "temps size: " + temps.size());
+        for (String temp : temps){
+            Log.d(Settings.TAG, "temp: " + temp);
+        }
 
         ApiManager.getInstance().getReport(new Callback<ResponseModel<ReportHeaderModel<ReportModel>>>() {
             @Override
             public void onResponse(Call<ResponseModel<ReportHeaderModel<ReportModel>>> call, Response<ResponseModel<ReportHeaderModel<ReportModel>>> response) {
-                Log.d(Settings.TAG, "onResponse");
-                Log.d(Settings.TAG, response.body().toString());
+                Log.d(Settings.TAG, "onResponse: " + response);
+                if (response != null){
+                    Log.d(Settings.TAG, "response body: " + response.body());
+                }
 
                 startHomeActivity();
             }

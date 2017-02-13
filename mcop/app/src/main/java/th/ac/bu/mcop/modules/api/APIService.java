@@ -27,7 +27,7 @@ import th.ac.bu.mcop.models.response.ResponseUpload;
 
 public interface APIService {
 
-    @GET("index.php/file/report")
+    @GET("http://mobile-monitoring.bu.ac.th/api/index.php/file/report")
     Call<ResponseModel<ReportHeaderModel<ReportModel>>> getReport(
             @Query("apikey") String apiKey,
             @Query("resource[]") ArrayList<String> resourceList
