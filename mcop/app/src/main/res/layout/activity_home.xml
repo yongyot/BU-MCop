@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_margin"
-                android:text="Total installed app"
+                android:text="user install"
                 />
             <TextView
                 android:id="@+id/number_total_install_textview"
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:layout_below="@+id/title_total_install_textview"
-                android:text="App using internet"
+                android:text="user install and using internet"
                 />
             <TextView
                 android:id="@+id/number_app_using_internet_textview"

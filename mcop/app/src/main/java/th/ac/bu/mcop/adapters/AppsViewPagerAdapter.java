@@ -15,7 +15,7 @@ import th.ac.bu.mcop.fragments.AppsFragment;
 
 public class AppsViewPagerAdapter extends FragmentPagerAdapter {
 
-    private final int NUM_ITEMS = 3;
+    private final int NUM_ITEMS = 2;
     private ArrayList<ApplicationInfo> mApplicationInfos;
 
     public AppsViewPagerAdapter(FragmentManager fragmentManager, ArrayList<ApplicationInfo> applicationInfos) {
@@ -30,8 +30,6 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return AppsFragment.newInstance(mApplicationInfos);
             case 1:
-                return AppsFragment.newInstance(mApplicationInfos);
-            case 2:
                 return AppsFragment.newInstance(mApplicationInfos);
             default:
                 return null;
@@ -49,8 +47,6 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
             return "Safe";
         } else if (position == 1){
             return "Warning";
-        } else if (position == 2){
-            return "New Apps";
         }
         return "";
     }

@@ -24,7 +24,12 @@ public class ApplicationInfoManager {
         ArrayList<ApplicationInfo> applicationInfos = (ArrayList<ApplicationInfo>) packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
 
         for (ApplicationInfo info : applicationInfos) {
-            applicationInfosInstall.add(info);
+            String[] nativeLibraryDirs = info.nativeLibraryDir.split("/");
+            if (nativeLibraryDirs.length > 0){
+                if (!nativeLibraryDirs[0].equals("system")){
+                    applicationInfosInstall.add(info);
+                }
+            }
         }
 
         return applicationInfosInstall;
