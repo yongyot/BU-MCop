@@ -89,9 +89,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
+    protected void onStop() {
+        super.onStop();
         try {
             unregisterReceiver(mMessageRecevier);
             unregisterReceiver(mIntenetReceiver);
@@ -169,10 +168,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mMessageTextView.setText("Please turn on usage access first.");
             mMessageTextView.setTextColor(Color.RED);
 
-            /*new AlertDialog
+            new AlertDialog
                     .Builder(this)
-            .setTitle("Please turn on usage access first.")
-            .setMessage("")
+            .setTitle(getString(R.string.app_name))
+            .setMessage("Please turn on usage access first.")
             .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -185,7 +184,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                 }
-            }).show();*/
+            }).show();
         }
 
     }

@@ -18,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import th.ac.bu.mcop.models.request.UploadRequest;
 import th.ac.bu.mcop.models.response.ReportHeaderModel;
 import th.ac.bu.mcop.models.response.ReportModel;
+import th.ac.bu.mcop.models.response.ResponseDataModel;
 import th.ac.bu.mcop.models.response.ResponseModel;
 import th.ac.bu.mcop.models.response.ResponseUpload;
 
@@ -27,7 +28,7 @@ import th.ac.bu.mcop.models.response.ResponseUpload;
 
 public class ApiManager {
 
-    private final String API_KEY = "78660282aeaedccc679bb9b2e33095916ff8d356be6e77d05ef04a284c42deff";;
+    public static final String API_KEY = "78660282aeaedccc679bb9b2e33095916ff8d356be6e77d05ef04a284c42deff";;
     private final String BASE_API = "http://mobile-monitoring.bu.ac.th/";
     private static ApiManager sApiManger;
     private Gson mGson;
@@ -56,6 +57,11 @@ public class ApiManager {
     public void getReport(Callback<ResponseModel<ReportHeaderModel<ReportModel>>> callback, String resources){
 
         Call<ResponseModel<ReportHeaderModel<ReportModel>>> call = mApiService.getReport(API_KEY, resources);
+        call.enqueue(callback);
+    }
+
+    public void uploadAPK(Callback<ResponseModel> callback, RequestBody apkBody, RequestBody apiBody){
+        Call<ResponseModel> call = mApiService.uploadAPK(apiBody, apkBody);
         call.enqueue(callback);
     }
 
