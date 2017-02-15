@@ -28,7 +28,7 @@ import th.ac.bu.mcop.models.response.ResponseUpload;
 public class ApiManager {
 
     private final String API_KEY = "78660282aeaedccc679bb9b2e33095916ff8d356be6e77d05ef04a284c42deff";;
-    private final String BASE_API = "http://mobile-monitoring.bu.ac.th/api/";
+    private final String BASE_API = "http://mobile-monitoring.bu.ac.th/";
     private static ApiManager sApiManger;
     private Gson mGson;
     private Retrofit mRetrofit;
@@ -53,9 +53,9 @@ public class ApiManager {
         mApiService = mRetrofit.create(APIService.class);
     }
 
-    public void getReport(Callback<ResponseModel<ReportHeaderModel<ReportModel>>> callback, ArrayList<String> resourceList){
+    public void getReport(Callback<ResponseModel<ReportHeaderModel<ReportModel>>> callback, String resources){
 
-        Call<ResponseModel<ReportHeaderModel<ReportModel>>> call = mApiService.getReport(API_KEY, resourceList);
+        Call<ResponseModel<ReportHeaderModel<ReportModel>>> call = mApiService.getReport(API_KEY, resources);
         call.enqueue(callback);
     }
 

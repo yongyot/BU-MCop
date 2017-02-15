@@ -1,6 +1,6 @@
 package th.ac.bu.mcop.models.response;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
 
 /**
  * Created by jeeraphan on 12/26/16.
@@ -8,36 +8,31 @@ import com.google.gson.annotations.SerializedName;
 
 public class ReportHeaderModel<T extends Object>{
 
-    @SerializedName("result")
-    int result;
+    boolean result;
+    String error;
+    ArrayList<ReportModel> data;
 
-    @SerializedName("error")
-    int error;
-
-    @SerializedName("data")
-    T data;
-
-    public int getResult() {
+    public boolean isResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(boolean result) {
         this.result = result;
     }
 
-    public int getError() {
+    public String getError() {
         return error;
     }
 
-    public void setError(int error) {
+    public void setError(String error) {
         this.error = error;
     }
 
-    public T getData() {
+    public ArrayList<ReportModel> getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(ArrayList<ReportModel> data) {
         this.data = data;
     }
 }

@@ -1,8 +1,10 @@
 package th.ac.bu.mcop.activities;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
@@ -166,6 +168,24 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mStartLogButton.setText("Turn on");
             mMessageTextView.setText("Please turn on usage access first.");
             mMessageTextView.setTextColor(Color.RED);
+
+            /*new AlertDialog
+                    .Builder(this)
+            .setTitle("Please turn on usage access first.")
+            .setMessage("")
+            .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    startActivity(intent);
+                }
+            })
+            .setNegativeButton(getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            }).show();*/
         }
 
     }

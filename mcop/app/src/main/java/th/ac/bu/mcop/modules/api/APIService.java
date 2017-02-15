@@ -27,18 +27,18 @@ import th.ac.bu.mcop.models.response.ResponseUpload;
 
 public interface APIService {
 
-    @GET("http://mobile-monitoring.bu.ac.th/api/index.php/file/report")
+    @GET("api/virustotal.php/hash")
     Call<ResponseModel<ReportHeaderModel<ReportModel>>> getReport(
             @Query("apikey") String apiKey,
-            @Query("resource[]") ArrayList<String> resourceList
+            @Query("resource[]") String resources
     );
 
-    @POST("http://mobile-monitoring.bu.ac.th/Mcop/api_uploadfile/api/uploadfile")
+    @POST("Mcop/api_uploadfile/api/uploadfile")
     Call<ResponseUpload> uploadNetDataByte(
             @Body RequestBody requestBody
     );
 
-    @POST("http://mobile-monitoring.bu.ac.th/Mcop/api_uploadfile/api/hashcodefile")
+    @POST("Mcop/api_uploadfile/api/hashcodefile")
     Call<ResponseUpload> uploadHashCodeByte(
             @Body RequestBody requestBody
     );

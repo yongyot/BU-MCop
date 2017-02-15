@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
+import org.json.JSONObject;
+
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +54,6 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
         Settings.loadSetting(this);
         initHasFile();
-
-        //startHomeActivity();
     }
 
     private void animateScal(){
@@ -114,6 +114,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
     }
 
     private void getReport(){
+
         /*ArrayList<String> mockups = new ArrayList<>();
         mockups.add("d1f3cd0f2b963d8fb9f527d1b3a60063");
         mockups.add("74c7e83af4ec0d4db0cbc02e4a148d98");
@@ -144,19 +145,11 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         mockups.add("d185de75d4108759ecc8717361a0dfd1");
         mockups.add("2d1ed21673068cc953c2416832e24ed6");*/
 
-
-        ArrayList<String> temps = getAllHashReport();
-        Log.d(Settings.TAG, "temps size: " + temps.size());
-        for (String temp : temps){
-            Log.d(Settings.TAG, "temp: " + temp);
-        }
-
         ApiManager.getInstance().getReport(new Callback<ResponseModel<ReportHeaderModel<ReportModel>>>() {
             @Override
             public void onResponse(Call<ResponseModel<ReportHeaderModel<ReportModel>>> call, Response<ResponseModel<ReportHeaderModel<ReportModel>>> response) {
-                Log.d(Settings.TAG, "onResponse: " + response);
                 if (response != null){
-                    Log.d(Settings.TAG, "response body: " + response.body());
+                    //ResponseModel<ReportHeaderModel<ReportModel>> result = response.body();
                 }
 
                 startHomeActivity();
@@ -164,29 +157,27 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
             @Override
             public void onFailure(Call<ResponseModel<ReportHeaderModel<ReportModel>>> call, Throwable t) {
-                Log.d(Settings.TAG, "onFailure");
-                Log.d(Settings.TAG, call.toString());
+                startHomeActivity();
             }
         }, getAllHashReport());
     }
 
-    public ArrayList<String> getAllHashReport() {
+    public String getAllHashReport() {
 
         String selfApk = "th.ac.bu.mcop";
         PackageManager packageManager = getPackageManager();
         final List<ApplicationInfo> apps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
-
-        ArrayList<String> hashs = new ArrayList<>();
+        String hashs = "";
 
         for (ApplicationInfo appInfo : apps) {
             if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0 && !appInfo.packageName.equals(selfApk)) {
 
                 HashGenManager hashGen = new HashGenManager();
                 AppsInfo app = hashGen.getPackageInfo(appInfo.packageName, getBaseContext());
-                hashs.add(app.getHash());
+                hashs += app.getHash() + ",";
             }
         }
-
+        Log.d(Settings.TAG, "hash: " + hashs);
         return hashs;
     }
 

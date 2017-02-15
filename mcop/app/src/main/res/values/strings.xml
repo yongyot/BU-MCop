@@ -19,4 +19,7 @@
 
     <string name="key_nerver_kill">YouWillNeverKillMe</string>
 
+    <string name="label_ok">Ok</string>
+    <string name="label_cancel">Cancel</string>
+
 </resources>
