@@ -169,17 +169,22 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
         Log.d(Settings.TAG, "sendApk");
 
-        String packageName = "com.skype.raider";//getPankageNameWithHash(sendApkApps.get(0).getResource());
+        String packageName = "com.atom.prtrprotrack.android";//getPankageNameWithHash(sendApkApps.get(0).getResource());
         Log.d(Settings.TAG, "packageName: " + packageName);
         PackageManager packageManager = getPackageManager();
         try {
             PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
             String pathString = packageInfo.applicationInfo.sourceDir;
-            Log.d(Settings.TAG, "pathString: " + pathString);
             File file = new File(pathString);
 
-            RequestBody apkbody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            RequestBody apikey = RequestBody.create(MediaType.parse("text/plain"), ApiManager.API_KEY);
+            Log.d(Settings.TAG, "file exists: " + file.exists());
+
+            // create RequestBody instance from file
+            Uri uri = Uri.fromFile(file);
+            Log.d(Settings.TAG, "uri: " + uri);
+
+            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            Log.d(Settings.TAG, "contentType: " + requestBody.contentType());
 
             ApiManager.getInstance().uploadAPK(new Callback<ResponseModel>() {
                 @Override
@@ -188,8 +193,6 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                     if (response.body() != null){
                         Log.d(Settings.TAG, "isResult: " + response.body().isResult());
                         Log.d(Settings.TAG, "getError: " + response.body().getError());
-                        //Log.d(Settings.TAG, "getResource: " + response.body().getResponse().getData().getResource());
-
                     }
                 }
 
@@ -197,7 +200,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                 public void onFailure(Call<ResponseModel> call, Throwable t) {
                     Log.d(Settings.TAG, "onFailure: " + t.getMessage());
                 }
-            }, apikey, apkbody);
+            }, requestBody);
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

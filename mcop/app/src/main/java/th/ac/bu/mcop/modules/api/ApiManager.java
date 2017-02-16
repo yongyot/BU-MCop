@@ -60,8 +60,8 @@ public class ApiManager {
         call.enqueue(callback);
     }
 
-    public void uploadAPK(Callback<ResponseModel> callback, RequestBody apkBody, RequestBody apiBody){
-        Call<ResponseModel> call = mApiService.uploadAPK(apiBody, apkBody);
+    public void uploadAPK(Callback<ResponseModel> callback, RequestBody file){
+        Call<ResponseModel> call = mApiService.uploadAPK(file);
         call.enqueue(callback);
     }
 
