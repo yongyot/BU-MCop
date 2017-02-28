@@ -19,6 +19,15 @@ public class AppRealm extends RealmObject{
     private String versionName;
     private String versionCode;
     private long lastUpdate;
+    private int appStatus;
+
+    public int getAppStatus() {
+        return appStatus;
+    }
+
+    public void setAppStatus(int appStatus) {
+        this.appStatus = appStatus;
+    }
 
     public String getHash() {
         return hash;

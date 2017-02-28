@@ -1,17 +1,16 @@
 package th.ac.bu.mcop.modules.api;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 import th.ac.bu.mcop.models.response.ReportHeaderModel;
 import th.ac.bu.mcop.models.response.ReportModel;
+import th.ac.bu.mcop.models.response.ResponseDataModel;
 import th.ac.bu.mcop.models.response.ResponseModel;
 import th.ac.bu.mcop.models.response.ResponseUpload;
 
@@ -30,8 +29,7 @@ public interface APIService {
 
     @Multipart
     @POST("/api/virustotal.php/file")
-    Call<ResponseModel> uploadAPK(
-            //dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + existingFileName +"\"" + lineEnd);
+    Call<ResponseModel<ResponseDataModel<ReportModel>>> uploadAPK(
             @Part("file\"; filename=\"file.apk\" ") RequestBody file
             );
 

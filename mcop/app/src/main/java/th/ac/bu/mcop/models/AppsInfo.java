@@ -11,6 +11,15 @@ public class AppsInfo {
     private String versionName;
     private String versionCode;
     private long lastUpdate;
+    private int appStatus;
+
+    public int getAppStatus() {
+        return appStatus;
+    }
+
+    public void setAppStatus(int appStatus) {
+        this.appStatus = appStatus;
+    }
 
     public long getLastUpdate() {
         return lastUpdate;

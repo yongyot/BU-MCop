@@ -3,19 +3,14 @@ package th.ac.bu.mcop.modules.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONObject;
+import java.util.concurrent.TimeUnit;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import th.ac.bu.mcop.models.request.UploadRequest;
 import th.ac.bu.mcop.models.response.ReportHeaderModel;
 import th.ac.bu.mcop.models.response.ReportModel;
 import th.ac.bu.mcop.models.response.ResponseDataModel;
@@ -34,6 +29,7 @@ public class ApiManager {
     private Gson mGson;
     private Retrofit mRetrofit;
     private APIService mApiService;
+    private OkHttpClient mOkHttpClient;
 
     public static ApiManager getInstance(){
         if (sApiManger == null){
@@ -43,6 +39,12 @@ public class ApiManager {
     }
 
     public ApiManager(){
+
+        mOkHttpClient = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .build();
+
         mGson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .create();
@@ -50,6 +52,7 @@ public class ApiManager {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_API)
                 .addConverterFactory(GsonConverterFactory.create(mGson))
+                .client(mOkHttpClient)
                 .build();
         mApiService = mRetrofit.create(APIService.class);
     }
@@ -60,8 +63,8 @@ public class ApiManager {
         call.enqueue(callback);
     }
 
-    public void uploadAPK(Callback<ResponseModel> callback, RequestBody file){
-        Call<ResponseModel> call = mApiService.uploadAPK(file);
+    public void uploadAPK(Callback<ResponseModel<ResponseDataModel<ReportModel>>> callback, RequestBody file){
+        Call<ResponseModel<ResponseDataModel<ReportModel>>> call = mApiService.uploadAPK(file);
         call.enqueue(callback);
     }
 

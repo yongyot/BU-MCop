@@ -42,7 +42,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         mStatusTextView = (TextView) findViewById(R.id.status_textview);
         mDescPermissionTextView = (TextView) findViewById(R.id.desc_permission_textview);
         mAppIconImageview = (ImageView) findViewById(R.id.icon_imageview);
-
+        mDescPermissionTextView.setVisibility(View.GONE);
         mIgnoreButton.setOnClickListener(this);
         mUninstallAppButton.setOnClickListener(this);
 

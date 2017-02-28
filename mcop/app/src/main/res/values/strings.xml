@@ -15,7 +15,27 @@
     <string name="label_ignore">Ignore</string>
     <string name="label_uninstall">Uninstall</string>
     <string name="label_version">Version</string>
-    <string name="label_terms_detail">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</string>
+    <string name="label_terms_detail">Terms and Conditions
+
+Welcome to Mcop. Before using this application, you must agree to comply with and be bound by the following terms and conditions of use, which together with our privacy policy govern the relationship of Mcop with you in relation to this application. If you disagree with any part of these terms and conditions, please do not use our application.
+
+The term ‘Mcop’ or ‘us’ or ‘we’ refers to the developer of the application Mcop, which the project Mcop are funded by The National Broadcasting and Telecommunication Commission (NBTC), Thailand. The term ‘you’ refers to the user of our application.
+
+The use of this application is subject to the following terms of use:
+
+· The contents and functions of this application is for your general information and use only. It is subject to change without notice.
+
+· Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information and materials found or offered on this application for any particular purpose. You acknowledge that such information and materials may contain inaccuracies or errors and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.
+
+· Your use of any information or materials on this application or accessed via this application is entirely at your own risk, for which we shall not be liable. It shall be your own responsibility to ensure that any products, services or information available through this application meet your specific requirements.
+
+· All content on the application is protected by copyright, and owned or controlled by Mcop, or the party accredited as the owner or provider of the content. You must abide by all copyright notices, information, or restrictions contained in any content accessed through the application.
+
+· When you download the Mcop application, you are bound by the terms of the GNU General Public License. Full GNU GPL license details here: (http://www.gnu.org/licenses/licenses.html#GPL)
+
+· Unauthorised use of this application may give rise to a claim for damages and/or be a criminal offence.
+
+· Your use of this application and any dispute arising out of such use of the application is subject to the laws of Thailand.</string>
 
     <string name="key_nerver_kill">YouWillNeverKillMe</string>
 

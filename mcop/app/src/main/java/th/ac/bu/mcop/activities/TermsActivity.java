@@ -46,7 +46,7 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         if (view.getId() == R.id.start_monitoring_button){
             SharePrefs.setPreference(this, Constants.KEY_ACCEPT_TERM, true);
-            InitializationActivity();
+            startInitializationActivity();
         }
     }
 
@@ -59,7 +59,7 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void InitializationActivity(){
+    private void startInitializationActivity(){
         Intent intent = new Intent(this, InitializationActivity.class);
         startActivity(intent);
         finish();
