@@ -169,10 +169,20 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                             for (ReportModel model : reportModel.getResponse().getData()){
                                 if (model.getResponseCode() == 0){
                                     sendApkApps.add(model);
+
                                     //update status app status send apk
+                                    AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+                                    appInfo.setAppStatus(Constants.APP_STATUS_SEND_APK);
+                                    AppRealm.update(appInfo);
+
                                 } else if (model.getDetectionPercentage() > 50){
                                     warningApps.add(model);
+
                                     // update status app warning
+                                    AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+                                    appInfo.setAppStatus(Constants.APP_STATUS_WARNING);
+                                    AppRealm.update(appInfo);
+
                                 } else {
                                     safeApps.add(model);
                                 }
@@ -230,15 +240,23 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                 public void onResponse(Call<ResponseModel<ResponseDataModel<ReportModel>>> call, Response<ResponseModel<ResponseDataModel<ReportModel>>> response) {
                     Log.d(Settings.TAG, "sendApk onResponse");
 
-                    if (response.body() != null){
+                    ResponseModel<ResponseDataModel<ReportModel>> reportModel = response.body();
 
-                        Log.d(Settings.TAG, "sendApk isResult: " + response.body().isResult());
-                        Log.d(Settings.TAG, "sendApk getError: " + response.body().getError());
+                    if (reportModel != null){
 
-                        Log.d(Settings.TAG, "sendApk data: " + response.body().getResponse().getData());
+                        Log.d(Settings.TAG, "sendApk isResult: " + reportModel.isResult());
+                        Log.d(Settings.TAG, "sendApk getError: " + reportModel.getError());
 
-                        if (response.body().getResponse().getData() != null){
-                            Log.d(Settings.TAG, "sendApk getData verbosMsg: " + response.body().getResponse().getData().getVerboseMsg());
+                        Log.d(Settings.TAG, "sendApk data: " + reportModel.getResponse().getData());
+
+                        if (reportModel.getResponse().getData() != null){
+
+                            if (reportModel.getResponse().getData().getResponseCode() == 0){
+                                // update status app warning
+                                AppsInfo appInfo = AppRealm.getAppWithHash(reportModel.getResponse().getData().getResource());
+                                appInfo.setAppStatus(Constants.APP_STATUS_SEND_HASH);
+                                AppRealm.update(appInfo);
+                            }
                         }
                     }
 

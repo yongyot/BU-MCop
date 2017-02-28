@@ -6,6 +6,7 @@ import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.annotations.PrimaryKey;
 import th.ac.bu.mcop.models.AppsInfo;
 
 /**
@@ -83,11 +84,28 @@ public class AppRealm extends RealmObject{
             appRealm.setPackageName(appsInfo.getPackageName());
             appRealm.setVersionName(appsInfo.getVersionName());
             appRealm.setVersionCode(appsInfo.getVersionCode());
+            appRealm.setAppStatus(appsInfo.getAppStatus());
 
             appRealms.add(appRealm);
         }
 
         realm.copyFromRealm(appRealms);
+        realm.commitTransaction();
+    }
+
+    public static void update(AppsInfo appsInfo){
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+
+        AppRealm appRealm = realm.createObject(AppRealm.class);
+        appRealm.setHash(appsInfo.getHash());
+        appRealm.setLastUpdate(appsInfo.getLastUpdate());
+        appRealm.setPackageName(appsInfo.getPackageName());
+        appRealm.setVersionName(appsInfo.getVersionName());
+        appRealm.setVersionCode(appsInfo.getVersionCode());
+        appRealm.setAppStatus(appsInfo.getAppStatus());
+
+        realm.copyToRealmOrUpdate(appRealm);
         realm.commitTransaction();
     }
 
@@ -104,6 +122,21 @@ public class AppRealm extends RealmObject{
         }
 
         return appRealms;
+    }
+
+    public static AppsInfo getAppWithHash(final String hash){
+        Realm realm = Realm.getDefaultInstance();
+        AppRealm appRealm = realm.where(AppRealm.class).equalTo("hash", hash).findFirst();
+
+        AppsInfo appsInfo = new AppsInfo();
+        appsInfo.setAppStatus(appRealm.getAppStatus());
+        appsInfo.setHash(appRealm.getHash());
+        appsInfo.setVersionCode(appRealm.getVersionCode());
+        appsInfo.setVersionName(appRealm.getVersionName());
+        appsInfo.setLastUpdate(appRealm.getLastUpdate());
+        appsInfo.setPackageName(appRealm.getPackageName());
+
+        return appsInfo;
     }
 
     public static void deleteAll(){
