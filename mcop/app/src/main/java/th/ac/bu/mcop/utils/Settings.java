@@ -45,7 +45,7 @@ public class Settings {
         sMacAddress = getMacAddress(context);
         sApplicationPath = context.getCacheDir().toString() + "/BU-Stat-Collector/";
         sHashFilePath = sApplicationPath + "hashData";
-        Log.d(Settings.TAG, "sMacAddress: " + sMacAddress);
+
         if (sMacAddress != null){
             sOutputFileName = sMacAddress.replace(":", "-") + ".stats";
         }

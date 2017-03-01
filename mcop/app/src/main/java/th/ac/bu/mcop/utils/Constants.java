@@ -21,4 +21,9 @@ public class Constants {
     public static final String KEY_CURRENT_DATE = "key_current_date";
     public static final String KEY_FIRST_TIME = "key_first_time";
     public static final String KEY_ACCEPT_TERM = "key_accept_term";
+
+    public final static int APP_STATUS_SAFE = 0;
+    public final static int APP_STATUS_WARNING = 1;
+    public final static int APP_STATUS_SEND_HASH = 2;
+    public final static int APP_STATUS_SEND_APK = 3;
 }

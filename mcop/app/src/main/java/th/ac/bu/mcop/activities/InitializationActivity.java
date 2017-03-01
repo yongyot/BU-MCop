@@ -5,7 +5,9 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,23 +15,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
-import org.json.JSONObject;
-
+import java.io.File;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.models.AppsInfo;
+import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.models.response.ReportHeaderModel;
 import th.ac.bu.mcop.models.response.ReportModel;
+import th.ac.bu.mcop.models.response.ResponseDataModel;
 import th.ac.bu.mcop.models.response.ResponseModel;
 import th.ac.bu.mcop.modules.HashGenManager;
-import th.ac.bu.mcop.modules.VirusTotalResponse;
 import th.ac.bu.mcop.modules.api.ApiManager;
+import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.utils.SharePrefs;
@@ -43,6 +48,10 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
     private ImageView mCircleImageview;
     private Handler mHandler = new Handler();
+    private ArrayList<AppsInfo> mAppInfos;
+
+    private int mAPKCounter = 0;
+    private int mAPKSize = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,10 +59,11 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         setContentView(R.layout.activity_initialization);
 
         mCircleImageview = (ImageView) findViewById(R.id.circle_imageview);
+        mAppInfos = new ArrayList<>();
         animateScal();
 
         Settings.loadSetting(this);
-        initHasFile();
+        insertAppsToRealm();
     }
 
     private void animateScal(){
@@ -78,9 +88,33 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         });
     }
 
-    private void initHasFile(){
+    private void insertAppsToRealm(){
 
-        Log.d(Settings.TAG, "initHasFile: " + Settings.sMacAddress);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<AppRealm> appRealms = AppRealm.getAll();
+                if (appRealms.size() <= 0){
+
+                    ArrayList<ApplicationInfo> applicationInfos = ApplicationInfoManager.getTotalApplicationUsingInternet(InitializationActivity.this);
+                    ArrayList<AppsInfo> appsInfos = new ArrayList<>();
+                    for (ApplicationInfo applicationInfo : applicationInfos){
+
+                        AppsInfo appsInfo = new HashGenManager().getPackageInfo(applicationInfo.packageName, getBaseContext());
+                        appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
+                        appsInfos.add(appsInfo);
+
+                    }
+
+                    AppRealm.save(appsInfos);
+                }
+
+                initHasFile();
+            }
+        }).start();
+    }
+
+    private void initHasFile(){
 
         if(Settings.sMacAddress != null) {
 
@@ -115,44 +149,62 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
     private void getReport(){
 
-        /*ArrayList<String> mockups = new ArrayList<>();
-        mockups.add("d1f3cd0f2b963d8fb9f527d1b3a60063");
-        mockups.add("74c7e83af4ec0d4db0cbc02e4a148d98");
-        mockups.add("e59208c6241720955338a8c0d37b3f15");
-        mockups.add("bc08fb75c7b3a43bb34b909f1c4bf089");
-        mockups.add("c3c7d676ae4edd28939fbd34fa4b7ea6");
-        mockups.add("f138523f869128e962b1481cb861393e");
-        mockups.add("827615eee2af7e3d74222016a21f4734");
-        mockups.add("800bb4c04c8fd90ee4c210d6d2b5625e");
-        mockups.add("ac5af37855bb7c8ca4df95bc5cd81790");
-        mockups.add("eb7753ffe76bdfc6148baaf6e05d3402");
-        mockups.add("0340e7fd93209990d9333543115c6a5e");
-        mockups.add("4942f355ef2abb9f6a190bd655444bfe");
-        mockups.add("4942f355ef2abb9f6a190bd655444bfe");
-        mockups.add("3d01fa94750b079451d9cc93b5fb8636");
-        mockups.add("f56eebe0e88241a288697d5e358a333b");
-        mockups.add("f19414e9e7b65be3a57507823f1027eb");
-        mockups.add("810ed60e1a2e7e8a0e7cbdcdffb30277");
-        mockups.add("f6f00ec8c60ad4535b4a5d9197ad4226");
-        mockups.add("18f91ff9a9f670a1114496c76e364c50");
-        mockups.add("7aa1dad1d2ed99e6ad4470ff8cd0aa2c");
-        mockups.add("cbb9126669405c9f5ad33bb69fb7e8a8");
-        mockups.add("31bb35574ca4e01a5557ec3cbebb5060");
-        mockups.add("39cee2caf7e85b433bce5b56f7209328");
-        mockups.add("dc1ad8a1b869389ef121cfe6ce06b441");
-        mockups.add("8dbd1e2e93aaa25cc10131d86e6c4408");
-        mockups.add("70e1da00449457fdf8dce7b67294bc1b");
-        mockups.add("d185de75d4108759ecc8717361a0dfd1");
-        mockups.add("2d1ed21673068cc953c2416832e24ed6");*/
-
         ApiManager.getInstance().getReport(new Callback<ResponseModel<ReportHeaderModel<ReportModel>>>() {
             @Override
             public void onResponse(Call<ResponseModel<ReportHeaderModel<ReportModel>>> call, Response<ResponseModel<ReportHeaderModel<ReportModel>>> response) {
                 if (response != null){
-                    //ResponseModel<ReportHeaderModel<ReportModel>> result = response.body();
-                }
+                    ResponseModel<ReportHeaderModel<ReportModel>> reportModel = response.body();
 
-                startHomeActivity();
+                    ArrayList<ReportModel> sendApkApps = new ArrayList<>();
+                    ArrayList<ReportModel> safeApps = new ArrayList<>();
+                    ArrayList<ReportModel> warningApps = new ArrayList<>();
+
+                    Log.d(Settings.TAG, "getReport reportModel isResult: " + reportModel.isResult());
+                    Log.d(Settings.TAG, "getReport reportModel getError: " + reportModel.getError());
+                    Log.d(Settings.TAG, "getReport reportModel getData : " + reportModel.getResponse().getData());
+
+                    if (reportModel.getResponse().getData() != null || reportModel.getResponse().getData().size() > 0){
+                        // size = 0 because safe all
+                        if (reportModel.getResponse().getData().size() > 0){
+                            for (ReportModel model : reportModel.getResponse().getData()){
+                                if (model.getResponseCode() == 0){
+                                    sendApkApps.add(model);
+
+                                    //update status app status send apk
+                                    AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+                                    appInfo.setAppStatus(Constants.APP_STATUS_SEND_APK);
+                                    AppRealm.update(appInfo);
+
+                                } else if (model.getDetectionPercentage() > 50){
+                                    warningApps.add(model);
+
+                                    // update status app warning
+                                    AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+                                    appInfo.setAppStatus(Constants.APP_STATUS_WARNING);
+                                    AppRealm.update(appInfo);
+
+                                } else {
+                                    safeApps.add(model);
+                                }
+                            }
+                        }
+                    }
+
+                    mAPKSize = sendApkApps.size();
+
+                    Log.d(Settings.TAG, "sendApkApps size : " + sendApkApps.size());
+                    Log.d(Settings.TAG, "safeApps size    : " + safeApps.size());
+                    Log.d(Settings.TAG, "warningApps size : " + warningApps.size());
+
+                    // upload apk for check again
+                    if (sendApkApps.size() > 0){
+                        for (ReportModel apk : safeApps){
+                            sendApk(apk);
+                        }
+                    } else {
+                        startHomeActivity();
+                    }
+                }
             }
 
             @Override
@@ -160,6 +212,83 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                 startHomeActivity();
             }
         }, getAllHashReport());
+    }
+
+    private void sendApk(ReportModel sendApkApp){
+        Log.d(Settings.TAG, "sendApk");
+
+        mAPKCounter++;
+
+        String packageName = getPankageNameWithHash(sendApkApp.getResource());
+        Log.d(Settings.TAG, "packageName: " + packageName);
+        PackageManager packageManager = getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
+            String pathString = packageInfo.applicationInfo.sourceDir;
+            File file = new File(pathString);
+
+            Log.d(Settings.TAG, "file exists: " + file.exists());
+
+            // create RequestBody instance from file
+            Uri uri = Uri.fromFile(file);
+            Log.d(Settings.TAG, "uri: " + uri);
+
+            final RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+            ApiManager.getInstance().uploadAPK(new Callback<ResponseModel<ResponseDataModel<ReportModel>>>() {
+                @Override
+                public void onResponse(Call<ResponseModel<ResponseDataModel<ReportModel>>> call, Response<ResponseModel<ResponseDataModel<ReportModel>>> response) {
+                    Log.d(Settings.TAG, "sendApk onResponse");
+
+                    ResponseModel<ResponseDataModel<ReportModel>> reportModel = response.body();
+
+                    if (reportModel != null){
+
+                        Log.d(Settings.TAG, "sendApk isResult: " + reportModel.isResult());
+                        Log.d(Settings.TAG, "sendApk getError: " + reportModel.getError());
+
+                        Log.d(Settings.TAG, "sendApk data: " + reportModel.getResponse().getData());
+
+                        if (reportModel.getResponse().getData() != null){
+
+                            if (reportModel.getResponse().getData().getResponseCode() == 0){
+                                // update status app warning
+                                AppsInfo appInfo = AppRealm.getAppWithHash(reportModel.getResponse().getData().getResource());
+                                appInfo.setAppStatus(Constants.APP_STATUS_SEND_HASH);
+                                AppRealm.update(appInfo);
+                            }
+                        }
+                    }
+
+                    if (mAPKCounter > mAPKSize){
+                        startHomeActivity();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseModel<ResponseDataModel<ReportModel>>> call, Throwable t) {
+                    Log.d(Settings.TAG, "sendApk onFailure: " + t.getMessage());
+
+                    if (mAPKCounter > mAPKSize){
+                        startHomeActivity();
+                    }
+                }
+            }, requestBody);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getPankageNameWithHash(String hash){
+
+        for (AppsInfo appInfo : mAppInfos){
+            if (appInfo.getHash().equals(hash)){
+                return appInfo.getPackageName();
+            }
+        }
+
+        return "";
     }
 
     public String getAllHashReport() {
@@ -170,14 +299,19 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         String hashs = "";
 
         for (ApplicationInfo appInfo : apps) {
+
             if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0 && !appInfo.packageName.equals(selfApk)) {
 
                 HashGenManager hashGen = new HashGenManager();
                 AppsInfo app = hashGen.getPackageInfo(appInfo.packageName, getBaseContext());
                 hashs += app.getHash() + ",";
+
+                mAppInfos.add(app);
+
+                //Log.d(Settings.TAG, app.getPackageName() +  " hash: " + app.getHash());
             }
         }
-        Log.d(Settings.TAG, "hash: " + hashs);
+        //Log.d(Settings.TAG, "hash: " + hashs);
         return hashs;
     }
 

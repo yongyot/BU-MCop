@@ -19,20 +19,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.net.NetworkInterface;
 import java.util.ArrayList;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.broadcastreceiver.IntenetReceiver;
-import th.ac.bu.mcop.models.AppsInfo;
-import th.ac.bu.mcop.models.realm.AppRealm;
-import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
-import th.ac.bu.mcop.utils.SharePrefs;
-import th.ac.bu.mcop.widgets.NotificationView;
 
 /**
  * Created by jeeraphan on 12/10/16.
@@ -72,7 +66,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         mHandler = new Handler();
         mIntenetReceiver = new IntenetReceiver();
-        insertAppsToRealm();
     }
 
     @Override
@@ -89,9 +82,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
+    protected void onStop() {
+        super.onStop();
         try {
             unregisterReceiver(mMessageRecevier);
             unregisterReceiver(mIntenetReceiver);
@@ -169,10 +161,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mMessageTextView.setText("Please turn on usage access first.");
             mMessageTextView.setTextColor(Color.RED);
 
-            /*new AlertDialog
+            new AlertDialog
                     .Builder(this)
-            .setTitle("Please turn on usage access first.")
-            .setMessage("")
+            .setTitle(getString(R.string.app_name))
+            .setMessage("Please turn on usage access first.")
             .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -185,7 +177,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                 }
-            }).show();*/
+            }).show();
         }
 
     }
@@ -207,22 +199,5 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         return false;
-    }
-
-    private void insertAppsToRealm(){
-
-        ArrayList<AppRealm> appRealms = AppRealm.getAll();
-        if (appRealms.size() <= 0){
-
-            ArrayList<ApplicationInfo> applicationInfos = ApplicationInfoManager.getTotalApplicationUsingInternet(this);
-            ArrayList<AppsInfo> appsInfos = new ArrayList<>();
-            for (ApplicationInfo applicationInfo : applicationInfos){
-
-                AppsInfo appsInfo = new HashGenManager().getPackageInfo(applicationInfo.packageName, getBaseContext());
-                appsInfos.add(appsInfo);
-            }
-
-            AppRealm.save(appsInfos);
-        }
     }
 }
