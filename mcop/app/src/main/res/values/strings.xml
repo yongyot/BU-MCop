@@ -42,4 +42,12 @@ The use of this application is subject to the following terms of use:
     <string name="label_ok">Ok</string>
     <string name="label_cancel">Cancel</string>
 
+
+    <string name="login_user">User</string>
+    <string name="login_user_value"></string>
+    <string name="login_password">Password</string>
+    <string name="login_password_value"></string>
+    <string name="login_cancel">Cancel</string>
+    <string name="login_login">Login</string>
+
 </resources>

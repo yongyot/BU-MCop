@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mFileSizeTextView;
     private TextView mLastTimeTextView;
     private TextView mMacAddressTextView;
+    public static TextView sMessageTextView;
 
     private boolean isAppPaused = false;
     private static Context mContext;
