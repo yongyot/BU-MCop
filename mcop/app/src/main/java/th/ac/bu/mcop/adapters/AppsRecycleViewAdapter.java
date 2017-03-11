@@ -14,6 +14,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import th.ac.bu.mcop.R;
+import th.ac.bu.mcop.activities.InitializationActivity;
+import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Settings;
 
 /**
@@ -26,12 +29,14 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
         void onItemClickListener(int position);
     }
 
-    private ArrayList<ApplicationInfo> mApplicationInfos;
+    //private ArrayList<ApplicationInfo> mApplicationInfos;
+    private ArrayList<AppRealm> mApps;
+
     private Context mContext;
     private OnAppListener mOnAppListener;
 
-    public AppsRecycleViewAdapter(Context context, ArrayList<ApplicationInfo> applicationInfos){
-        mApplicationInfos = applicationInfos;
+    public AppsRecycleViewAdapter(Context context, ArrayList<AppRealm> apps){
+        mApps = apps;
         mContext = context;
     }
 
@@ -45,9 +50,28 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.appNameTextView.setText(mApplicationInfos.get(position).loadLabel(mContext.getPackageManager()));
+        /*holder.appNameTextView.setText(mApplicationInfos.get(position).loadLabel(mContext.getPackageManager()));
         holder.packageNameTextView.setText(mApplicationInfos.get(position).packageName);
         holder.iconImageView.setImageDrawable(mApplicationInfos.get(position).loadIcon(mContext.getPackageManager()));
+        holder.containerAppsRelative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnAppListener != null){
+                    mOnAppListener.onItemClickListener(position);
+                }
+            }
+        });*/
+
+        ArrayList<ApplicationInfo> applicationInfos = ApplicationInfoManager.getTotalApplicationUsingInternet(mContext);
+        for (ApplicationInfo appInfo : applicationInfos){
+            if (appInfo.packageName.equals(mApps.get(position).getPackageName())){
+                holder.iconImageView.setImageDrawable(appInfo.loadIcon(mContext.getPackageManager()));
+                break;
+            }
+        }
+
+        holder.appNameTextView.setText(mApps.get(position).getName());
+        holder.packageNameTextView.setText(mApps.get(position).getPackageName());
         holder.containerAppsRelative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,8 +84,8 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
 
     @Override
     public int getItemCount() {
-        if (mApplicationInfos != null){
-            return mApplicationInfos.size();
+        if (mApps != null){
+            return mApps.size();
         }
         return 0;
     }

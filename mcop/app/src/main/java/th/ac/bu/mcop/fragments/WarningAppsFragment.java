@@ -1,11 +1,11 @@
 package th.ac.bu.mcop.fragments;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +15,22 @@ import java.util.ArrayList;
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.AppInfoActivity;
 import th.ac.bu.mcop.adapters.AppsRecycleViewAdapter;
+import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.utils.Settings;
 
 /**
  * Created by jeeraphan on 12/11/16.
  */
 
-public class AppsFragment extends Fragment implements AppsRecycleViewAdapter.OnAppListener{
-
-    private static ArrayList<ApplicationInfo> mApplicationInfos;
+public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdapter.OnAppListener{
+    private static ArrayList<AppRealm> mApps;
 
     private RecyclerView mRecyclerView;
     private AppsRecycleViewAdapter mAppsRecycleViewAdapter;
 
-    public static AppsFragment newInstance(ArrayList<ApplicationInfo> applicationInfos) {
-        AppsFragment appsFragment = new AppsFragment();
-        mApplicationInfos = applicationInfos;
+    public static WarningAppsFragment newInstance(ArrayList<AppRealm> apps){
+        WarningAppsFragment appsFragment = new WarningAppsFragment();
+        mApps = apps;
         return appsFragment;
     }
 
@@ -37,12 +38,11 @@ public class AppsFragment extends Fragment implements AppsRecycleViewAdapter.OnA
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_apps, container, false);
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.app_recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mAppsRecycleViewAdapter = new AppsRecycleViewAdapter(container.getContext(), mApplicationInfos);
+        mAppsRecycleViewAdapter = new AppsRecycleViewAdapter(container.getContext(), mApps);
         mAppsRecycleViewAdapter.setOnAppListener(this);
         mRecyclerView.setAdapter(mAppsRecycleViewAdapter);
 
@@ -56,7 +56,7 @@ public class AppsFragment extends Fragment implements AppsRecycleViewAdapter.OnA
     @Override
     public void onItemClickListener(int position) {
         Intent intent = new Intent(getActivity(), AppInfoActivity.class);
-        intent.putExtra("put_extra_package_name", mApplicationInfos.get(position).packageName);
+        intent.putExtra("put_extra_package_name", mApps.get(position).getPackageName());
         startActivity(intent);
     }
 }

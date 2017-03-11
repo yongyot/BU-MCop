@@ -7,11 +7,20 @@ package th.ac.bu.mcop.models;
 public class AppsInfo {
 
     private String hash;
+    private String name;
     private String packageName;
     private String versionName;
     private String versionCode;
     private long lastUpdate;
     private int appStatus;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getAppStatus() {
         return appStatus;

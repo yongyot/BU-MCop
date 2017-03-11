@@ -4,10 +4,14 @@ import android.content.pm.ApplicationInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 
-import th.ac.bu.mcop.fragments.AppsFragment;
+import th.ac.bu.mcop.fragments.SalfAppsFragment;
+import th.ac.bu.mcop.fragments.WarningAppsFragment;
+import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.utils.Settings;
 
 /**
  * Created by jeeraphan on 12/11/16.
@@ -17,10 +21,18 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
 
     private final int NUM_ITEMS = 2;
     private ArrayList<ApplicationInfo> mApplicationInfos;
+    private ArrayList<AppRealm> mSafeApps;
+    private ArrayList<AppRealm> mWarningApps;
 
     public AppsViewPagerAdapter(FragmentManager fragmentManager, ArrayList<ApplicationInfo> applicationInfos) {
         super(fragmentManager);
         mApplicationInfos = applicationInfos;
+    }
+
+    public AppsViewPagerAdapter(FragmentManager fragmentManager, ArrayList<AppRealm> safeApps, ArrayList<AppRealm> warningApps){
+        super(fragmentManager);
+        mSafeApps = safeApps;
+        mWarningApps = warningApps;
     }
 
     @Override
@@ -28,9 +40,11 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return AppsFragment.newInstance(mApplicationInfos);
+                Log.d(Settings.TAG, "getItem 0");
+                return SalfAppsFragment.newInstance(mSafeApps);
             case 1:
-                return AppsFragment.newInstance(mApplicationInfos);
+                Log.d(Settings.TAG, "getItem 1");
+                return WarningAppsFragment.newInstance(mWarningApps);
             default:
                 return null;
         }

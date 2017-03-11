@@ -102,6 +102,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
                         AppsInfo appsInfo = new HashGenManager().getPackageInfo(applicationInfo.packageName, getBaseContext());
                         appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
+                        appsInfo.setName(applicationInfo.loadLabel(getPackageManager()).toString());
                         appsInfos.add(appsInfo);
 
                     }

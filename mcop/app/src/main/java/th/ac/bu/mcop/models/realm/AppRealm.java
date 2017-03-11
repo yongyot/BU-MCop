@@ -18,11 +18,20 @@ import th.ac.bu.mcop.utils.Constants;
 public class AppRealm extends RealmObject{
 
     private String hash;
+    private String name;
     private String packageName;
     private String versionName;
     private String versionCode;
     private long lastUpdate;
     private int appStatus;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getAppStatus() {
         return appStatus;
@@ -87,6 +96,7 @@ public class AppRealm extends RealmObject{
             appRealm.setVersionName(appsInfo.getVersionName());
             appRealm.setVersionCode(appsInfo.getVersionCode());
             appRealm.setAppStatus(appsInfo.getAppStatus());
+            appRealm.setName(appsInfo.getName());
 
             appRealms.add(appRealm);
         }
@@ -106,6 +116,7 @@ public class AppRealm extends RealmObject{
         appRealm.setVersionName(appsInfo.getVersionName());
         appRealm.setVersionCode(appsInfo.getVersionCode());
         appRealm.setAppStatus(appsInfo.getAppStatus());
+        appRealm.setName(appsInfo.getName());
 
         realm.copyToRealmOrUpdate(appRealm);
         realm.commitTransaction();
@@ -137,14 +148,11 @@ public class AppRealm extends RealmObject{
         appsInfo.setVersionName(appRealm.getVersionName());
         appsInfo.setLastUpdate(appRealm.getLastUpdate());
         appsInfo.setPackageName(appRealm.getPackageName());
+        appsInfo.setAppStatus(appRealm.getAppStatus());
+        appsInfo.setName(appRealm.getName());
 
         return appsInfo;
     }
-
-//    public final static int APP_STATUS_SAFE = 0;
-//    public final static int APP_STATUS_WARNING = 1;
-//    public final static int APP_STATUS_SEND_HASH = 2;
-//    public final static int APP_STATUS_SEND_APK = 3;
 
     public static ArrayList<AppRealm> getSafeApps(){
 
