@@ -4,12 +4,14 @@ import th.ac.bu.mcop.android.monitor.core.AndroidEvent;
 import th.ac.bu.mcop.android.monitor.core.AndroidWatchdog;
 import th.ac.bu.mcop.android.monitor.observer.AndroidWatcher;
 import th.ac.bu.mcop.mobile.monitor.core.Watcher;
+import th.ac.bu.mcop.utils.Settings;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 /**
  * This Android service is spawned when an {@link AndroidWatcher} want to
@@ -51,6 +53,7 @@ public final class AndroidWatchdogService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		//setForeground(true);
+		Log.d(Settings.TAG, "AndroidWatchdogService onCreate");
 	}
 	
 	@Override

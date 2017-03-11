@@ -10,7 +10,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
 
 import th.ac.bu.mcop.R;
-import th.ac.bu.mcop.activities.MainActivity;
+import th.ac.bu.mcop.activities.HomeActivity;
 
 /**
  * Created by jeeraphan on 11/14/16.
@@ -31,9 +31,9 @@ public class NotificationView {
         notificationBuilder.setPriority(Notification.PRIORITY_LOW);
         notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, HomeActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addParentStack(HomeActivity.class);
         stackBuilder.addNextIntent(intent);
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationBuilder.setContentIntent(pendingIntent);

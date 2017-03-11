@@ -1,5 +1,6 @@
 package th.ac.bu.mcop.android.monitor;
 
+import io.realm.Realm;
 import th.ac.bu.mcop.android.monitor.core.AndroidEvent;
 import th.ac.bu.mcop.android.monitor.core.AndroidWatchdog;
 import th.ac.bu.mcop.android.monitor.observer.AndroidWatcher;
@@ -7,12 +8,14 @@ import th.ac.bu.mcop.http.core.Logger;
 import th.ac.bu.mcop.mobile.monitor.core.Event;
 import th.ac.bu.mcop.mobile.monitor.core.Observer;
 import th.ac.bu.mcop.mobile.monitor.core.Watchdog;
+import th.ac.bu.mcop.utils.Settings;
 
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 /**
  * <p>This class implements {@link BroadcastReceiver} to receive broadcast events
@@ -50,6 +53,8 @@ public abstract class AndroidMonitorApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Log.d(Settings.TAG, "onCreate AndroidMonitorApplication");
+		Realm.init(this);
 		watchdog = new AndroidWatchdog();
 		IntentFilter filter = new IntentFilter();
 		initialize(watchdog, filter);

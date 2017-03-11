@@ -51,6 +51,7 @@
                 android:src="@drawable/circle_green"
                 />
             <TextView
+                android:id="@+id/status_apps_in_device"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_device_safe"
@@ -133,6 +134,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/test_sms_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="TEST TEST"
         />
 
 </RelativeLayout>

@@ -2,12 +2,13 @@ package th.ac.bu.mcop.android.monitor.observer;
 
 import java.util.Date;
 
-import th.ac.bu.mcop.activities.MainActivity;
+import th.ac.bu.mcop.activities.HomeActivity;
 import th.ac.bu.mcop.android.monitor.core.AndroidEvent;
 import th.ac.bu.mcop.http.core.Logger;
 import th.ac.bu.mcop.mobile.monitor.core.Event;
 import th.ac.bu.mcop.mobile.monitor.core.Reporter;
 import th.ac.bu.mcop.mobile.monitor.report.SMS;
+import th.ac.bu.mcop.utils.Settings;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -51,6 +52,7 @@ public final class AndroidSmsWatcher extends AndroidWatcher {
 		// outgoing SMS events, we should monitor the sms inbox by registering
 		// a content observer to the ContentResolver.
 		registerContentObserver(((AndroidEvent) dc));
+		Log.d(Settings.TAG, "AndroidSmsWatcher start");
 	}
 
 	@Override
@@ -161,9 +163,10 @@ public final class AndroidSmsWatcher extends AndroidWatcher {
 					"\nseen : " + cursor.getString(seen) +
 					"\n";
 
+			Log.d(Settings.TAG, "SMS: " + str);
 
+			HomeActivity.mTestSMSTextView.append(str);
 
-			MainActivity.sMessageTextView.append(str);
 			Log.d("Lattapol", str);
 
 			String from = "0";

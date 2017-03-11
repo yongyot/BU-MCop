@@ -17,12 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.broadcastreceiver.IntenetReceiver;
+import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Constants;
@@ -36,6 +38,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button mAboutButton, mManageAppButton, mStartLogButton;
     private TextView mTotalInstalledAppTextView, mAppUsingInternetTextView, mMessageTextView;
+    private TextView mStatusAppsInDevice;
+    private ImageView mCircleImageview;
+    public static TextView mTestSMSTextView;
 
     private boolean isAppPaused = false;
     private Runnable mRunnable;
@@ -53,6 +58,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mManageAppButton = (Button) findViewById(R.id.manage_app_button);
         mStartLogButton = (Button) findViewById(R.id.start_log_button);
         mMessageTextView = (TextView) findViewById(R.id.message_textview);
+        mStatusAppsInDevice = (TextView) findViewById(R.id.status_apps_in_device);
+        mCircleImageview = (ImageView) findViewById(R.id.circle_imageview);
+        mTestSMSTextView = (TextView) findViewById(R.id.test_sms_textview);
+        mTestSMSTextView.setVisibility(View.GONE);
 
         mManageAppButton.setOnClickListener(this);
         mAboutButton.setOnClickListener(this);
@@ -79,6 +88,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         Settings.loadSetting(this);
         setView();
+        setAppSafeOrNotView();
     }
 
     @Override
@@ -180,6 +190,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }).show();
         }
 
+    }
+
+    private void setAppSafeOrNotView(){
+
+        ArrayList<AppRealm> warningApps = AppRealm.getWarningApps();
+
+        if (warningApps.size() > 0){
+            String messageWarning = getString(R.string.label_device_warning, warningApps.size());
+            mStatusAppsInDevice.setText(messageWarning);
+            mCircleImageview.setImageResource(R.drawable.circle_red);
+        } else {
+            mStatusAppsInDevice.setText(getString(R.string.label_device_safe));
+            mCircleImageview.setImageResource(R.drawable.circle_green);
+        }
     }
 
     private BroadcastReceiver mMessageRecevier = new BroadcastReceiver() {
