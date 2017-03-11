@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.annotations.PrimaryKey;
 import th.ac.bu.mcop.models.AppsInfo;
+import th.ac.bu.mcop.utils.Constants;
 
 /**
  * Created by jeeraphan on 12/23/16.
@@ -137,6 +139,71 @@ public class AppRealm extends RealmObject{
         appsInfo.setPackageName(appRealm.getPackageName());
 
         return appsInfo;
+    }
+
+//    public final static int APP_STATUS_SAFE = 0;
+//    public final static int APP_STATUS_WARNING = 1;
+//    public final static int APP_STATUS_SEND_HASH = 2;
+//    public final static int APP_STATUS_SEND_APK = 3;
+
+    public static ArrayList<AppRealm> getSafeApps(){
+
+        ArrayList<AppRealm> appRealms = new ArrayList<>();
+
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<AppRealm> query = realm.where(AppRealm.class);
+        query.equalTo("appStatus", Constants.APP_STATUS_SAFE);
+
+        RealmResults<AppRealm> result = query.findAll();
+        appRealms.addAll(result);
+
+        return appRealms;
+    }
+
+    public static ArrayList<AppRealm> getWarningApps(){
+
+        ArrayList<AppRealm> appRealms = new ArrayList<>();
+
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<AppRealm> query = realm.where(AppRealm.class);
+        query.equalTo("appStatus", Constants.APP_STATUS_WARNING);
+
+        RealmResults<AppRealm> result = query.findAll();
+        appRealms.addAll(result);
+
+        return appRealms;
+    }
+
+    public static ArrayList<AppRealm> getSendHashApps(){
+
+        ArrayList<AppRealm> appRealms = new ArrayList<>();
+
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<AppRealm> query = realm.where(AppRealm.class);
+        query.equalTo("appStatus", Constants.APP_STATUS_SEND_HASH);
+
+        RealmResults<AppRealm> result = query.findAll();
+        appRealms.addAll(result);
+
+        return appRealms;
+    }
+
+    public static ArrayList<AppRealm> getSendApkApps(){
+
+        ArrayList<AppRealm> appRealms = new ArrayList<>();
+
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<AppRealm> query = realm.where(AppRealm.class);
+        query.equalTo("appStatus", Constants.APP_STATUS_SEND_APK);
+
+        RealmResults<AppRealm> result = query.findAll();
+        appRealms.addAll(result);
+
+        return appRealms;
     }
 
     public static void deleteAll(){
