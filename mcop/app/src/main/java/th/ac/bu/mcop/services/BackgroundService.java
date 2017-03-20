@@ -55,10 +55,6 @@ import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.utils.SharePrefs;
 
-/**
- * Created by jeeraphan on 11/14/16.
- */
-
 public class BackgroundService extends Service {
 
     public static boolean sIsServiceRunning;

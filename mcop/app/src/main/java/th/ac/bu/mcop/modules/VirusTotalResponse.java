@@ -1,9 +1,5 @@
 package th.ac.bu.mcop.modules;
 
-/**
- * Created by jeeraphan on 12/12/16.
- */
-
 public class VirusTotalResponse {
     int response_code;
     String resource;

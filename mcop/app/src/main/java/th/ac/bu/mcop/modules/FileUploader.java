@@ -17,10 +17,6 @@ import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.utils.SharePrefs;
 
-/**
- * Created by jeeraphan on 11/16/16.
- */
-
 public class FileUploader extends AsyncTask<String, Void, String> {
 
     private Context mContext;

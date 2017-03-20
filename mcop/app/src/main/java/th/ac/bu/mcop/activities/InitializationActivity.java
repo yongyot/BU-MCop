@@ -40,10 +40,6 @@ import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.utils.SharePrefs;
 import th.ac.bu.mcop.widgets.NotificationView;
 
-/**
- * Created by jeeraphan on 12/10/16.
- */
-
 public class InitializationActivity extends AppCompatActivity implements HashGenManager.OnHashGenListener{
 
     private ImageView mCircleImageview;

@@ -18,10 +18,6 @@ import java.util.zip.ZipOutputStream;
 import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.widgets.NotificationView;
 
-/**
- * Created by jeeraphan on 11/14/16.
- */
-
 public class StatsFileManager {
 
     private Context mContext;

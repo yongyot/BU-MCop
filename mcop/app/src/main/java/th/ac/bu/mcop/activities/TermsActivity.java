@@ -16,10 +16,6 @@ import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.utils.SharePrefs;
 
-/**
- * Created by jeeraphan on 12/10/16.
- */
-
 public class TermsActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private Button mStartMonitoringButton;

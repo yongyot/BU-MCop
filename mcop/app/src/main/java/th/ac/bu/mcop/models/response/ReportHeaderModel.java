@@ -2,10 +2,6 @@ package th.ac.bu.mcop.models.response;
 
 import java.util.ArrayList;
 
-/**
- * Created by jeeraphan on 12/26/16.
- */
-
 public class ReportHeaderModel<T extends Object>{
 
     boolean result;

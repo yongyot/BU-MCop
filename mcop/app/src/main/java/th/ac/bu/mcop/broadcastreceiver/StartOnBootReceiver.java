@@ -6,10 +6,6 @@ import android.content.Intent;
 
 import th.ac.bu.mcop.services.BackgroundService;
 
-/**
- * Created by jeeraphan on 11/14/16.
- */
-
 public class StartOnBootReceiver extends BroadcastReceiver {
 
     @Override

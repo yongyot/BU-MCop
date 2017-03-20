@@ -9,10 +9,6 @@ import android.net.NetworkInfo;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 11/14/16.
- */
-
 public class IntenetReceiver extends BroadcastReceiver {
 
     @Override

@@ -1,9 +1,5 @@
 package th.ac.bu.mcop.models;
 
-/**
- * Created by jeeraphan on 11/15/16.
- */
-
 public class Stats {
 
     private int state;

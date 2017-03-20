@@ -1,9 +1,5 @@
 package th.ac.bu.mcop.utils;
 
-/**
- * Created by jeeraphan on 11/14/16.
- */
-
 public class Constants {
 
     public static final int NETWORK_TYPE_NO_NETWORK = 0;

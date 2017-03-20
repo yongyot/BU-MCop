@@ -127,6 +127,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_above="@+id/message_textview"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/message_textview"
@@ -134,6 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         />
 
     <TextView
@@ -142,6 +144,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="TEST TEST"
+        android:visibility="gone"
         />
 
 </RelativeLayout>

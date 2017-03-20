@@ -58,6 +58,7 @@
             android:layout_centerInParent="true"
             android:layout_above="@+id/analysing_textview"
             android:text="@string/label_get_hashcode_report"
+            android:visibility="gone"
             />
 
         <TextView

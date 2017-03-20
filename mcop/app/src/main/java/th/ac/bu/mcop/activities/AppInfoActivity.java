@@ -22,9 +22,6 @@ import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 12/11/16.
- */
 
 public class AppInfoActivity extends AppCompatActivity implements View.OnClickListener{
 

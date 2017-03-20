@@ -47,9 +47,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_desc_textview"
-        android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        android:text="@string/label_about_desc"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/line_margin"
         />
 
     <TextView
@@ -62,6 +63,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:textSize="@dimen/subtitle_text_size"
+
         />
 
     <TextView
@@ -72,6 +74,7 @@
         android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
         />
 
     <TextView
@@ -84,6 +87,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:textSize="@dimen/subtitle_text_size"
+        android:visibility="gone"
         />
 
     <TextView
@@ -94,6 +98,7 @@
         android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
         />
 
     <TextView
@@ -106,6 +111,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:textSize="@dimen/subtitle_text_size"
+        android:visibility="gone"
         />
 
     <TextView
@@ -116,14 +122,40 @@
         android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:visibility="gone"
         />
+
+    <LinearLayout
+        android:id="@+id/logo_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/detail_rate_textview"
+        android:gravity="center"
+        android:padding="@dimen/activity_horizontal_margin"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/rate_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_rate"
-        android:layout_below="@+id/detail_rate_textview"
+        android:layout_below="@+id/logo_linear"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
         />

@@ -12,10 +12,6 @@ import android.support.v7.app.NotificationCompat;
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.HomeActivity;
 
-/**
- * Created by jeeraphan on 11/14/16.
- */
-
 public class NotificationView {
 
     private static int counter = 0;

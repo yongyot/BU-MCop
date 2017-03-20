@@ -12,10 +12,11 @@
     <string name="label_apps">Apps</string>
     <string name="label_apps_info">App Info</string>
     <string name="label_rate">Rate</string>
-    <string name="label_manageapp">Manage App</string>
+    <string name="label_manageapp">Application List</string>
     <string name="label_ignore">Ignore</string>
     <string name="label_uninstall">Uninstall</string>
     <string name="label_version">Version</string>
+    <string name="label_about_desc">mCOP by NBTC เตือนภัยแอปพลิเคชั่นอันตรายบนโทรศัพท์เคลื่อนที่</string>
     <string name="label_terms_detail">Terms and Conditions
 
 Welcome to Mcop. Before using this application, you must agree to comply with and be bound by the following terms and conditions of use, which together with our privacy policy govern the relationship of Mcop with you in relation to this application. If you disagree with any part of these terms and conditions, please do not use our application.

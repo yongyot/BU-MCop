@@ -18,10 +18,6 @@ import th.ac.bu.mcop.adapters.AppsRecycleViewAdapter;
 import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 12/11/16.
- */
-
 public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdapter.OnAppListener{
     private static ArrayList<AppRealm> mApps;
 

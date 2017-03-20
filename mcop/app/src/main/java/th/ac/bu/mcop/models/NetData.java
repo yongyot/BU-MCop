@@ -5,10 +5,6 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-/**
- * Created by jeeraphan on 11/22/16.
- */
-
 public class NetData {
 
     // Define Constant value

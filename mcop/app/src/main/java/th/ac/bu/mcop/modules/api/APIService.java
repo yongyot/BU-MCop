@@ -14,11 +14,6 @@ import th.ac.bu.mcop.models.response.ResponseDataModel;
 import th.ac.bu.mcop.models.response.ResponseModel;
 import th.ac.bu.mcop.models.response.ResponseUpload;
 
-
-/**
- * Created by jeeraphan on 12/12/16.
- */
-
 public interface APIService {
 
     @GET("api/virustotal.php/hash")

@@ -9,10 +9,6 @@ import android.widget.Button;
 
 import th.ac.bu.mcop.R;
 
-/**
- * Created by jeeraphan on 12/10/16.
- */
-
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button mRateButton;

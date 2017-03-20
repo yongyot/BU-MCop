@@ -21,10 +21,6 @@ import java.util.TimeZone;
 import th.ac.bu.mcop.models.AppsInfo;
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 11/15/16.
- */
-
 public class HashGenManager {
 
 

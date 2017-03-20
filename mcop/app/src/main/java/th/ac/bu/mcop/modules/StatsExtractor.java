@@ -18,10 +18,6 @@ import th.ac.bu.mcop.models.realm.StatsRealm;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 11/22/16.
- */
-
 public class StatsExtractor {
 
     public static final String DATA_INTERFACE = "rmnet0";

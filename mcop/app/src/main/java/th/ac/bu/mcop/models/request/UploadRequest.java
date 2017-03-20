@@ -1,9 +1,5 @@
 package th.ac.bu.mcop.models.request;
 
-/**
- * Created by jeeraphan on 1/26/17.
- */
-
 public class UploadRequest {
 
     private String deviceMac;

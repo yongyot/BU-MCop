@@ -30,10 +30,6 @@ import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 12/10/16.
- */
-
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button mAboutButton, mManageAppButton, mStartLogButton;
@@ -61,7 +57,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mStatusAppsInDevice = (TextView) findViewById(R.id.status_apps_in_device);
         mCircleImageview = (ImageView) findViewById(R.id.circle_imageview);
         mTestSMSTextView = (TextView) findViewById(R.id.test_sms_textview);
-        //mTestSMSTextView.setVisibility(View.GONE);
 
         mManageAppButton.setOnClickListener(this);
         mAboutButton.setOnClickListener(this);
@@ -87,13 +82,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         isAppPaused = false;
         super.onStart();
         Settings.loadSetting(this);
-        setView();
         setAppSafeOrNotView();
+
+        startCollection();
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
         try {
             unregisterReceiver(mMessageRecevier);
             unregisterReceiver(mIntenetReceiver);
@@ -102,6 +97,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         isAppPaused = true;
+        super.onStop();
     }
 
     /***********************************************
@@ -120,7 +116,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, ApplistActivity.class);
             startActivity(intent);
 
-        } else if (view.getId() == R.id.start_log_button){
+        }/* else if (view.getId() == R.id.start_log_button){
 
             if(Settings.isUsageAccessGranted(this)){
                 if(!isServiceRunning(BackgroundService.class)) { //service is stopped. Start it.
@@ -144,52 +140,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 startActivity(intent);
             }
-
-            setView();
-        }
-    }
-
-    private void setView(){
-
-        if(Settings.isUsageAccessGranted(this)){
-
-            if(isServiceRunning(BackgroundService.class)){
-
-                mStartLogButton.setText("Stop Collecting Data");
-                mMessageTextView.setText("Collecting data....");
-                mMessageTextView.setTextColor(Color.GREEN);
-
-            } else {
-
-                mStartLogButton.setText("Start Collecting Data");
-                mMessageTextView.setText("Ready for Collection.");
-                mMessageTextView.setTextColor(Color.parseColor("#FFA500")); //orange color
-            }
-        } else {
-
-            mStartLogButton.setText("Turn on");
-            mMessageTextView.setText("Please turn on usage access first.");
-            mMessageTextView.setTextColor(Color.RED);
-
-            new AlertDialog
-                    .Builder(this)
-            .setTitle(getString(R.string.app_name))
-            .setMessage("Please turn on usage access first.")
-            .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                    startActivity(intent);
-                }
-            })
-            .setNegativeButton(getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            }).show();
-        }
-
+        }*/
     }
 
     private void setAppSafeOrNotView(){
@@ -210,10 +161,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onReceive(Context context, Intent intent) {
             if(!isAppPaused) {
-                setView();
+
             }
         }
     };
+
+    private void startCollection(){
+
+        if(!isServiceRunning(BackgroundService.class)) { //service is stopped. Start it.
+            Intent intent = new Intent(this, BackgroundService.class);
+            startService(intent);
+        }
+    }
 
     private boolean isServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);

@@ -1,9 +1,5 @@
 package th.ac.bu.mcop.models.response;
 
-/**
- * Created by jeeraphan on 2/12/17.
- */
-
 public class ResponseUpload {
     private int IsCompleted;
     private String Message;

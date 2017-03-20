@@ -17,10 +17,6 @@ import th.ac.bu.mcop.models.response.ResponseDataModel;
 import th.ac.bu.mcop.models.response.ResponseModel;
 import th.ac.bu.mcop.models.response.ResponseUpload;
 
-/**
- * Created by jeeraphan on 12/12/16.
- */
-
 public class ApiManager {
 
     public static final String API_KEY = "78660282aeaedccc679bb9b2e33095916ff8d356be6e77d05ef04a284c42deff";;

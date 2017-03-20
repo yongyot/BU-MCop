@@ -33,9 +33,6 @@
 //import th.ac.bu.mcop.utils.SharePrefs;
 //import th.ac.bu.mcop.widgets.NotificationView;
 //
-///**
-// * Created by jeeraphan on 10/28/16.
-// */
 //
 //public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 //

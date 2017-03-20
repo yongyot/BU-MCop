@@ -6,10 +6,6 @@ import io.realm.Realm;
 import th.ac.bu.mcop.android.monitor.AndroidMonitorApplication;
 import th.ac.bu.mcop.mobile.monitor.core.Watchdog;
 
-/**
- * Created by jeeraphan on 12/22/16.
- */
-
 public class MCOPApplication extends AndroidMonitorApplication {
 
     @Override

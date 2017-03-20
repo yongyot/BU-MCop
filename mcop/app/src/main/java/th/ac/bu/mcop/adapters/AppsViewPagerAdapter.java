@@ -13,10 +13,6 @@ import th.ac.bu.mcop.fragments.WarningAppsFragment;
 import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 12/11/16.
- */
-
 public class AppsViewPagerAdapter extends FragmentPagerAdapter {
 
     private final int NUM_ITEMS = 2;

@@ -2,10 +2,6 @@ package th.ac.bu.mcop.models.response;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by jeeraphan on 12/26/16.
- */
-
 public class ReportModel{
 
     @SerializedName("resource")

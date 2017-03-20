@@ -11,10 +11,6 @@ import io.realm.annotations.PrimaryKey;
 import th.ac.bu.mcop.models.AppsInfo;
 import th.ac.bu.mcop.utils.Constants;
 
-/**
- * Created by jeeraphan on 12/23/16.
- */
-
 public class AppRealm extends RealmObject{
 
     private String hash;

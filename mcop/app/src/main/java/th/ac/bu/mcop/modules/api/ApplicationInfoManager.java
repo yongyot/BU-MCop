@@ -10,10 +10,6 @@ import java.util.ArrayList;
 
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 12/11/16.
- */
-
 public class ApplicationInfoManager {
 
     public static ArrayList<ApplicationInfo> getTotalApplication(Activity activity){

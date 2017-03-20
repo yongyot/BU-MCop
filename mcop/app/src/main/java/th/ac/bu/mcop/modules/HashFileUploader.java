@@ -14,10 +14,6 @@ import java.net.URL;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 11/16/16.
- */
-
 public class HashFileUploader extends AsyncTask <String, Void, String>{
 
     private Context mContext;

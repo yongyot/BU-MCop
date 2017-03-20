@@ -16,10 +16,6 @@ import java.util.TreeMap;
 
 import th.ac.bu.mcop.widgets.NotificationView;
 
-/**
- * Created by jeeraphan on 11/14/16.
- */
-
 public class Settings {
 
     public static final String TAG = "log-mcop";

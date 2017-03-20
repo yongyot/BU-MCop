@@ -17,10 +17,6 @@ import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Settings;
 
-/**
- * Created by jeeraphan on 12/10/16.
- */
-
 public class ApplistActivity extends AppCompatActivity {
 
     private AppsViewPagerAdapter mAppsViewPagerAdapter;

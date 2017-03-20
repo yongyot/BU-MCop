@@ -14,12 +14,7 @@ import io.realm.RealmObject;
 import io.realm.RealmResults;
 import th.ac.bu.mcop.models.Net;
 import th.ac.bu.mcop.models.Stats;
-import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Settings;
-
-/**
- * Created by jeeraphan on 12/23/16.
- */
 
 public class StatsRealm extends RealmObject{
 
