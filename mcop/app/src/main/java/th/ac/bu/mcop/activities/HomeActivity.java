@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mStatusAppsInDevice = (TextView) findViewById(R.id.status_apps_in_device);
         mCircleImageview = (ImageView) findViewById(R.id.circle_imageview);
         mTestSMSTextView = (TextView) findViewById(R.id.test_sms_textview);
-        mTestSMSTextView.setVisibility(View.GONE);
+        //mTestSMSTextView.setVisibility(View.GONE);
 
         mManageAppButton.setOnClickListener(this);
         mAboutButton.setOnClickListener(this);

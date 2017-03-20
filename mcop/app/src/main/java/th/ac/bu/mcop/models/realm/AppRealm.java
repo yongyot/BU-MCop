@@ -154,6 +154,23 @@ public class AppRealm extends RealmObject{
         return appsInfo;
     }
 
+    public static AppsInfo getAppWithPackageName(final String packageName){
+        Realm realm = Realm.getDefaultInstance();
+        AppRealm appRealm = realm.where(AppRealm.class).equalTo("packageName", packageName).findFirst();
+
+        AppsInfo appsInfo = new AppsInfo();
+        appsInfo.setAppStatus(appRealm.getAppStatus());
+        appsInfo.setHash(appRealm.getHash());
+        appsInfo.setVersionCode(appRealm.getVersionCode());
+        appsInfo.setVersionName(appRealm.getVersionName());
+        appsInfo.setLastUpdate(appRealm.getLastUpdate());
+        appsInfo.setPackageName(appRealm.getPackageName());
+        appsInfo.setAppStatus(appRealm.getAppStatus());
+        appsInfo.setName(appRealm.getName());
+
+        return appsInfo;
+    }
+
     public static ArrayList<AppRealm> getSafeApps(){
 
         ArrayList<AppRealm> appRealms = new ArrayList<>();

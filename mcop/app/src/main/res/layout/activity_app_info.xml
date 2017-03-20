@@ -83,26 +83,15 @@
         />
 
     <TextView
-        android:id="@+id/title_permission_textview"
+        android:id="@+id/storage_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/status_textview"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="14dp"
         android:text="Permission"
         android:textStyle="bold"
-        />
-
-    <TextView
-        android:id="@+id/desc_permission_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title_permission_textview"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:text="android.permission.ACCESS_NETWORK_STATE \nandroid.permission.WRITE_EXTERNAL_STORAGE \nandroid.permission.INTERNET \nandroid.permission.ACCESS_WIFI_STATE"
-        />
+        android:layout_below="@+id/status_textview"
+        android:layout_alignLeft="@+id/status_textview"
+        android:layout_alignStart="@+id/status_textview" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

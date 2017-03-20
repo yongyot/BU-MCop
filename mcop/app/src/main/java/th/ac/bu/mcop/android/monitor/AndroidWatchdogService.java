@@ -63,10 +63,12 @@ public final class AndroidWatchdogService extends Service {
 		Bundle extras = intent.getExtras();
 		Object key = extras != null ? extras.get(EXTRA_KEY_OBJECT_HASH_CODE) : null;
 		AndroidWatchdog watchdog = ((AndroidMonitorApplication) getApplication()).getWatchdog();
+		Log.d(Settings.TAG, "key : " + key);
 		if (key != null) {
 			// The service looks up the appropriate watcher by using
 			// information in the given intent and delegating the
 			// processing to this watcher.
+			Log.d(Settings.TAG, "onStart AndroidWatchdogService");
 			AndroidWatcher watcher = watchdog.getWatcher((Integer) key);
 			watcher.service(event);
 		}
