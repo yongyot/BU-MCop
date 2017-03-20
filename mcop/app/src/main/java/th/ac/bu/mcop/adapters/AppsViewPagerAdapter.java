@@ -56,7 +56,7 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
         if (position == 0){
             return "Safe";
         } else if (position == 1){
-            return "Warning";
+            return "Suspicious";
         }
         return "";
     }

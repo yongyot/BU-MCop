@@ -167,6 +167,25 @@ public class AppRealm extends RealmObject{
         return appsInfo;
     }
 
+    public static void deleteAppWithPackageName(final String packageName){
+
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<AppRealm> query = realm.where(AppRealm.class);
+        query.equalTo("packageName", packageName);
+
+        final RealmResults<AppRealm> result = query.findAll();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                if (result.size() > 0){
+                    result.get(0).deleteFromRealm();
+                }
+
+            }
+        });
+    }
+
     public static ArrayList<AppRealm> getSafeApps(){
 
         ArrayList<AppRealm> appRealms = new ArrayList<>();
@@ -189,7 +208,9 @@ public class AppRealm extends RealmObject{
         Realm realm = Realm.getDefaultInstance();
 
         RealmQuery<AppRealm> query = realm.where(AppRealm.class);
-        query.equalTo("appStatus", Constants.APP_STATUS_WARNING);
+        query.equalTo("appStatus", Constants.APP_STATUS_WARNING_YELLOW);
+        query.or().equalTo("appStatus", Constants.APP_STATUS_WARNING_ORANGE);
+        query.or().equalTo("appStatus", Constants.APP_STATUS_WARNING_RED);
 
         RealmResults<AppRealm> result = query.findAll();
         appRealms.addAll(result);

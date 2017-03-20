@@ -18,8 +18,14 @@ public class Constants {
     public static final String KEY_FIRST_TIME = "key_first_time";
     public static final String KEY_ACCEPT_TERM = "key_accept_term";
 
+    public static final int REQUEST_CODE_APP_INFO = 1001;
+    public static final int RESULT_DELETE = 2001;
+
     public final static int APP_STATUS_SAFE = 0;
-    public final static int APP_STATUS_WARNING = 1;
-    public final static int APP_STATUS_SEND_HASH = 2;
-    public final static int APP_STATUS_SEND_APK = 3;
+    public final static int APP_STATUS_WARNING_YELLOW = 1;
+    public final static int APP_STATUS_WARNING_ORANGE = 2;
+    public final static int APP_STATUS_WARNING_RED = 3;
+
+    public final static int APP_STATUS_SEND_HASH = 4;
+    public final static int APP_STATUS_SEND_APK = 5;
 }

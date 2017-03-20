@@ -90,6 +90,10 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
         mOnAppListener = listener;
     }
 
+    public void setApps(ArrayList<AppRealm> apps){
+        mApps = apps;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private RelativeLayout containerAppsRelative;

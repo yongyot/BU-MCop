@@ -94,12 +94,25 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
                     ArrayList<ApplicationInfo> applicationInfos = ApplicationInfoManager.getTotalApplicationUsingInternet(InitializationActivity.this);
                     ArrayList<AppsInfo> appsInfos = new ArrayList<>();
+                    int count = 0;
                     for (ApplicationInfo applicationInfo : applicationInfos){
 
                         AppsInfo appsInfo = new HashGenManager().getPackageInfo(applicationInfo.packageName, getBaseContext());
-                        appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
                         appsInfo.setName(applicationInfo.loadLabel(getPackageManager()).toString());
+
+                        if (count % 4 == 0){
+                            appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
+                        } else if (count % 4 == 1){
+                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+                        } else if (count % 4 == 2){
+                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
+                        } else if (count % 4 == 3){
+                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
+                        }
+
                         appsInfos.add(appsInfo);
+
+                        count++;
 
                     }
 
@@ -164,7 +177,10 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                         // size = 0 because safe all
                         if (reportModel.getResponse().getData().size() > 0){
                             for (ReportModel model : reportModel.getResponse().getData()){
-                                if (model.getResponseCode() == 0){
+
+                                int percent = model.getDetectionPercentage();
+
+                                if (percent == 0){
                                     sendApkApps.add(model);
 
                                     //update status app status send apk
@@ -172,16 +188,22 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                                     appInfo.setAppStatus(Constants.APP_STATUS_SEND_APK);
                                     AppRealm.update(appInfo);
 
-                                } else if (model.getDetectionPercentage() > 50){
+                                } else {
                                     warningApps.add(model);
 
                                     // update status app warning
                                     AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
-                                    appInfo.setAppStatus(Constants.APP_STATUS_WARNING);
+
+                                    if (percent > 25){
+                                        appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+                                    } else if (percent > 50){
+                                        appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
+                                    } else if (percent > 75){
+                                        appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
+                                    }
+
                                     AppRealm.update(appInfo);
 
-                                } else {
-                                    safeApps.add(model);
                                 }
                             }
                         }

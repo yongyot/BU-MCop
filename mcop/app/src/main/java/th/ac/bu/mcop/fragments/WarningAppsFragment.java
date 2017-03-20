@@ -1,5 +1,6 @@
 package th.ac.bu.mcop.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.AppInfoActivity;
 import th.ac.bu.mcop.adapters.AppsRecycleViewAdapter;
 import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
 public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdapter.OnAppListener{
@@ -54,5 +56,16 @@ public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdap
         Intent intent = new Intent(getActivity(), AppInfoActivity.class);
         intent.putExtra("put_extra_package_name", mApps.get(position).getPackageName());
         startActivity(intent);
+        startActivityForResult(intent, Constants.REQUEST_CODE_APP_INFO);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_CODE_APP_INFO && resultCode == Constants.RESULT_DELETE){
+            mApps = AppRealm.getWarningApps();
+            mAppsRecycleViewAdapter.setApps(mApps);
+            mAppsRecycleViewAdapter.notifyDataSetChanged();
+        }
     }
 }

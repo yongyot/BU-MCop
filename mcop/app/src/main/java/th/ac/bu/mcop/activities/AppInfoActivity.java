@@ -62,6 +62,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                 if (appsInfo != null){
                     if (appsInfo.getAppStatus() == Constants.APP_STATUS_SAFE){
                         mIgnoreButton.setVisibility(View.INVISIBLE);
+                        mUninstallAppButton.setVisibility(View.INVISIBLE);
                     }
                 }
 
@@ -81,6 +82,20 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        try {
+            getPackageManager().getPackageInfo(mPackageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            AppRealm.deleteAppWithPackageName(mPackageName);
+            setResult(Constants.RESULT_DELETE);
+            finish();
         }
     }
 
