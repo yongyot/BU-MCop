@@ -145,7 +145,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setAppSafeOrNotView(){
 
-        ArrayList<AppRealm> warningApps = AppRealm.getWarningApps();
+        ArrayList<AppRealm> yellowApps = AppRealm.getWarningYellowApps();
+        ArrayList<AppRealm> orangeApps = AppRealm.getWarningOrangeApps();
+        ArrayList<AppRealm> redApps = AppRealm.getWarningRedApps();
+
+        ArrayList<AppRealm> warningApps = new ArrayList<>();
+        warningApps.addAll(redApps);
+        warningApps.addAll(orangeApps);
+        warningApps.addAll(yellowApps);
 
         if (warningApps.size() > 0){
             String messageWarning = getString(R.string.label_device_warning, warningApps.size());

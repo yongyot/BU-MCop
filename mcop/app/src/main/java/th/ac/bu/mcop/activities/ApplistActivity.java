@@ -35,7 +35,15 @@ public class ApplistActivity extends AppCompatActivity {
         mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 
         ArrayList<AppRealm> safeApps = AppRealm.getSafeApps();
-        ArrayList<AppRealm> warning = AppRealm.getWarningApps();
+
+        ArrayList<AppRealm> yellowApps = AppRealm.getWarningYellowApps();
+        ArrayList<AppRealm> orangeApps = AppRealm.getWarningOrangeApps();
+        ArrayList<AppRealm> redApps = AppRealm.getWarningRedApps();
+
+        ArrayList<AppRealm> warning = new ArrayList<>();
+        warning.addAll(redApps);
+        warning.addAll(orangeApps);
+        warning.addAll(yellowApps);
 
         //mAppsViewPagerAdapter = new AppsViewPagerAdapter(getSupportFragmentManager(), mApplicationInfosInstall);
         mAppsViewPagerAdapter = new AppsViewPagerAdapter(getSupportFragmentManager(), safeApps, warning);

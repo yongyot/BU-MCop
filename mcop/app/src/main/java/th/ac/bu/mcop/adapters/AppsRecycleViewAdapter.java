@@ -17,6 +17,7 @@ import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.InitializationActivity;
 import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
+import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
 public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleViewAdapter.ViewHolder>{
@@ -76,6 +77,16 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
                 }
             }
         });
+
+        if (mApps.get(position).getAppStatus() == Constants.APP_STATUS_WARNING_RED){
+            holder.iconStatusImageView.setImageResource(R.drawable.red);
+        } else if (mApps.get(position).getAppStatus() == Constants.APP_STATUS_WARNING_ORANGE){
+            holder.iconStatusImageView.setImageResource(R.drawable.orange);
+        } else if (mApps.get(position).getAppStatus() == Constants.APP_STATUS_WARNING_YELLOW){
+            holder.iconStatusImageView.setImageResource(R.drawable.yellow);
+        } else {
+            holder.iconStatusImageView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -98,6 +109,7 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
 
         private RelativeLayout containerAppsRelative;
         private ImageView iconImageView;
+        private ImageView iconStatusImageView;
         private TextView appNameTextView;
         private TextView packageNameTextView;
 
@@ -107,6 +119,7 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
             iconImageView = (ImageView) view.findViewById(R.id.icon_imageview);
             appNameTextView = (TextView) view.findViewById(R.id.app_name_textview);
             packageNameTextView = (TextView) view.findViewById(R.id.package_name_textview);
+            iconStatusImageView = (ImageView) view.findViewById(R.id.icon_status_imageview);
         }
     }
 }

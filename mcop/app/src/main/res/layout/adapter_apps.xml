@@ -26,6 +26,9 @@
             android:textSize="@dimen/row_title_text_size"
             android:textStyle="bold"
             android:text="App name"
+            android:layout_toLeftOf="@+id/icon_status_imageview"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:ellipsize="end"
             />
 
         <TextView
@@ -35,6 +38,19 @@
             android:layout_below="@+id/app_name_textview"
             android:textSize="@dimen/row_desc_text_size"
             android:text="Package name"
+            android:layout_toLeftOf="@+id/icon_status_imageview"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:ellipsize="end"
+            />
+
+        <ImageView
+            android:id="@+id/icon_status_imageview"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/red"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             />
 
     </RelativeLayout>

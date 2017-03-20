@@ -201,7 +201,7 @@ public class AppRealm extends RealmObject{
         return appRealms;
     }
 
-    public static ArrayList<AppRealm> getWarningApps(){
+    public static ArrayList<AppRealm> getWarningYellowApps(){
 
         ArrayList<AppRealm> appRealms = new ArrayList<>();
 
@@ -209,8 +209,36 @@ public class AppRealm extends RealmObject{
 
         RealmQuery<AppRealm> query = realm.where(AppRealm.class);
         query.equalTo("appStatus", Constants.APP_STATUS_WARNING_YELLOW);
-        query.or().equalTo("appStatus", Constants.APP_STATUS_WARNING_ORANGE);
-        query.or().equalTo("appStatus", Constants.APP_STATUS_WARNING_RED);
+
+        RealmResults<AppRealm> result = query.findAll();
+        appRealms.addAll(result);
+
+        return appRealms;
+    }
+
+    public static ArrayList<AppRealm> getWarningOrangeApps(){
+
+        ArrayList<AppRealm> appRealms = new ArrayList<>();
+
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<AppRealm> query = realm.where(AppRealm.class);
+        query.equalTo("appStatus", Constants.APP_STATUS_WARNING_ORANGE);
+
+        RealmResults<AppRealm> result = query.findAll();
+        appRealms.addAll(result);
+
+        return appRealms;
+    }
+
+    public static ArrayList<AppRealm> getWarningRedApps(){
+
+        ArrayList<AppRealm> appRealms = new ArrayList<>();
+
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<AppRealm> query = realm.where(AppRealm.class);
+        query.equalTo("appStatus", Constants.APP_STATUS_WARNING_RED);
 
         RealmResults<AppRealm> result = query.findAll();
         appRealms.addAll(result);

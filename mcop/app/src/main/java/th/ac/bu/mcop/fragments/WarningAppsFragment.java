@@ -63,7 +63,17 @@ public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdap
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.REQUEST_CODE_APP_INFO && resultCode == Constants.RESULT_DELETE){
-            mApps = AppRealm.getWarningApps();
+
+            ArrayList<AppRealm> yellowApps = AppRealm.getWarningYellowApps();
+            ArrayList<AppRealm> orangeApps = AppRealm.getWarningOrangeApps();
+            ArrayList<AppRealm> redApps = AppRealm.getWarningRedApps();
+
+            ArrayList<AppRealm> warning = new ArrayList<>();
+            warning.addAll(redApps);
+            warning.addAll(orangeApps);
+            warning.addAll(yellowApps);
+
+            mApps = warning;
             mAppsRecycleViewAdapter.setApps(mApps);
             mAppsRecycleViewAdapter.notifyDataSetChanged();
         }
