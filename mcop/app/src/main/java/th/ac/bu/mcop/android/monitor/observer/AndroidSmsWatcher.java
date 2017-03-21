@@ -52,7 +52,6 @@ public final class AndroidSmsWatcher extends AndroidWatcher {
 		// outgoing SMS events, we should monitor the sms inbox by registering
 		// a content observer to the ContentResolver.
 		registerContentObserver(((AndroidEvent) dc));
-		Log.d(Settings.TAG, "AndroidSmsWatcher start");
 	}
 
 	@Override

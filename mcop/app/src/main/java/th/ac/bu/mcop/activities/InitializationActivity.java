@@ -100,7 +100,9 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                         AppsInfo appsInfo = new HashGenManager().getPackageInfo(applicationInfo.packageName, getBaseContext());
                         appsInfo.setName(applicationInfo.loadLabel(getPackageManager()).toString());
 
-                        if (count % 4 == 0){
+                        appsInfo.setAppStatus(Constants.APP_STATUS_SAFE); // set default
+
+                        /*if (count % 4 == 0){
                             appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
                         } else if (count % 4 == 1){
                             appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
@@ -108,7 +110,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                             appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
                         } else if (count % 4 == 3){
                             appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
-                        }
+                        }*/
 
                         appsInfos.add(appsInfo);
 

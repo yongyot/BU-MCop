@@ -109,7 +109,7 @@ public class StatsFileManager {
 
         String metaInfo = "File Name: " + Settings.sOutputFileName + "\r\n" +
                 "Extraction Started: " + createtime + "\r\n";
-        String formatStr = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s";
+        String formatStr = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n";
         String title = String.format(formatStr
                 , "LOG_TIME"
                 , "PACKAGE_NAME"
