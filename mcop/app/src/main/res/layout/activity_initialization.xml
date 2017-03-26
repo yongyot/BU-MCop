@@ -65,7 +65,6 @@
             android:id="@+id/analysing_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:textSize="@dimen/subtitle_text_size"
             android:gravity="center"
             android:layout_margin="@dimen/activity_vertical_margin"

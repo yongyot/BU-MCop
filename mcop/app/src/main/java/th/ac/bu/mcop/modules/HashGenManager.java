@@ -52,8 +52,8 @@ public class HashGenManager {
 
                     Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
                     calendar.setTimeInMillis(app.getLastUpdate());
-                    String date=  formatter.format(calendar.getTime());
-                    data = data + app.getPackageName() + "*" + date + "*" + app.getHash() + "*"+ app.getVersionName() + "*" + app.getVersionCode() + "\n";
+                    String date =  formatter.format(calendar.getTime());
+                    data = data + app.getPackageName() + "*" + date + "*" + app.getHash() + "*"+ app.getVersionName() + "*" + app.getVersionCode() + "\r\n";
                 }
             }
         }
@@ -115,7 +115,7 @@ public class HashGenManager {
 
     private  void writeToFile(String data, boolean append) {
 
-        data = Settings.sMacAddress + "\n" + data;
+        data = Settings.sMacAddress + "\r\n" + data;
         File statsDir;
         statsDir = new File(Settings.sApplicationPath);
 

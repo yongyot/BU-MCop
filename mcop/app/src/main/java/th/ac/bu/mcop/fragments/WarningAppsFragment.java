@@ -55,8 +55,8 @@ public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdap
     public void onItemClickListener(int position) {
         Intent intent = new Intent(getActivity(), AppInfoActivity.class);
         intent.putExtra("put_extra_package_name", mApps.get(position).getPackageName());
-        startActivity(intent);
-        startActivityForResult(intent, Constants.REQUEST_CODE_APP_INFO);
+        intent.putExtra("put_extra_app_status", mApps.get(position).getAppStatus());
+        getActivity().startActivityForResult(intent, Constants.REQUEST_CODE_APP_INFO);
     }
 
     @Override

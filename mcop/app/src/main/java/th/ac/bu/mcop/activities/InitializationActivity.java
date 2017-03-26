@@ -102,15 +102,15 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
                         appsInfo.setAppStatus(Constants.APP_STATUS_SAFE); // set default
 
-                        /*if (count % 4 == 0){
-                            appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
-                        } else if (count % 4 == 1){
-                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
-                        } else if (count % 4 == 2){
-                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
-                        } else if (count % 4 == 3){
-                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
-                        }*/
+//                        if (count % 4 == 0){
+//                            appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
+//                        } else if (count % 4 == 1){
+//                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+//                        } else if (count % 4 == 2){
+//                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
+//                        } else if (count % 4 == 3){
+//                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
+//                        }
 
                         appsInfos.add(appsInfo);
 
@@ -337,6 +337,9 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
     }
 
     private void startHomeActivity(){
+
+        SharePrefs.setPreference(this, Constants.KEY_ACCEPT_TERM, true);
+
         mHandler.postDelayed(new Runnable() {
             public void run() {
                 Intent intent = new  Intent(InitializationActivity.this, HomeActivity.class);

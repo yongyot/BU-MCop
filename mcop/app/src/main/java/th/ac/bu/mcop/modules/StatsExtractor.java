@@ -38,7 +38,7 @@ public class StatsExtractor {
             bufferedReader = new BufferedReader(new FileReader(procFileName));
             String line;                //ignore header
             while ((line = bufferedReader.readLine()) != null) {
-                fileData.append(line + "\n");
+                fileData.append(line + "\n\r");
             }
 
             bufferedReader.close();
@@ -128,7 +128,10 @@ public class StatsExtractor {
 
         String data = topData.toString();
         int i = data.indexOf("Name");
-        return data.substring(i+4);
+        if (data.length() > i+4){
+            return data.substring(i+4);
+        }
+        return data;
     }
 
     private static int isSystemPackage(String packageName){
@@ -174,8 +177,7 @@ public class StatsExtractor {
             for(int i = 0; i < lines.length; i++) {
 
                 String dataBG[] = lines[i].trim().split("\\s+");
-
-                if (dataBG[APP_UID].equalsIgnoreCase(UID) && dataBG[TAG].equalsIgnoreCase("0x0")){
+                if (dataBG.length > APP_UID && dataBG[APP_UID].equalsIgnoreCase(UID) && dataBG[TAG].equalsIgnoreCase("0x0")){
 
                     String dataFG[] = lines[i + 1].trim().split("\\s+");
                     i++;

@@ -16,6 +16,7 @@ import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.AppInfoActivity;
 import th.ac.bu.mcop.adapters.AppsRecycleViewAdapter;
 import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
 public class SalfAppsFragment extends Fragment implements AppsRecycleViewAdapter.OnAppListener{
@@ -53,6 +54,7 @@ public class SalfAppsFragment extends Fragment implements AppsRecycleViewAdapter
     public void onItemClickListener(int position) {
         Intent intent = new Intent(getActivity(), AppInfoActivity.class);
         intent.putExtra("put_extra_package_name", mApps.get(position).getPackageName());
-        startActivity(intent);
+        intent.putExtra("put_extra_app_status", mApps.get(position).getAppStatus());
+        getActivity().startActivityForResult(intent, Constants.REQUEST_CODE_APP_INFO);
     }
 }

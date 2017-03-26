@@ -9,7 +9,6 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -29,13 +28,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -119,7 +115,7 @@ public class BackgroundService extends Service {
     private void uploadNetDataByte() {
 
         String path = Settings.sApplicationPath + Settings.sOutputFileName;
-        String osVersion = "5.0";//Build.VERSION.BASE_OS + "";
+        String osVersion = Build.VERSION.BASE_OS + "";
         String deviceModel = Build.MODEL;
         final File file = new File(path);
 
@@ -134,20 +130,11 @@ public class BackgroundService extends Service {
 
             JSONObject jsonObject = new JSONObject(new Gson().toJson(object));
             String bodyPostJson = jsonObject.getString("nameValuePairs");
-            Log.d(Settings.TAG, "bodyPost: " + bodyPostJson);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),bodyPostJson);
-            Log.d(Settings.TAG, "requestBody: " + requestBody);
             ApiManager.getInstance().uploadNetDataByte(new Callback<ResponseUpload>() {
                 @Override
                 public void onResponse(Call<ResponseUpload> call, Response<ResponseUpload> response) {
-                    Log.d(Settings.TAG, "upload net date byte success");
-                    Log.d(Settings.TAG, response + "");
-                    if (response != null){
-                        Log.d(Settings.TAG, "body: " + response.body());
-                        Log.d(Settings.TAG, "isCompleted: " + response.body().getIsCompleted());
-                        Log.d(Settings.TAG, "Message: " + response.body().getMessage());
-                    }
-
+                    Log.d(Settings.TAG, "upload byte success");
                     file.delete();
                     initPathFile();
                 }
@@ -194,7 +181,7 @@ public class BackgroundService extends Service {
 
     private void uploadHashCodeByte() {
 
-        String osVersion = "5.0";//Build.VERSION.BASE_OS + "";
+        String osVersion = Build.VERSION.BASE_OS + "";
         String deviceModel = Build.MODEL;
         final File file = new File(Settings.sHashFilePath);
 
@@ -209,19 +196,11 @@ public class BackgroundService extends Service {
 
             JSONObject jsonObject = new JSONObject(new Gson().toJson(object));
             String bodyPostJson = jsonObject.getString("nameValuePairs");
-            Log.d(Settings.TAG, "bodyPost: " + bodyPostJson);
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyPostJson);
-            Log.d(Settings.TAG, "requestBody: " + requestBody);
             ApiManager.getInstance().uploadHashCodeByte(new Callback<ResponseUpload>() {
                 @Override
                 public void onResponse(Call<ResponseUpload> call, Response<ResponseUpload> response) {
                     Log.d(Settings.TAG, "upload hash code byte success");
-                    Log.d(Settings.TAG, response + "");
-                    if (response != null) {
-                        Log.d(Settings.TAG, "body: " + response.body());
-                        Log.d(Settings.TAG, "isCompleted: " + response.body().getIsCompleted());
-                        Log.d(Settings.TAG, "Message: " + response.body().getMessage());
-                    }
 
                     file.delete();
                     initPathFile();

@@ -2,21 +2,64 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 24
+
+    def mVersionMajor = "1"
+    def mVersionMinor = "0.0"
+    def mVersionCode = 1
+    def mVersionName = mVersionMajor + "." + mVersionMinor
+
+    compileSdkVersion 25
     buildToolsVersion '25.0.0'
+
     defaultConfig {
         applicationId "th.ac.bu.mcop"
         minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        targetSdkVersion 25
+        versionCode mVersionCode
+        versionName mVersionName
+
+
     }
-    buildTypes {
+
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            storeFile file("/Users/jeeraphan/Documents/AppAndroid/bu-mcop/mcop/mcop.jks")
+            storePassword "mcop1234"
+            keyAlias "mcop"
+            keyPassword "mcop1234"
         }
+    }
+
+    buildTypes {
+
+        debug {
+            debuggable true
+            minifyEnabled false
+
+            applicationVariants.all { variant ->
+                def apk = variant.outputs[0].outputFile;
+                def newName = "";
+                newName = apk.name.replace(".apk", "-" + mVersionName + ".apk");
+                variant.outputs[0].outputFile = new File(apk.parentFile, newName);
+            }
+        }
+
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
+            buildConfigField "boolean", "REPORT_CRASHES", "true"
+
+            applicationVariants.all { variant ->
+                def apk = variant.outputs[0].outputFile;
+                def newName = "";
+                newName = apk.name.replace(".apk", "-" + mVersionName + ".apk");
+                variant.outputs[0].outputFile = new File(apk.parentFile, newName);
+            }
+        }
+
     }
 
     useLibrary 'org.apache.http.legacy'
@@ -24,9 +67,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:21.0.+'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
@@ -34,7 +74,6 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:mockwebserver:3.6.0'
-    testCompile 'junit:junit:4.12'
 }
 
 buildscript {

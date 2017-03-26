@@ -1,5 +1,6 @@
 package th.ac.bu.mcop.android.monitor;
 
+import th.ac.bu.mcop.activities.HomeActivity;
 import th.ac.bu.mcop.android.monitor.core.AndroidEvent;
 import th.ac.bu.mcop.android.monitor.core.AndroidWatchdog;
 import th.ac.bu.mcop.android.monitor.observer.AndroidWatcher;
@@ -53,7 +54,6 @@ public final class AndroidWatchdogService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		//setForeground(true);
-		Log.d(Settings.TAG, "AndroidWatchdogService onCreate");
 	}
 	
 	@Override
@@ -62,13 +62,11 @@ public final class AndroidWatchdogService extends Service {
 		AndroidEvent event = new AndroidEvent(this, this, intent);
 		Bundle extras = intent.getExtras();
 		Object key = extras != null ? extras.get(EXTRA_KEY_OBJECT_HASH_CODE) : null;
-		AndroidWatchdog watchdog = ((AndroidMonitorApplication) getApplication()).getWatchdog();
-		Log.d(Settings.TAG, "key : " + key);
+		AndroidWatchdog watchdog = HomeActivity.getWatchdog();
 		if (key != null) {
 			// The service looks up the appropriate watcher by using
 			// information in the given intent and delegating the
 			// processing to this watcher.
-			Log.d(Settings.TAG, "onStart AndroidWatchdogService");
 			AndroidWatcher watcher = watchdog.getWatcher((Integer) key);
 			watcher.service(event);
 		}

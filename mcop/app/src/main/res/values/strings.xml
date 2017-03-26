@@ -3,7 +3,7 @@
     <string name="label_terms">Terms &amp; Condition</string>
     <string name="label_button_start_monitoring">Start monitoring</string>
     <string name="label_accept_service">I accept terms of service</string>
-    <string name="label_analysing">Analysing your device for suspicious application</string>
+    <string name="label_analysing">Analysing your device for suspicious application, Please wait.</string>
     <string name="label_initializing">Initializing</string>
     <string name="label_get_hashcode_report">Get hashcode report</string>
     <string name="label_device_safe">Your device is safe</string>
@@ -16,6 +16,9 @@
     <string name="label_ignore">Ignore</string>
     <string name="label_uninstall">Uninstall</string>
     <string name="label_version">Version</string>
+    <string name="label_risk_level">Risk level</string>
+    <string name="label_storage">Storage</string>
+    <string name="label_permission">Permission</string>
     <string name="label_about_desc">mCOP by NBTC เตือนภัยแอปพลิเคชั่นอันตรายบนโทรศัพท์เคลื่อนที่</string>
     <string name="label_terms_detail">Terms and Conditions
 

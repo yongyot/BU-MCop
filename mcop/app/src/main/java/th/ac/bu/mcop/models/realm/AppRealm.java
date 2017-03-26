@@ -276,6 +276,19 @@ public class AppRealm extends RealmObject{
         return appRealms;
     }
 
+    public static void updateWithPackage(final String packageName, final int appStatus){
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgRealm) {
+                AppRealm appRealm = bgRealm.where(AppRealm.class).equalTo("packageName", packageName).findFirst();
+                appRealm.setAppStatus(appStatus);
+            }
+        });
+    }
+
+
     public static void deleteAll(){
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();

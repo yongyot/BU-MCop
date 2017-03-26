@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_desc_textview"
         android:text="@string/label_about_desc"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin_bulet"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/line_margin"
         />
@@ -136,15 +136,16 @@
         >
 
         <ImageView
+            android:id="@+id/about_logo_imageview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
+            android:layout_height="150dp"
+            android:src="@drawable/about_logo2"
             android:layout_weight="1"
             />
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/about_logo1"
             android:layout_weight="1"
             />
 
@@ -152,12 +153,13 @@
 
     <Button
         android:id="@+id/rate_button"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
         android:text="@string/label_rate"
         android:layout_below="@+id/logo_linear"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_button"
         />
 
 </RelativeLayout>

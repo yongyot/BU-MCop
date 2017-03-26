@@ -31,6 +31,11 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
         mWarningApps = warningApps;
     }
 
+    public void setAdapter(ArrayList<AppRealm> safeApps, ArrayList<AppRealm> warningApps){
+        mSafeApps = safeApps;
+        mWarningApps = warningApps;
+    }
+
     @Override
     public Fragment getItem(int position) {
 

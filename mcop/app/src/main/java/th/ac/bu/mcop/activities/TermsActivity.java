@@ -42,18 +42,18 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
 
-        if(Settings.isUsageAccessGranted(this)){
-            mStartMonitoringButton.setEnabled(true);
-            mAccpetCheckBox.setChecked(true);
-        } else {
+//        if(Settings.isUsageAccessGranted(this)){
+//            mStartMonitoringButton.setEnabled(true);
+//            mAccpetCheckBox.setChecked(true);
+//        } else {
             mStartMonitoringButton.setEnabled(false);
             mAccpetCheckBox.setChecked(false);
-
-
-            if (mAlertDialog != null){
-                mAlertDialog.show();
-            }
-        }
+//
+//
+//            if (mAlertDialog != null){
+//                mAlertDialog.show();
+//            }
+//        }
     }
 
     /***********************************************
@@ -63,7 +63,6 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.start_monitoring_button){
-            SharePrefs.setPreference(this, Constants.KEY_ACCEPT_TERM, true);
             startInitializationActivity();
         }
     }
@@ -72,23 +71,29 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
     public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
         if (isCheck){
 
-            mAlertDialog = new AlertDialog
-                    .Builder(this)
-                    .setMessage("Please turn on usage access first.")
-                    .setCancelable(false)
-                    .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                            startActivity(intent);
-                        }
-                    })
-                    .setNegativeButton(getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            mAccpetCheckBox.setChecked(false);
-                        }
-                    }).show();
+            if (Settings.isUsageAccessGranted(this)){
+                mStartMonitoringButton.setEnabled(true);
+                mAccpetCheckBox.setChecked(true);
+            } else {
+                mAccpetCheckBox.setChecked(false);
+                mAlertDialog = new AlertDialog
+                        .Builder(this)
+                        .setMessage("Please turn on usage access first.")
+                        .setCancelable(false)
+                        .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mAccpetCheckBox.setChecked(false);
+                            }
+                        }).show();
+            }
         }
     }
 

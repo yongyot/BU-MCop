@@ -258,7 +258,7 @@ public class NetData {
         String date = sdf.format(calTime.getTime());
 
         //date
-        String formatStr = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\n";
+        String formatStr = "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\r\n";
         return  String.format(formatStr
                 , date
                 , packageName

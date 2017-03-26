@@ -35,7 +35,7 @@ public class Settings {
 
         sInterval = 5;
         sNetInterval = 1;
-        sUploadSize = 1024;
+        sUploadSize = 1;
         sIsUsageAccessGranted = isUsageAccessGranted(context);
         sWifiInterfaceName = getWifiInterfaceName();
         sMacAddress = getMacAddress(context);

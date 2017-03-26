@@ -87,13 +87,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="Permission"
+        android:text="@string/label_storage"
         android:textStyle="bold"
         android:layout_below="@+id/status_textview"
         android:layout_alignLeft="@+id/status_textview"
         android:layout_alignStart="@+id/status_textview" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/storage_textview"
+        android:layout_above="@+id/container_button"
+        android:layout_alignLeft="@+id/status_textview"
+        android:layout_alignStart="@+id/status_textview"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/permission_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_permission"
+                android:layout_marginTop="14dp"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
     <RelativeLayout
+        android:id="@+id/container_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

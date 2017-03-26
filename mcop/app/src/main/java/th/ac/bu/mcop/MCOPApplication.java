@@ -1,17 +1,9 @@
 package th.ac.bu.mcop;
 
-import android.content.IntentFilter;
-
+import android.app.Application;
 import io.realm.Realm;
-import th.ac.bu.mcop.android.monitor.AndroidMonitorApplication;
-import th.ac.bu.mcop.mobile.monitor.core.Watchdog;
 
-public class MCOPApplication extends AndroidMonitorApplication {
-
-    @Override
-    protected void initialize(Watchdog watchdog, IntentFilter filter) {
-
-    }
+public class MCOPApplication extends Application {
 
     @Override
     public void onCreate() {
