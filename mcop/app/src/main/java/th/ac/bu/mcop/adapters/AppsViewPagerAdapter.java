@@ -20,11 +20,6 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<AppRealm> mSafeApps;
     private ArrayList<AppRealm> mWarningApps;
 
-    public AppsViewPagerAdapter(FragmentManager fragmentManager, ArrayList<ApplicationInfo> applicationInfos) {
-        super(fragmentManager);
-        mApplicationInfos = applicationInfos;
-    }
-
     public AppsViewPagerAdapter(FragmentManager fragmentManager, ArrayList<AppRealm> safeApps, ArrayList<AppRealm> warningApps){
         super(fragmentManager);
         mSafeApps = safeApps;
@@ -41,10 +36,8 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                Log.d(Settings.TAG, "getItem 0");
                 return SalfAppsFragment.newInstance(mSafeApps);
             case 1:
-                Log.d(Settings.TAG, "getItem 1");
                 return WarningAppsFragment.newInstance(mWarningApps);
             default:
                 return null;

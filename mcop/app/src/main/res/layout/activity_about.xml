@@ -13,16 +13,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_about"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:textSize="@dimen/title_text_size"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             />
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/logo_imageview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/navbar"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        />
 
     <TextView
         android:id="@+id/version_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/navbar"
+        android:layout_below="@+id/logo_imageview"
         android:text="Version 1.0.0"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
@@ -138,7 +150,7 @@
         <ImageView
             android:id="@+id/about_logo_imageview"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:src="@drawable/about_logo2"
             android:layout_weight="1"
             />
@@ -159,7 +171,9 @@
         android:layout_below="@+id/logo_linear"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_button"
+        android:background="@drawable/btn_selector"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
         />
 
 </RelativeLayout>

@@ -9,7 +9,7 @@
     <string name="label_device_safe">Your device is safe</string>
     <string name="label_device_warning">Your device have %d waning</string>
     <string name="label_about">About</string>
-    <string name="label_apps">Apps</string>
+    <string name="label_apps">Applications</string>
     <string name="label_apps_info">App Info</string>
     <string name="label_rate">Rate</string>
     <string name="label_manageapp">Application List</string>

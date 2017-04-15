@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:textSize="@dimen/title_text_size"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:textColor="@color/colorBgGray"
+            android:textColor="@android:color/white"
             />
     </RelativeLayout>
     

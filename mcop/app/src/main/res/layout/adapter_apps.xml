@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container_apps_relative"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="80dp">
 
     <ImageView
         android:id="@+id/icon_imageview"
@@ -14,11 +14,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_toRightOf="@+id/icon_imageview"
-        android:layout_centerVertical="true"
         >
-
         <TextView
             android:id="@+id/app_name_textview"
             android:layout_width="match_parent"
@@ -29,6 +27,7 @@
             android:layout_toLeftOf="@+id/icon_status_imageview"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:ellipsize="end"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_bulet"
             />
 
         <TextView
@@ -45,14 +44,19 @@
 
         <ImageView
             android:id="@+id/icon_status_imageview"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/red"
-            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/tag_safe"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             />
 
     </RelativeLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/icon_imageview"
+        android:background="@color/colorBgGray"
+        />
+    
 </RelativeLayout>

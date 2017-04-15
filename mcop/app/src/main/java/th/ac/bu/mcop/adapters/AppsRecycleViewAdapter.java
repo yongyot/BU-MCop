@@ -79,11 +79,11 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
         });
 
         if (mApps.get(position).getAppStatus() == Constants.APP_STATUS_WARNING_RED){
-            holder.iconStatusImageView.setImageResource(R.drawable.red);
+            holder.iconStatusImageView.setImageResource(R.drawable.tag_high);
         } else if (mApps.get(position).getAppStatus() == Constants.APP_STATUS_WARNING_ORANGE){
-            holder.iconStatusImageView.setImageResource(R.drawable.orange);
+            holder.iconStatusImageView.setImageResource(R.drawable.tag_medium);
         } else if (mApps.get(position).getAppStatus() == Constants.APP_STATUS_WARNING_YELLOW){
-            holder.iconStatusImageView.setImageResource(R.drawable.yellow);
+            holder.iconStatusImageView.setImageResource(R.drawable.tag_low);
         } else {
             holder.iconStatusImageView.setVisibility(View.INVISIBLE);
         }
