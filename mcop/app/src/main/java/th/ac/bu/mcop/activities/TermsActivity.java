@@ -94,6 +94,9 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
                             }
                         }).show();
             }
+        } else {
+            mStartMonitoringButton.setEnabled(false);
+            mAccpetCheckBox.setChecked(false);
         }
     }
 

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">mCOP</string>
     <string name="label_terms">Terms &amp; Condition</string>
-    <string name="label_button_start_monitoring">Start monitoring</string>
+    <string name="label_button_start_monitoring">Start Monitoring</string>
     <string name="label_accept_service">I accept terms of service</string>
     <string name="label_analysing">Analysing your device for suspicious application, Please wait.</string>
     <string name="label_initializing">Initializing</string>

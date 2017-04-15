@@ -5,9 +5,9 @@
     <dimen name="initialization_margin">40dp</dimen>
     <dimen name="line_margin">8dp</dimen>
     <dimen name="activity_horizontal_margin_bulet">24dp</dimen>
+    <dimen name="scroll_margin">32dp</dimen>
 
-
-    <dimen name="title_text_size">24dp</dimen>
+    <dimen name="title_text_size">20dp</dimen>
     <dimen name="subtitle_text_size">20dp</dimen>
     <dimen name="row_title_text_size">16dp</dimen>
     <dimen name="row_desc_text_size">14dp</dimen>

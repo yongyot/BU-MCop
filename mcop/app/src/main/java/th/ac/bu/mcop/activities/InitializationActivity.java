@@ -86,6 +86,8 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
     private void insertAppsToRealm(){
 
+        Log.d(Settings.TAG, "insertAppsToRealm");
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -100,17 +102,17 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                         AppsInfo appsInfo = new HashGenManager().getPackageInfo(applicationInfo.packageName, getBaseContext());
                         appsInfo.setName(applicationInfo.loadLabel(getPackageManager()).toString());
 
-                        appsInfo.setAppStatus(Constants.APP_STATUS_SAFE); // set default
+                        //appsInfo.setAppStatus(Constants.APP_STATUS_SAFE); // set default
 
-//                        if (count % 4 == 0){
-//                            appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
-//                        } else if (count % 4 == 1){
-//                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
-//                        } else if (count % 4 == 2){
-//                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
-//                        } else if (count % 4 == 3){
-//                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
-//                        }
+                        if (count % 4 == 0){
+                            appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
+                        } else if (count % 4 == 1){
+                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+                        } else if (count % 4 == 2){
+                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
+                        } else if (count % 4 == 3){
+                            appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
+                        }
 
                         appsInfos.add(appsInfo);
 
@@ -127,7 +129,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
     }
 
     private void initHasFile(){
-
+        Log.d(Settings.TAG, "initHasFile : " + Settings.sMacAddress);
         if(Settings.sMacAddress != null) {
 
             try {
@@ -138,6 +140,15 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                 Log.d(Settings.TAG, "Can not find data interface name. Details: " + ex.toString());
             }
 
+            new Thread(new Runnable() {
+                public void run() {
+                    SharePrefs.setPreference(getBaseContext(), Constants.KEY_FIRST_TIME, true);
+                    HashGenManager hashGen = new HashGenManager();
+                    hashGen.setOnHashGenListener(InitializationActivity.this);
+                    hashGen.getAllAppInfo(getBaseContext());
+                }
+            }).start();
+        } else {
             new Thread(new Runnable() {
                 public void run() {
                     SharePrefs.setPreference(getBaseContext(), Constants.KEY_FIRST_TIME, true);
@@ -160,7 +171,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
     }
 
     private void getReport(){
-
+        Log.d(Settings.TAG, "getReport");
         ApiManager.getInstance().getReport(new Callback<ResponseModel<ReportHeaderModel<ReportModel>>>() {
             @Override
             public void onResponse(Call<ResponseModel<ReportHeaderModel<ReportModel>>> call, Response<ResponseModel<ReportHeaderModel<ReportModel>>> response) {
@@ -173,9 +184,11 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
                     Log.d(Settings.TAG, "getReport reportModel isResult: " + reportModel.isResult());
                     Log.d(Settings.TAG, "getReport reportModel getError: " + reportModel.getError());
-                    Log.d(Settings.TAG, "getReport reportModel getData : " + reportModel.getResponse().getData());
 
-                    if (reportModel.getResponse().getData() != null || reportModel.getResponse().getData().size() > 0){
+                    if (reportModel.getResponse() != null && (reportModel.getResponse().getData() != null || reportModel.getResponse().getData().size() > 0)){
+
+                        Log.d(Settings.TAG, "getReport reportModel getData : " + reportModel.getResponse().getData());
+
                         // size = 0 because safe all
                         if (reportModel.getResponse().getData().size() > 0){
                             for (ReportModel model : reportModel.getResponse().getData()){
@@ -187,6 +200,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
                                     //update status app status send apk
                                     AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+                                    Log.d(Settings.TAG, "appInfo1");
                                     appInfo.setAppStatus(Constants.APP_STATUS_SEND_APK);
                                     AppRealm.update(appInfo);
 
@@ -195,7 +209,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
                                     // update status app warning
                                     AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
-
+                                    Log.d(Settings.TAG, "appInfo2");
                                     if (percent > 25){
                                         appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
                                     } else if (percent > 50){

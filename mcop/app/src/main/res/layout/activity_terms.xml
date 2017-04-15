@@ -13,8 +13,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:textSize="@dimen/title_text_size"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textColor="@color/colorBgGray"
             />
     </RelativeLayout>
     
@@ -27,7 +29,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:textSize="@dimen/title_text_size"
-        android:textStyle="bold"
+        android:textColor="@android:color/black"
         />
 
     <ScrollView
@@ -35,13 +37,15 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/title_terms_textview"
         android:layout_above="@+id/accept_checkbox"
-        android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_margin="@dimen/scroll_margin"
+        android:background="@color/colorBgGray"
         >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_terms_detail"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             />
 
     </ScrollView>
@@ -52,7 +56,19 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_above="@+id/start_monitoring_button"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:button="@drawable/checkbox_selector"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/label_accept_service"
+        android:textColor="@android:color/black"
+        android:layout_above="@+id/start_monitoring_button"
+        android:layout_toRightOf="@+id/accept_checkbox"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         />
 
     <Button
@@ -64,6 +80,8 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:text="@string/label_button_start_monitoring"
         android:enabled="false"
+        android:background="@drawable/btn_selector"
+        android:textAllCaps="false"
         />
 
 </RelativeLayout>
