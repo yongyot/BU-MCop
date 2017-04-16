@@ -15,35 +15,65 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:textSize="@dimen/title_text_size"
+            android:textColor="@android:color/white"
             />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/initialization_margin"
         android:layout_weight="1"
         >
-
+        <ImageView
+            android:id="@+id/radar_circle_imageview1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/inner_circle_green"
+            />
+        <ImageView
+            android:id="@+id/radar_circle_imageview2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/inner_circle_green"
+            />
+        <ImageView
+            android:id="@+id/radar_circle_imageview3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/inner_circle_green"
+            />
         <ImageView
             android:id="@+id/circle_imageview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/circle_green"
+            android:src="@drawable/radar"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/white_circle"
+            android:layout_margin="@dimen/inner_cycle"
             />
         <TextView
+            android:id="@+id/status_safe_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_initializing"
-            android:textSize="@dimen/subtitle_text_size"
+            android:textSize="@dimen/row_title_text_size"
             android:layout_centerInParent="true"
             android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/colorTextSafe"
             />
-
     </RelativeLayout>
 
     <RelativeLayout

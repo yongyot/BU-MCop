@@ -42,7 +42,7 @@ import th.ac.bu.mcop.widgets.NotificationView;
 
 public class InitializationActivity extends AppCompatActivity implements HashGenManager.OnHashGenListener{
 
-    private ImageView mCircleImageview;
+    private ImageView mCircleImageview, mRadarCircleImage1, mRadarCircleImage2, mRadarCircleImage3;
     private Handler mHandler = new Handler();
     private ArrayList<AppsInfo> mAppInfos;
 
@@ -55,8 +55,12 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         setContentView(R.layout.activity_initialization);
 
         mCircleImageview = (ImageView) findViewById(R.id.circle_imageview);
+        mRadarCircleImage1 = (ImageView) findViewById(R.id.radar_circle_imageview1);
+        mRadarCircleImage2 = (ImageView) findViewById(R.id.radar_circle_imageview2);
+        mRadarCircleImage3 = (ImageView) findViewById(R.id.radar_circle_imageview3);
         mAppInfos = new ArrayList<>();
         animateScal();
+        animateRatate();
 
         Settings.loadSetting(this);
         insertAppsToRealm();
@@ -64,24 +68,26 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
     private void animateScal(){
 
-        AnimatorSet animator = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal3);
+        AnimatorSet animator1 = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal3);
+        animator1.setTarget(mRadarCircleImage1);
+        animator1.start();
+
+        AnimatorSet animator2 = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal3);
+        animator2.setTarget(mRadarCircleImage2);
+        animator2.setStartDelay(300);
+        animator2.start();
+
+        AnimatorSet animator3 = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal3);
+        animator3.setTarget(mRadarCircleImage3);
+        animator3.setStartDelay(600);
+        animator3.start();
+    }
+
+    private void animateRatate(){
+
+        AnimatorSet animator = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.rotate);
         animator.setTarget(mCircleImageview);
         animator.start();
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {}
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                animateScal();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {}
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {}
-        });
     }
 
     private void insertAppsToRealm(){
