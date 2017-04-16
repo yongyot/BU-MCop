@@ -2,6 +2,8 @@ package th.ac.bu.mcop.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,11 +19,13 @@ import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.AppInfoActivity;
 import th.ac.bu.mcop.adapters.AppsRecycleViewAdapter;
 import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
 public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdapter.OnAppListener{
     private static ArrayList<AppRealm> mApps;
+    private ArrayList<Drawable> mDrawables;
 
     private RecyclerView mRecyclerView;
     private AppsRecycleViewAdapter mAppsRecycleViewAdapter;
@@ -40,11 +44,30 @@ public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdap
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mAppsRecycleViewAdapter = new AppsRecycleViewAdapter(container.getContext(), mApps);
+
+        mDrawables = getDrawable();
+        mAppsRecycleViewAdapter = new AppsRecycleViewAdapter(container.getContext(), mApps, mDrawables);
         mAppsRecycleViewAdapter.setOnAppListener(this);
         mRecyclerView.setAdapter(mAppsRecycleViewAdapter);
 
         return view;
+    }
+
+    private ArrayList<Drawable> getDrawable(){
+
+        ArrayList<Drawable> drawables = new ArrayList<>();
+
+        ArrayList<ApplicationInfo> applicationInfos = ApplicationInfoManager.getTotalApplicationUsingInternet(getContext());
+
+        for (int i = 0; i < mApps.size(); i++){
+            for (ApplicationInfo appInfo : applicationInfos){
+                if (appInfo.packageName.equals(mApps.get(i).getPackageName())){
+                    drawables.add(appInfo.loadIcon(getContext().getPackageManager()));
+                }
+            }
+        }
+
+        return drawables;
     }
 
     /***********************************************

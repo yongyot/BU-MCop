@@ -78,6 +78,7 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
                 mAccpetCheckBox.setChecked(false);
                 mAlertDialog = new AlertDialog
                         .Builder(this)
+                        .setTitle(getString(R.string.app_name))
                         .setMessage("Please turn on usage access first.")
                         .setCancelable(false)
                         .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {

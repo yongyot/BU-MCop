@@ -3,6 +3,7 @@ package th.ac.bu.mcop.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,14 +27,15 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
         void onItemClickListener(int position);
     }
 
-    //private ArrayList<ApplicationInfo> mApplicationInfos;
     private ArrayList<AppRealm> mApps;
+    private ArrayList<Drawable> mDrawables;
 
     private Context mContext;
     private OnAppListener mOnAppListener;
 
-    public AppsRecycleViewAdapter(Context context, ArrayList<AppRealm> apps){
+    public AppsRecycleViewAdapter(Context context, ArrayList<AppRealm> apps, ArrayList<Drawable> drawables){
         mApps = apps;
+        mDrawables = drawables;
         mContext = context;
     }
 
@@ -47,25 +49,7 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        /*holder.appNameTextView.setText(mApplicationInfos.get(position).loadLabel(mContext.getPackageManager()));
-        holder.packageNameTextView.setText(mApplicationInfos.get(position).packageName);
-        holder.iconImageView.setImageDrawable(mApplicationInfos.get(position).loadIcon(mContext.getPackageManager()));
-        holder.containerAppsRelative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mOnAppListener != null){
-                    mOnAppListener.onItemClickListener(position);
-                }
-            }
-        });*/
-
-        ArrayList<ApplicationInfo> applicationInfos = ApplicationInfoManager.getTotalApplicationUsingInternet(mContext);
-        for (ApplicationInfo appInfo : applicationInfos){
-            if (appInfo.packageName.equals(mApps.get(position).getPackageName())){
-                holder.iconImageView.setImageDrawable(appInfo.loadIcon(mContext.getPackageManager()));
-                break;
-            }
-        }
+        holder.iconImageView.setImageDrawable(mDrawables.get(position));
 
         holder.appNameTextView.setText(mApps.get(position).getName());
         holder.packageNameTextView.setText(mApps.get(position).getPackageName());
