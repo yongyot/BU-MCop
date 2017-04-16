@@ -17,8 +17,9 @@
     <string name="label_manageapp">Application List</string>
     <string name="label_ignore">Ignore</string>
     <string name="label_uninstall">Uninstall</string>
-    <string name="label_version">Version</string>
-    <string name="label_risk_level">Risk level</string>
+    <string name="label_version">Current Version:</string>
+    <string name="label_updateed">Updated:</string>
+    <string name="label_risk_level">Risk level:</string>
     <string name="label_storage">Storage</string>
     <string name="label_permission">Permission</string>
     <string name="label_about_desc">mCOP by NBTC เตือนภัยแอปพลิเคชั่นอันตรายบนโทรศัพท์เคลื่อนที่</string>

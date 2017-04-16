@@ -17,7 +17,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.models.AppsInfo;
 import th.ac.bu.mcop.models.realm.AppRealm;
@@ -30,7 +34,8 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
 
     private Button mUninstallAppButton, mIgnoreButton;
     private ApplicationInfo mApplicationInfo;
-    private TextView mAppNameTextView, mPackageNameTextView, mVersionTextView, mStatusTextView, mStorageTextview, mPermissionTextView;
+    private TextView mAppNameTextView, mPackageNameTextView, mVersionTextView, mUpdatedTextView;
+    private Button mSafeButton, mLowButton, mMediumButton, mHightButton;
     private RelativeLayout mContainerButton;
     private ImageView mAppIconImageview;
 
@@ -47,12 +52,16 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         mUninstallAppButton = (Button) findViewById(R.id.uninstall_app_button);
         mAppNameTextView = (TextView) findViewById(R.id.app_name_textview);
         mPackageNameTextView = (TextView) findViewById(R.id.package_name_textview);
-        mVersionTextView = (TextView) findViewById(R.id.version_textview);
-        mStatusTextView = (TextView) findViewById(R.id.status_textview);
-        mStorageTextview = (TextView) findViewById(R.id.storage_textview);
-        mPermissionTextView = (TextView) findViewById(R.id.permission_textview);
         mAppIconImageview = (ImageView) findViewById(R.id.icon_imageview);
+        mVersionTextView = (TextView) findViewById(R.id.version_value_textview);
+        mUpdatedTextView = (TextView) findViewById(R.id.update_value_textview);
         mContainerButton = (RelativeLayout) findViewById(R.id.container_button);
+
+        mSafeButton = (Button) findViewById(R.id.safe_button);
+        mLowButton = (Button) findViewById(R.id.low_button);
+        mMediumButton = (Button) findViewById(R.id.medium_button);
+        mHightButton = (Button) findViewById(R.id.high_button);
+
         mIgnoreButton.setOnClickListener(this);
         mUninstallAppButton.setOnClickListener(this);
 
@@ -76,6 +85,11 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setView(){
 
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd ,yyyy");
+        String dateString = format.format(new Date());
+
+        mUpdatedTextView.setText(dateString);
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             mPackageName = bundle.getString("put_extra_package_name");
@@ -96,79 +110,53 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
 
                 try {
                     PackageInfo packageInfo = getPackageManager().getPackageInfo(mApplicationInfo.packageName, 0);
-                    mVersionTextView.setText(getString(R.string.label_version) + " : " + packageInfo.versionName);
+                    mVersionTextView.setText(packageInfo.versionName);
 
-                    String appStatus = "";
                     if (mAppStatus == Constants.APP_STATUS_SAFE){
-                        appStatus = "Safe";
+
+                        mLowButton.setBackgroundResource(R.drawable.empty);
+                        mMediumButton.setBackgroundResource(R.drawable.empty);
+                        mHightButton.setBackgroundResource(R.drawable.empty);
+
+                        mLowButton.setTextColor(Color.GRAY);
+                        mMediumButton.setTextColor(Color.GRAY);
+                        mHightButton.setTextColor(Color.GRAY);
+
                     } else if (mAppStatus == Constants.APP_STATUS_WARNING_YELLOW){
-                        appStatus = "Low";
+
+                        mSafeButton.setBackgroundResource(R.drawable.empty);
+                        mMediumButton.setBackgroundResource(R.drawable.empty);
+                        mHightButton.setBackgroundResource(R.drawable.empty);
+
+                        mSafeButton.setTextColor(Color.GRAY);
+                        mMediumButton.setTextColor(Color.GRAY);
+                        mHightButton.setTextColor(Color.GRAY);
+
                     } else if (mAppStatus == Constants.APP_STATUS_WARNING_ORANGE){
-                        appStatus = "Medium";
+
+                        mSafeButton.setBackgroundResource(R.drawable.empty);
+                        mLowButton.setBackgroundResource(R.drawable.empty);
+                        mHightButton.setBackgroundResource(R.drawable.empty);
+
+                        mSafeButton.setTextColor(Color.GRAY);
+                        mLowButton.setTextColor(Color.GRAY);
+                        mHightButton.setTextColor(Color.GRAY);
+
                     } else if (mAppStatus == Constants.APP_STATUS_WARNING_RED){
-                        appStatus = "High";
+
+                        mSafeButton.setBackgroundResource(R.drawable.empty);
+                        mLowButton.setBackgroundResource(R.drawable.empty);
+                        mMediumButton.setBackgroundResource(R.drawable.empty);
+
+                        mSafeButton.setTextColor(Color.GRAY);
+                        mLowButton.setTextColor(Color.GRAY);
+                        mMediumButton.setTextColor(Color.GRAY);
                     }
-
-                    mStatusTextView.setText(getString(R.string.label_risk_level) + " : " + appStatus);
-
-                    PackageInfo packageInfoPermission = getPackageManager().getPackageInfo(mApplicationInfo.packageName, PackageManager.GET_PERMISSIONS);
-                    String[] requestedPermissions = packageInfoPermission.requestedPermissions;
-
-                    String permissionString = "";
-                    for (int i = 0; i < requestedPermissions.length; i++){
-                        permissionString += requestedPermissions[i] + "\n";
-                    }
-                    mPermissionTextView.setText(getString(R.string.label_permission) + "\n" + permissionString);
-                    mPermissionTextView.setVisibility(View.INVISIBLE);
-                    mStorageTextview.setVisibility(View.INVISIBLE);
-
-                    setTextColor(mAppStatus);
 
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             }
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void setTextColor(int appStatus){
-        if (appStatus == Constants.APP_STATUS_SAFE){
-
-//            mAppNameTextView.setTextColor(Color.GREEN);
-//            mPackageNameTextView .setTextColor(Color.GREEN);
-//            mVersionTextView .setTextColor(Color.GREEN);
-            mStatusTextView.setTextColor(Color.GREEN);
-            mStatusTextView.setTextColor(getColor(R.color.colorGreenSafe));
-//            mStorageTextview .setTextColor(Color.GREEN);
-//            mPermissionTextView.setTextColor(Color.GREEN);
-
-        } else if (appStatus == Constants.APP_STATUS_WARNING_YELLOW){
-
-//            mAppNameTextView.setTextColor(Color.YELLOW);
-//            mPackageNameTextView .setTextColor(Color.YELLOW);
-//            mVersionTextView .setTextColor(Color.YELLOW);
-            mStatusTextView.setTextColor(Color.YELLOW);
-//            mStorageTextview .setTextColor(Color.YELLOW);
-//            mPermissionTextView.setTextColor(Color.YELLOW);
-
-        } else if (appStatus == Constants.APP_STATUS_WARNING_ORANGE){
-
-//            mAppNameTextView.setTextColor(Color.rgb(255,127,80));
-//            mPackageNameTextView .setTextColor(Color.rgb(255,127,80));
-//            mVersionTextView .setTextColor(Color.rgb(255,127,80));
-            mStatusTextView.setTextColor(Color.rgb(255,127,80));
-//            mStorageTextview .setTextColor(Color.rgb(255,127,80));
-//            mPermissionTextView.setTextColor(Color.rgb(255,127,80));
-
-        } else if (appStatus == Constants.APP_STATUS_WARNING_RED){
-
-//            mAppNameTextView.setTextColor(Color.RED);
-//            mPackageNameTextView .setTextColor(Color.RED);
-//            mVersionTextView .setTextColor(Color.RED);
-            mStatusTextView.setTextColor(Color.RED);
-//            mStorageTextview .setTextColor(Color.RED);
-//            mPermissionTextView.setTextColor(Color.RED);
         }
     }
 
