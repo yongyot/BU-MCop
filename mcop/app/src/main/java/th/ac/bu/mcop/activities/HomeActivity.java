@@ -1,20 +1,16 @@
 package th.ac.bu.mcop.activities;
 
 import android.Manifest;
-import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -66,8 +63,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button mAboutButton, mManageAppButton, mStartLogButton;
     private TextView mTotalInstalledAppTextView, mAppUsingInternetTextView, mMessageTextView;
-    private TextView mStatusAppsInDevice;
-    private ImageView mCircleImageview;
+    private TextView mStatusSafeTextView, mAmountWarningTextView;
+    private ImageView mCircleImageview, mRadarCircleImage1, mRadarCircleImage2, mRadarCircleImage3;
+    private LinearLayout mContainerWarningLenearLayout;
     public static TextView mTestSMSTextView;
 
     private boolean isAppPaused = false;
@@ -93,8 +91,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mManageAppButton = (Button) findViewById(R.id.manage_app_button);
         mStartLogButton = (Button) findViewById(R.id.start_log_button);
         mMessageTextView = (TextView) findViewById(R.id.message_textview);
-        mStatusAppsInDevice = (TextView) findViewById(R.id.status_apps_in_device);
+        mStatusSafeTextView = (TextView) findViewById(R.id.status_safe_textview);
         mCircleImageview = (ImageView) findViewById(R.id.circle_imageview);
+        mRadarCircleImage1 = (ImageView) findViewById(R.id.radar_circle_imageview1);
+        mRadarCircleImage2 = (ImageView) findViewById(R.id.radar_circle_imageview2);
+        mRadarCircleImage3 = (ImageView) findViewById(R.id.radar_circle_imageview3);
+        mAmountWarningTextView = (TextView) findViewById(R.id.amount_warning_textview);
+        mContainerWarningLenearLayout = (LinearLayout) findViewById(R.id.container_warning_linearlayout);
         mTestSMSTextView = (TextView) findViewById(R.id.test_sms_textview);
 
         mManageAppButton.setOnClickListener(this);
@@ -118,6 +121,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         animateScal();
+        animateRatate();
     }
 
     @Override
@@ -157,24 +161,26 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void animateScal(){
 
-        AnimatorSet animator = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal);
+        AnimatorSet animator1 = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal3);
+        animator1.setTarget(mRadarCircleImage1);
+        animator1.start();
+
+        AnimatorSet animator2 = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal3);
+        animator2.setTarget(mRadarCircleImage2);
+        animator2.setStartDelay(300);
+        animator2.start();
+
+        AnimatorSet animator3 = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal3);
+        animator3.setTarget(mRadarCircleImage3);
+        animator3.setStartDelay(600);
+        animator3.start();
+    }
+
+    private void animateRatate(){
+
+        AnimatorSet animator = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.rotate);
         animator.setTarget(mCircleImageview);
         animator.start();
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {}
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                animateScal();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {}
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {}
-        });
     }
 
     /***********************************************
@@ -232,12 +238,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         warningApps.addAll(yellowApps);
 
         if (warningApps.size() > 0){
-            String messageWarning = getString(R.string.label_device_warning, warningApps.size());
-            mStatusAppsInDevice.setText(messageWarning);
-            mCircleImageview.setImageResource(R.drawable.circle_red);
+            mContainerWarningLenearLayout.setVisibility(View.VISIBLE);
+            mStatusSafeTextView.setVisibility(View.INVISIBLE);
+            mAmountWarningTextView.setText(warningApps.size() + "");
+            mCircleImageview.setImageResource(R.drawable.radar_red);
+            mRadarCircleImage1.setImageResource(R.drawable.inner_circle_red);
+            mRadarCircleImage2.setImageResource(R.drawable.inner_circle_red);
+            mRadarCircleImage3.setImageResource(R.drawable.inner_circle_red);
         } else {
-            mStatusAppsInDevice.setText(getString(R.string.label_device_safe));
-            mCircleImageview.setImageResource(R.drawable.circle_green);
+            mContainerWarningLenearLayout.setVisibility(View.INVISIBLE);
+            mStatusSafeTextView.setVisibility(View.VISIBLE);
+            mCircleImageview.setImageResource(R.drawable.radar);
+            mRadarCircleImage1.setImageResource(R.drawable.inner_circle_green);
+            mRadarCircleImage2.setImageResource(R.drawable.inner_circle_green);
+            mRadarCircleImage3.setImageResource(R.drawable.inner_circle_green);
         }
     }
 

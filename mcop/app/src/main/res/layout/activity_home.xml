@@ -13,8 +13,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:textSize="@dimen/title_text_size"
+            android:textColor="@android:color/white"
             />
     </RelativeLayout>
 
@@ -22,7 +24,7 @@
         android:id="@+id/about_button"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:background="@drawable/icon_about"
+        android:background="@drawable/ic_about_selector"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/navbar"
@@ -42,24 +44,94 @@
             android:layout_margin="@dimen/initialization_margin"
             android:layout_weight="1"
             >
-
+            <ImageView
+                android:id="@+id/radar_circle_imageview1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/inner_circle_green"
+                />
+            <ImageView
+                android:id="@+id/radar_circle_imageview2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/inner_circle_green"
+                />
+            <ImageView
+                android:id="@+id/radar_circle_imageview3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/inner_circle_green"
+                />
             <ImageView
                 android:id="@+id/circle_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/circle_green"
+                android:src="@drawable/radar"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/white_circle"
+                android:layout_margin="@dimen/inner_cycle"
                 />
             <TextView
-                android:id="@+id/status_apps_in_device"
+                android:id="@+id/status_safe_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_device_safe"
-                android:textSize="@dimen/subtitle_text_size"
+                android:textSize="@dimen/row_title_text_size"
                 android:layout_centerInParent="true"
                 android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/colorTextSafe"
                 />
 
+            <LinearLayout
+                android:id="@+id/container_warning_linearlayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:visibility="invisible"
+                >
+                <TextView
+                    android:id="@+id/status_warning_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_device_have"
+                    android:textSize="@dimen/device_have_text_size"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/colorTextWarning"
+                    android:gravity="center"
+                    />
+                <TextView
+                    android:id="@+id/amount_warning_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="@dimen/amount_text_size"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/colorTextWarning"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    />
+                <TextView
+                    android:id="@+id/warning_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_warning"
+                    android:textSize="@dimen/warning_text_size"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/colorTextWarning"
+                    android:gravity="center"
+                    />
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
@@ -69,7 +141,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:background="@color/colorBgGray"
+
             >
 
             <TextView
@@ -78,6 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:text="Total installed app"
+                android:textStyle="bold"
                 />
             <TextView
                 android:id="@+id/number_total_install_textview"
@@ -85,6 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:layout_alignParentRight="true"
+                android:textStyle="bold"
                 />
 
             <TextView
@@ -94,6 +168,7 @@
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:layout_below="@+id/title_total_install_textview"
                 android:text="App using internet"
+                android:textStyle="bold"
                 />
             <TextView
                 android:id="@+id/number_app_using_internet_textview"
@@ -102,18 +177,20 @@
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:layout_below="@+id/title_total_install_textview"
                 android:layout_alignParentRight="true"
+                android:textStyle="bold"
                 />
 
             <Button
                 android:id="@+id/manage_app_button"
-                android:layout_width="@dimen/button_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:text="@string/label_manageapp"
                 android:textAllCaps="false"
-                android:background="@drawable/btn_button"
+                android:background="@drawable/btn_selector"
+                android:textColor="@android:color/white"
                 />
 
         </RelativeLayout>

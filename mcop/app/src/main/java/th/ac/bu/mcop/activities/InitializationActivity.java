@@ -64,7 +64,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
     private void animateScal(){
 
-        AnimatorSet animator = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal);
+        AnimatorSet animator = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scal3);
         animator.setTarget(mCircleImageview);
         animator.start();
         animator.addListener(new Animator.AnimatorListener() {
