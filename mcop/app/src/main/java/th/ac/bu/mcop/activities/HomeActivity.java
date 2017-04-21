@@ -315,6 +315,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         initSMSWatch();
     }
 
+    private void requestReadCallLog(){
+        Log.d(Settings.TAG, "requestReadCallLogPermission");
+        int hasLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG);
+        if (hasLocationPermission != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALL_LOG}, Constants.REQUEST_READ_CALL_LOG);
+            return;
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -329,6 +338,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 requestReadPhoneStatePermission();
             }
         } else if (requestCode == Constants.REQUEST_READ_PHONE_STATE){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //initSMSWatch();
+                requestReadCallLog();
+            }
+        } else if (requestCode == Constants.REQUEST_READ_CALL_LOG){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initSMSWatch();
             }

@@ -120,6 +120,11 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                             appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
                         }
 
+                        // calculate size dir
+                        //Log.d(Settings.TAG, "=========== packageName: " + applicationInfo.packageName + " ========");
+                        //File file = new File(applicationInfo.dataDir);
+                        //Log.d(Settings.TAG, "dirSize: " + dirSize(file));
+
                         appsInfos.add(appsInfo);
 
                         count++;
@@ -132,6 +137,25 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                 initHasFile();
             }
         }).start();
+    }
+
+    private long dirSize(File directory) {
+        Log.d(Settings.TAG, "============== dirSize: " + directory);
+        Log.d(Settings.TAG, "============== dirSize.listFiles: " + directory.listFiles());
+
+        if (directory == null || directory.listFiles() == null){
+            return 0;
+        }
+
+        long length = 0;
+        for (File file : directory.listFiles()) {
+            if (file.isFile())
+                length += file.length();
+            else
+                length += dirSize(file);
+        }
+        Log.d(Settings.TAG, "length: " + length);
+        return length;
     }
 
     private void initHasFile(){

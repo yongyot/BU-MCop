@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.IntDef;
 import android.util.Log;
 
 /**
@@ -55,10 +56,10 @@ public final class AndroidWatchdogService extends Service {
 		super.onCreate();
 		//setForeground(true);
 	}
-	
+
 	@Override
-	public void onStart(final Intent intent, int startId) {
-		super.onStart(intent, startId);
+	public int onStartCommand(Intent intent, int flags, int startId) {
+
 		AndroidEvent event = new AndroidEvent(this, this, intent);
 		Bundle extras = intent.getExtras();
 		Object key = extras != null ? extras.get(EXTRA_KEY_OBJECT_HASH_CODE) : null;
@@ -74,6 +75,8 @@ public final class AndroidWatchdogService extends Service {
 			// Start all watchers
 			watchdog.start(event);
 		}
+
+		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Override

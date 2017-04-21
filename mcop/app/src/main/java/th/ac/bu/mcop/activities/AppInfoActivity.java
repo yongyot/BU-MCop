@@ -1,5 +1,7 @@
 package th.ac.bu.mcop.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -32,7 +34,7 @@ import th.ac.bu.mcop.utils.Settings;
 
 public class AppInfoActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button mUninstallAppButton, mIgnoreButton;
+    private Button mUninstallAppButton, mIgnoreButton, mBackButton;
     private ApplicationInfo mApplicationInfo;
     private TextView mAppNameTextView, mPackageNameTextView, mVersionTextView, mUpdatedTextView;
     private Button mSafeButton, mLowButton, mMediumButton, mHightButton;
@@ -56,6 +58,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         mVersionTextView = (TextView) findViewById(R.id.version_value_textview);
         mUpdatedTextView = (TextView) findViewById(R.id.update_value_textview);
         mContainerButton = (RelativeLayout) findViewById(R.id.container_button);
+        mBackButton = (Button) findViewById(R.id.back_button);
 
         mSafeButton = (Button) findViewById(R.id.safe_button);
         mLowButton = (Button) findViewById(R.id.low_button);
@@ -64,6 +67,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
 
         mIgnoreButton.setOnClickListener(this);
         mUninstallAppButton.setOnClickListener(this);
+        mBackButton.setOnClickListener(this);
 
         setView();
     }
@@ -168,9 +172,25 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         if (view.getId() == R.id.ignore_button){
 
-            AppRealm.updateWithPackage(mPackageName, Constants.APP_STATUS_SAFE);
-            setResult(Constants.RESULT_IGNORE);
-            finish();
+            new AlertDialog
+                    .Builder(this)
+                    .setTitle(getString(R.string.app_name))
+                    .setMessage("Do you want to ignore this Application?")
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            AppRealm.updateWithPackage(mPackageName, Constants.APP_STATUS_SAFE);
+                            setResult(Constants.RESULT_IGNORE);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).show();
 
         } else if (view.getId() == R.id.uninstall_app_button){
 
@@ -182,6 +202,8 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             startActivity(intent);
+        } else if (view.getId() == R.id.back_button){
+            finish();
         }
     }
 

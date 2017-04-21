@@ -115,7 +115,7 @@ public class BackgroundService extends Service {
     private void uploadNetDataByte() {
 
         String path = Settings.sApplicationPath + Settings.sOutputFileName;
-        String osVersion = Build.VERSION.BASE_OS + "";
+        String osVersion = Build.VERSION.RELEASE;
         String deviceModel = Build.MODEL;
         final File file = new File(path);
 
@@ -135,7 +135,9 @@ public class BackgroundService extends Service {
                 @Override
                 public void onResponse(Call<ResponseUpload> call, Response<ResponseUpload> response) {
                     Log.d(Settings.TAG, "upload byte success");
-                    file.delete();
+                    if (file != null){
+                        file.delete();
+                    }
                     initPathFile();
                 }
 
@@ -181,7 +183,7 @@ public class BackgroundService extends Service {
 
     private void uploadHashCodeByte() {
 
-        String osVersion = Build.VERSION.BASE_OS + "";
+        String osVersion = Build.VERSION.RELEASE;
         String deviceModel = Build.MODEL;
         final File file = new File(Settings.sHashFilePath);
 
@@ -201,8 +203,9 @@ public class BackgroundService extends Service {
                 @Override
                 public void onResponse(Call<ResponseUpload> call, Response<ResponseUpload> response) {
                     Log.d(Settings.TAG, "upload hash code byte success");
-
-                    file.delete();
+                    if (file != null){
+                        file.delete();
+                    }
                     initPathFile();
                 }
 

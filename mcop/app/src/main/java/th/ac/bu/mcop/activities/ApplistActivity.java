@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,11 +24,12 @@ import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 
-public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, View.OnClickListener{
 
     private AppsViewPagerAdapter mAppsViewPagerAdapter;
     private ViewPager mViewPager;
     private PagerSlidingTabStrip mPagerSlidingTabStrip;
+    private Button mBackButton;
 
     ArrayList<ApplicationInfo> mApplicationInfosInstall;
     private int INDEX_TAB_SAFE = 0;
@@ -41,6 +44,8 @@ public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPa
 
         mViewPager = (ViewPager) findViewById(R.id.app_viewpager);
         mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        mBackButton = (Button) findViewById(R.id.back_button);
+        mBackButton.setOnClickListener(this);
 
         ArrayList<AppRealm> safeApps = AppRealm.getSafeApps();
 
@@ -48,12 +53,12 @@ public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPa
         ArrayList<AppRealm> orangeApps = AppRealm.getWarningOrangeApps();
         ArrayList<AppRealm> redApps = AppRealm.getWarningRedApps();
 
-        ArrayList<AppRealm> warning = new ArrayList<>();
-        warning.addAll(redApps);
-        warning.addAll(orangeApps);
-        warning.addAll(yellowApps);
+        ArrayList<AppRealm> warningApps = new ArrayList<>();
+        warningApps.addAll(redApps);
+        warningApps.addAll(orangeApps);
+        warningApps.addAll(yellowApps);
 
-        mAppsViewPagerAdapter = new AppsViewPagerAdapter(getSupportFragmentManager(), safeApps, warning);
+        mAppsViewPagerAdapter = new AppsViewPagerAdapter(getSupportFragmentManager(), safeApps, warningApps);
         mViewPager.setAdapter(mAppsViewPagerAdapter);
         mPagerSlidingTabStrip.setViewPager(mViewPager);
 
@@ -125,5 +130,12 @@ public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPa
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+         if (v.getId() == R.id.back_button){
+            finish();
+        }
     }
 }

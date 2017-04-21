@@ -25,6 +25,7 @@ public class Constants {
     public static final int REQUEST_READ_PHONE_STATE = 5001;
     public static final int REQUEST_READ_SMS = 5002;
     public static final int REQUEST_ACCESS_FINE_LOCATION = 5003;
+    public static final int REQUEST_READ_CALL_LOG = 5004;
 
     public final static int APP_STATUS_SAFE = 0;
     public final static int APP_STATUS_WARNING_YELLOW = 1;

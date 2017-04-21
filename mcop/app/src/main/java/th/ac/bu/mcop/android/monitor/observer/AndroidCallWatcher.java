@@ -34,6 +34,7 @@ public class AndroidCallWatcher extends AndroidWatcher {
 	@Override
 	public void start(Event dc) {
 		super.start(dc);
+
 		Context context = ((AndroidEvent)dc).getContext();
 		TelephonyManager telephony = (TelephonyManager) context.getSystemService(
 				Context.TELEPHONY_SERVICE);

@@ -19,6 +19,10 @@ public class ApplicationInfoManager {
         PackageManager packageManager = activity.getPackageManager();
         ArrayList<ApplicationInfo> applicationInfos = (ArrayList<ApplicationInfo>) packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
 
+        if (applicationInfos == null){
+            return new ArrayList<>();
+        }
+
         for (ApplicationInfo info : applicationInfos) {
             String[] nativeLibraryDirs = info.nativeLibraryDir.split("/");
             if (nativeLibraryDirs.length > 0){
@@ -37,6 +41,10 @@ public class ApplicationInfoManager {
 
         PackageManager packageManager = context.getPackageManager();
         ArrayList<ApplicationInfo> applicationInfos = (ArrayList<ApplicationInfo>) packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        if (applicationInfos == null){
+            return new ArrayList<>();
+        }
 
         for (ApplicationInfo info : applicationInfos) {
 

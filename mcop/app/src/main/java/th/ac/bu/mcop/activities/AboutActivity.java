@@ -11,7 +11,7 @@ import th.ac.bu.mcop.R;
 
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button mRateButton;
+    private Button mRateButton, mBackButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -19,7 +19,9 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_about);
 
         mRateButton = (Button) findViewById(R.id.rate_button);
+        mBackButton = (Button) findViewById(R.id.back_button);
         mRateButton.setOnClickListener(this);
+        mBackButton.setOnClickListener(this);
     }
 
     /***********************************************
@@ -30,6 +32,8 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         if (view.getId() == R.id.rate_button){
 
+        } else if (view.getId() == R.id.back_button){
+            finish();
         }
     }
 }
