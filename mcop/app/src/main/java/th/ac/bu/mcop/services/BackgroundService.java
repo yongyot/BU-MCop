@@ -322,7 +322,7 @@ public class BackgroundService extends Service {
 
         int icon = R.mipmap.ic_launcher;
 
-        mBuilder.setContentTitle("mCOP Stats Collector")
+        mBuilder.setContentTitle(getString(R.string.app_name))
                 .setContentText("Started: " + mDateFormat.format(mDate))
                 .setSubText("Session: " + sCounter)
                 .setContentInfo("Interval: " + Settings.sInterval)
@@ -393,13 +393,6 @@ public class BackgroundService extends Service {
             hashGen.getAllAppInfo(mContext);
 
             uploadHashCodeByte();
-
-//            File file = new File(Settings.sHashFilePath);
-//            boolean isExist = file.exists();
-//            if (isExist && !HashGenManager.sIsGenerating && !HashFileUploader.sIsUploading){
-//                HashFileUploader hashFileUploader = new HashFileUploader(mContext);
-//                hashFileUploader.execute();
-//            }
         }
     }
 }

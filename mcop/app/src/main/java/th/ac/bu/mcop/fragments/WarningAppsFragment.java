@@ -1,6 +1,5 @@
 package th.ac.bu.mcop.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +19,6 @@ import th.ac.bu.mcop.adapters.AppsRecycleViewAdapter;
 import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Constants;
-import th.ac.bu.mcop.utils.Settings;
 
 public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdapter.OnAppListener{
     private static ArrayList<AppRealm> mApps;

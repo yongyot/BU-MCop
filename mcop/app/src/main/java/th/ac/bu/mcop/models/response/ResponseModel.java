@@ -1,9 +1,14 @@
 package th.ac.bu.mcop.models.response;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ResponseModel<T extends Object> {
 
+    @SerializedName("result")
     boolean result;
+    @SerializedName("error")
     String error;
+    @SerializedName("response")
     T response;
 
     public boolean isResult() {

@@ -154,18 +154,6 @@ public class StatsRealm extends RealmObject{
             statsRealm.setCreateDate(createtime);
 
             statsRealms.add(statsRealm);
-
-//            Log.d(Settings.TAG, "Timer: " + BackgroundService.sCounter);
-//            Log.d(Settings.TAG, "getPackageName                     : " + stats.getPackageName());
-//            Log.d(Settings.TAG, "getUid                             : " + stats.getUid());
-//            Log.d(Settings.TAG, "NetworkType                        : " + Settings.sNetworkType + "");
-//            Log.d(Settings.TAG, "ApplicationState                   : " + stats.getState() + "");
-//            Log.d(Settings.TAG, "getUpDataInByte                    : " + stats.getNet().getUpDataInByte());
-//            Log.d(Settings.TAG, "getDownDataInByte                  : " + stats.getNet().getDownDataInByte());
-//            Log.d(Settings.TAG, "sentDataInBytePercentOfToal        : " + sentDataInBytePercentOfToal);
-//            Log.d(Settings.TAG, "receivedDataInBytePercentOfTotal   : " + receivedDataInBytePercentOfTotal);
-//            Log.d(Settings.TAG, "create date                        : " + createtime);
-//            Log.d(Settings.TAG, "********************");
         }
 
         realm.copyFromRealm(statsRealms);

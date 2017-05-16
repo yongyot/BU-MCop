@@ -19,6 +19,11 @@ import th.ac.bu.mcop.widgets.NotificationView;
 public class Settings {
 
     public static final String TAG = "log-mcop";
+    public static final String WLAND0 = "wlan0";
+    public static final String ETH0 = "eth0";
+    public static final String ETH1 = "eth1";
+    public static final String STAT_PATH = "/BU-Stat-Collector/";
+    public static final String HASH_DATA = "hashData";
 
     public static int sNetworkType;
     public static int sInterval;
@@ -39,8 +44,8 @@ public class Settings {
         sIsUsageAccessGranted = isUsageAccessGranted(context);
         sWifiInterfaceName = getWifiInterfaceName();
         sMacAddress = getMacAddress(context);
-        sApplicationPath = context.getCacheDir().toString() + "/BU-Stat-Collector/";
-        sHashFilePath = sApplicationPath + "hashData";
+        sApplicationPath = context.getCacheDir().toString() + STAT_PATH;
+        sHashFilePath = sApplicationPath + HASH_DATA;
 
         if (sMacAddress != null){
             sOutputFileName = sMacAddress.replace(":", "-") + ".stats";
@@ -50,12 +55,12 @@ public class Settings {
     public static String getWifiInterfaceName(){
 
         try {
-            if (NetworkInterface.getByName("wlan0") != null){
-                return "wlan0";
-            } else if (NetworkInterface.getByName("eth0") != null){
-                return "eth0";
-            } else if (NetworkInterface.getByName("eth1") != null){
-                return "eth1";
+            if (NetworkInterface.getByName(WLAND0) != null){
+                return WLAND0;
+            } else if (NetworkInterface.getByName(ETH0) != null){
+                return ETH0;
+            } else if (NetworkInterface.getByName(ETH1) != null){
+                return ETH1;
             }
         } catch (Exception e){
             Log.d(Settings.TAG,"Can not get wifi network interface name.");
@@ -71,7 +76,7 @@ public class Settings {
             try {
                 List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
                 for (NetworkInterface nif : all) {
-                    if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+                    if (!nif.getName().equalsIgnoreCase(WLAND0)) continue;
 
                     byte[] macBytes = nif.getHardwareAddress();
                     if (macBytes == null) {

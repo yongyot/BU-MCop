@@ -32,6 +32,6 @@ public class Constants {
     public final static int APP_STATUS_WARNING_ORANGE = 2;
     public final static int APP_STATUS_WARNING_RED = 3;
 
-    public final static int APP_STATUS_SEND_HASH = 4;
-    public final static int APP_STATUS_SEND_APK = 5;
+    public final static int APP_STATUS_WAIT_FOR_SEND_HASH = 4;
+    public final static int APP_STATUS_WAIT_FOR_SEND_APK = 5;
 }

@@ -42,18 +42,8 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
 
-//        if(Settings.isUsageAccessGranted(this)){
-//            mStartMonitoringButton.setEnabled(true);
-//            mAccpetCheckBox.setChecked(true);
-//        } else {
-            mStartMonitoringButton.setEnabled(false);
-            mAccpetCheckBox.setChecked(false);
-//
-//
-//            if (mAlertDialog != null){
-//                mAlertDialog.show();
-//            }
-//        }
+        mStartMonitoringButton.setEnabled(false);
+        mAccpetCheckBox.setChecked(false);
     }
 
     /***********************************************

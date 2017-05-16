@@ -1,22 +1,21 @@
 package th.ac.bu.mcop.adapters;
 
-import android.content.pm.ApplicationInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import java.util.ArrayList;
 
 import th.ac.bu.mcop.fragments.SalfAppsFragment;
 import th.ac.bu.mcop.fragments.WarningAppsFragment;
 import th.ac.bu.mcop.models.realm.AppRealm;
-import th.ac.bu.mcop.utils.Settings;
 
 public class AppsViewPagerAdapter extends FragmentPagerAdapter {
 
+    private final String SAFE_TITLE = "Safe";
+    private final String SUSPICIOUS_TITLE = "Suspicious";
+
     private final int NUM_ITEMS = 2;
-    private ArrayList<ApplicationInfo> mApplicationInfos;
     private ArrayList<AppRealm> mSafeApps;
     private ArrayList<AppRealm> mWarningApps;
 
@@ -52,9 +51,9 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0){
-            return "Safe";
+            return SAFE_TITLE;
         } else if (position == 1){
-            return "Suspicious";
+            return SUSPICIOUS_TITLE;
         }
         return "";
     }

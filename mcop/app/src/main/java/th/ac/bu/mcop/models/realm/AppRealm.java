@@ -253,7 +253,7 @@ public class AppRealm extends RealmObject{
         Realm realm = Realm.getDefaultInstance();
 
         RealmQuery<AppRealm> query = realm.where(AppRealm.class);
-        query.equalTo("appStatus", Constants.APP_STATUS_SEND_HASH);
+        query.equalTo("appStatus", Constants.APP_STATUS_WAIT_FOR_SEND_HASH);
 
         RealmResults<AppRealm> result = query.findAll();
         appRealms.addAll(result);
@@ -268,7 +268,7 @@ public class AppRealm extends RealmObject{
         Realm realm = Realm.getDefaultInstance();
 
         RealmQuery<AppRealm> query = realm.where(AppRealm.class);
-        query.equalTo("appStatus", Constants.APP_STATUS_SEND_APK);
+        query.equalTo("appStatus", Constants.APP_STATUS_WAIT_FOR_SEND_APK);
 
         RealmResults<AppRealm> result = query.findAll();
         appRealms.addAll(result);

@@ -67,10 +67,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView mCircleImageview, mRadarCircleImage1, mRadarCircleImage2, mRadarCircleImage3;
     private LinearLayout mContainerWarningLenearLayout;
     public static TextView mTestSMSTextView;
-
-    private boolean isAppPaused = false;
-    private Runnable mRunnable;
-    private Handler mHandler;
     private IntenetReceiver mIntenetReceiver;
 
     private static AndroidWatchdog mWatchdog;
@@ -110,7 +106,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mTotalInstalledAppTextView.setText(applicationInstalled.size() + "");
         mAppUsingInternetTextView.setText(applicationUsingInternet.size() + "");
 
-        mHandler = new Handler();
         mIntenetReceiver = new IntenetReceiver();
 
         // start sms
@@ -138,7 +133,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageRecevier, new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI));
         LocalBroadcastManager.getInstance(this).registerReceiver(mIntenetReceiver, new IntentFilter(Constants.INTENT_FILTER_INTERNET));
 
-        isAppPaused = false;
         super.onStart();
         Settings.loadSetting(this);
         setAppSafeOrNotView();
@@ -154,8 +148,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception ex) {
             Log.d(Settings.TAG, ex.getMessage());
         }
-
-        isAppPaused = true;
         super.onStop();
     }
 
@@ -198,32 +190,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             Intent intent = new Intent(this, ApplistActivity.class);
             startActivity(intent);
-
-        }/* else if (view.getId() == R.id.start_log_button){
-
-            if(Settings.isUsageAccessGranted(this)){
-                if(!isServiceRunning(BackgroundService.class)) { //service is stopped. Start it.
-                    Intent intent = new Intent(this, BackgroundService.class);
-                    try {
-                        stopService(intent);
-                    } catch (Exception ex) {
-                        Log.d(Settings.TAG, ex.toString());
-                    }
-
-                    startService(intent);
-
-                } else {
-                    stopService(new Intent(this,BackgroundService.class));
-                    BackgroundService.sStopRequest = true;
-
-                    mHandler.removeCallbacks(mRunnable);
-                }
-            } else {
-
-                Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                startActivity(intent);
-            }
-        }*/
+        }
     }
 
     private void setAppSafeOrNotView(){
@@ -258,9 +225,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private BroadcastReceiver mMessageRecevier = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(!isAppPaused) {
-
-            }
+            //if(!isAppPaused) {}
         }
     };
 
@@ -283,7 +248,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void requestReadSMSPermission(){
-        Log.d(Settings.TAG, "requestReadSMSPermission");
         int hasSmsPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS);
         if (hasSmsPermission != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_SMS}, Constants.REQUEST_READ_SMS);
@@ -294,7 +258,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void requestFineLocationPermission(){
-        Log.d(Settings.TAG, "requestFineLocationPermission");
         int hasLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (hasLocationPermission != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_ACCESS_FINE_LOCATION);
@@ -305,7 +268,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void requestReadPhoneStatePermission(){
-        Log.d(Settings.TAG, "requestReadPhoneStatePermission");
         int hasLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         if (hasLocationPermission != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, Constants.REQUEST_READ_PHONE_STATE);
@@ -316,7 +278,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void requestReadCallLog(){
-        Log.d(Settings.TAG, "requestReadCallLogPermission");
         int hasLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG);
         if (hasLocationPermission != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALL_LOG}, Constants.REQUEST_READ_CALL_LOG);
@@ -327,25 +288,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        //PERMISSION_GRANTED = 0;
-        Log.d(Settings.TAG, "onRequestPermissionsResult [" + requestCode + "]" + "[" + grantResults.length +"]" + "[" + + grantResults[0] + "]");
+        //grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED  is allow
         if (requestCode == Constants.REQUEST_READ_SMS){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                requestFineLocationPermission();
-            }
+            requestFineLocationPermission();
         } else if (requestCode == Constants.REQUEST_ACCESS_FINE_LOCATION){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                requestReadPhoneStatePermission();
-            }
+            requestReadPhoneStatePermission();
         } else if (requestCode == Constants.REQUEST_READ_PHONE_STATE){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //initSMSWatch();
-                requestReadCallLog();
-            }
+            requestReadCallLog();
         } else if (requestCode == Constants.REQUEST_READ_CALL_LOG){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                initSMSWatch();
-            }
+            initSMSWatch();
         }
     }
 
@@ -354,7 +305,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
      Init SMS
      ************************************************/
     private void initSMSWatch(){
-        Log.d(Settings.TAG, "initSMSWatch");
         mWatchdog = new AndroidWatchdog();
         IntentFilter filter = new IntentFilter();
         initWatchdog(mWatchdog, filter);

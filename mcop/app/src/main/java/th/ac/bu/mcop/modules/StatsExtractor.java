@@ -20,7 +20,11 @@ import th.ac.bu.mcop.utils.Settings;
 
 public class StatsExtractor {
 
+    public static final String TOP_COMMAND = "top -d 0 -n 1";
     public static final String DATA_INTERFACE = "rmnet0";
+    public static final String PROC_FILE_NAME = "/proc/net/xt_qtaguid/stats";
+    public static final String FRONT_GROUND = "fg";
+    public static final String BACK_GROUND = "bg";
     private static Context mContext;
 
     public static void saveStats(Context context){
@@ -31,7 +35,7 @@ public class StatsExtractor {
 
     private static String readProceFile(){
 
-        String procFileName="/proc/net/xt_qtaguid/stats";
+        String procFileName = PROC_FILE_NAME;
         StringBuffer fileData = new StringBuffer();
         BufferedReader bufferedReader = null;
         try {
@@ -44,7 +48,6 @@ public class StatsExtractor {
             bufferedReader.close();
         } catch (Exception e) {
             Log.d(Settings.TAG, "Error reading proc file in NetStatsCollector. Details: " + e.toString());
-            //Notify.showNotification(context, "Couldn't read network file");
             try {
                 if(bufferedReader!=null)
                     bufferedReader.close();
@@ -83,9 +86,9 @@ public class StatsExtractor {
                 Stats stats = new Stats();
                 stats.setPackageName(datas[INDEX_OF_NAME]);
                 stats.setUid(uid + "");
-                if(datas[INDEX_OF_PCY].equalsIgnoreCase("fg")){
+                if(datas[INDEX_OF_PCY].equalsIgnoreCase(FRONT_GROUND)){
                     stats.setState(Constants.STATE_FOREGROUND);
-                } else if(datas[INDEX_OF_PCY].equalsIgnoreCase("bg")) {
+                } else if(datas[INDEX_OF_PCY].equalsIgnoreCase(BACK_GROUND)) {
                     stats.setState(Constants.STATE_BACKGROUND);
                 }
 
@@ -112,7 +115,7 @@ public class StatsExtractor {
 
         StringBuffer topData = new StringBuffer();
         try {
-            Process process = Runtime.getRuntime().exec("top -d 0 -n 1");
+            Process process = Runtime.getRuntime().exec(TOP_COMMAND);
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
 
@@ -218,43 +221,7 @@ public class StatsExtractor {
         for (AppRealm app : appRealms){
 
             ArrayList<StatsRealm> statses = StatsRealm.getStatsWithPackageName(app.getPackageName());
-//            Log.d(Settings.TAG, app.getPackageName() + " size: " + statses.size());
             if (statses.size() > 0){
-//                Log.d(Settings.TAG, "____Start log net data___");
-//                Log.d(Settings.TAG, "packageName                    : " + statses.get(0).getPackageName());
-//                Log.d(Settings.TAG, "uid                            : " + statses.get(0).getUid());
-//
-//                Log.d(Settings.TAG, "netWorkState                   : " +  getNetWorkState(statses));
-//                Log.d(Settings.TAG, "getNetWorkMode                 : " +  getNetWorkMode(statses));
-//
-//                Log.d(Settings.TAG, "ApplicationState               : " + getApplicationState(statses));
-//
-//                Log.d(Settings.TAG, "AvgOfSentDataInByte            : " + String.format("%d", (int)getAvgOfSentDataInByte(statses)));
-//                Log.d(Settings.TAG, "SDOfSentDataInByte             : " + String.format("%d", (int)getSDOfSentDataInByte(statses)));
-//                Log.d(Settings.TAG, "MinOfSentDataInByte            : " + String.format("%d", (int)getMinOfSentDataInByte(statses)));
-//                Log.d(Settings.TAG, "MaxOfSentDataInByte            : " + String.format("%d", (int)getMaxOfSentDataInByte(statses)));
-//
-//                Log.d(Settings.TAG, "AvgOfReceivedtDataInByte       : " + String.format("%d", (int)getAvgOfReceivedDataInByte(statses)));
-//                Log.d(Settings.TAG, "SDOfReceivedDataInByte         : " + String.format("%d", (int)getSDOfReceivedDataInByte(statses)));
-//                Log.d(Settings.TAG, "MinOfReceivedDataInByte        : " + String.format("%d", (int)getMinOfReceivedDataInByte(statses)));
-//                Log.d(Settings.TAG, "MaxOfReceivedDataInByte        : " + String.format("%d", (int)getMaxOfReceivedDataInByte(statses)));
-//
-//                Log.d(Settings.TAG, "AvgOfSentDataInPercent         : " + String.format("%.4f", getAvgOfSentDataInPercent(statses)));
-//                Log.d(Settings.TAG, "SDOfSentDataInPercent          : " + String.format("%.4f", getSDOfSentDataInPercent(statses)));
-//                Log.d(Settings.TAG, "MinOfSentDataInPercent         : " + String.format("%.4f", getMinOfSentDataInPercent(statses)));
-//                Log.d(Settings.TAG, "MaxOfSentDataInPercent         : " + String.format("%.4f", getMaxOfSentDataInPercent(statses)));
-//
-//                Log.d(Settings.TAG, "AvgOfReceivedDataInPercent     : " + String.format("%.4f", getAvgOfReceivedDataInPercent(statses)));
-//                Log.d(Settings.TAG, "SDOfReceivedDataInPercent      : " + String.format("%.4f", getSDOfReceivedDataInPercent(statses)));
-//                Log.d(Settings.TAG, "MinOfReceivedDataInPercent     : " + String.format("%.4f", getMinOfReceivedDataInPercent(statses)));
-//                Log.d(Settings.TAG, "MaxOfReceivedDataInPercent     : " + String.format("%.4f", getMaxOfReceivedDataInPercent(statses)));
-//
-//                Log.d(Settings.TAG, "SentBetween                    : " + getSentBetween(statses));
-//                Log.d(Settings.TAG, "ReceivedBetween                : " + getReceivedBetween(statses));
-//
-//                Log.d(Settings.TAG, "SentDataInPercentOfTotal       : " + String.format("%.4f", getSentDataInPercentOfTotal(appRealms, statses.get(0).getPackageName())));
-//                Log.d(Settings.TAG, "ReceivedDataInPercentOfTotal   : " + String.format("%.4f", getReceivedDataInPercentOfTotal(appRealms, statses.get(0).getPackageName())));
-
 
                 NetData netData = new NetData();
                 netData.setPackageName(statses.get(0).getPackageName());
@@ -292,8 +259,6 @@ public class StatsExtractor {
 
                 StatsFileManager.writeToFile(netData.getStringNetData(), true);
             }
-
-//            Log.d(Settings.TAG, "+++++++++++++++++++++ End Net Data ++++++++++++++++++++++++++++++++++");
         }
 
         StatsRealm.deleteAll();

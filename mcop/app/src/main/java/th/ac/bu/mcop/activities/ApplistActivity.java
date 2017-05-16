@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -22,7 +21,6 @@ import th.ac.bu.mcop.adapters.AppsViewPagerAdapter;
 import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Constants;
-import th.ac.bu.mcop.utils.Settings;
 
 public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, View.OnClickListener{
 
@@ -93,7 +91,6 @@ public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(Settings.TAG, "onActivityResult ApplistActivity : " + requestCode + ":" + resultCode);
         if (requestCode == Constants.REQUEST_CODE_APP_INFO){
             setAdapter();
         }
@@ -118,7 +115,7 @@ public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPa
                 TextView t1 = (TextView) linearLayout.getChildAt(1);
                 t0.setTextColor(Color.WHITE);
                 t1.setTextColor(Color.LTGRAY);
-            } else {
+            } else if (position == INDEX_TAB_SUSPICIOUS) {
                 TextView t0 = (TextView) linearLayout.getChildAt(0);
                 TextView t1 = (TextView) linearLayout.getChildAt(1);
                 t0.setTextColor(Color.LTGRAY);

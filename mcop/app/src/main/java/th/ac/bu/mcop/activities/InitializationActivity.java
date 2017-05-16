@@ -1,6 +1,5 @@
 package th.ac.bu.mcop.activities;
 
-import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Intent;
@@ -92,8 +91,6 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
     private void insertAppsToRealm(){
 
-        Log.d(Settings.TAG, "insertAppsToRealm");
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -108,8 +105,9 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                         AppsInfo appsInfo = new HashGenManager().getPackageInfo(applicationInfo.packageName, getBaseContext());
                         appsInfo.setName(applicationInfo.loadLabel(getPackageManager()).toString());
 
-                        //appsInfo.setAppStatus(Constants.APP_STATUS_SAFE); // set default
+                        appsInfo.setAppStatus(Constants.APP_STATUS_SAFE); // set default
 
+                        /* make ui for test warning apps
                         if (count % 4 == 0){
                             appsInfo.setAppStatus(Constants.APP_STATUS_SAFE);
                         } else if (count % 4 == 1){
@@ -120,15 +118,10 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                             appsInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
                         }
 
-                        // calculate size dir
-                        //Log.d(Settings.TAG, "=========== packageName: " + applicationInfo.packageName + " ========");
-                        //File file = new File(applicationInfo.dataDir);
-                        //Log.d(Settings.TAG, "dirSize: " + dirSize(file));
+                        count++;
+                        */
 
                         appsInfos.add(appsInfo);
-
-                        count++;
-
                     }
 
                     AppRealm.save(appsInfos);
@@ -137,25 +130,6 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                 initHasFile();
             }
         }).start();
-    }
-
-    private long dirSize(File directory) {
-        Log.d(Settings.TAG, "============== dirSize: " + directory);
-        Log.d(Settings.TAG, "============== dirSize.listFiles: " + directory.listFiles());
-
-        if (directory == null || directory.listFiles() == null){
-            return 0;
-        }
-
-        long length = 0;
-        for (File file : directory.listFiles()) {
-            if (file.isFile())
-                length += file.length();
-            else
-                length += dirSize(file);
-        }
-        Log.d(Settings.TAG, "length: " + length);
-        return length;
     }
 
     private void initHasFile(){
@@ -205,70 +179,91 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
         ApiManager.getInstance().getReport(new Callback<ResponseModel<ReportHeaderModel<ReportModel>>>() {
             @Override
             public void onResponse(Call<ResponseModel<ReportHeaderModel<ReportModel>>> call, Response<ResponseModel<ReportHeaderModel<ReportModel>>> response) {
-                if (response != null){
-                    ResponseModel<ReportHeaderModel<ReportModel>> reportModel = response.body();
 
-                    ArrayList<ReportModel> sendApkApps = new ArrayList<>();
-                    ArrayList<ReportModel> safeApps = new ArrayList<>();
-                    ArrayList<ReportModel> warningApps = new ArrayList<>();
+                Log.d(Settings.TAG, "getReport onResponse: " + response);
 
-                    Log.d(Settings.TAG, "getReport reportModel isResult: " + reportModel.isResult());
-                    Log.d(Settings.TAG, "getReport reportModel getError: " + reportModel.getError());
+                if (response == null){
+                    startHomeActivity();
+                    return;
+                }
 
-                    if (reportModel.getResponse() != null && (reportModel.getResponse().getData() != null || reportModel.getResponse().getData().size() > 0)){
+                Log.d(Settings.TAG, "getReport onResponse body: " + response.body());
 
-                        Log.d(Settings.TAG, "getReport reportModel getData : " + reportModel.getResponse().getData());
+                if (response.body() == null){
+                    startHomeActivity();
+                    return;
+                }
 
-                        // size = 0 because safe all
-                        if (reportModel.getResponse().getData().size() > 0){
-                            for (ReportModel model : reportModel.getResponse().getData()){
+                Log.d(Settings.TAG, "getReport onResponse body getResponse: " + response.body().getResponse());
 
-                                int percent = model.getDetectionPercentage();
+                if (response.body().getResponse() == null){
+                    startHomeActivity();
+                    return;
+                }
 
-                                if (percent == 0){
-                                    sendApkApps.add(model);
+                Log.d(Settings.TAG, "getReport onResponse body getResponse getData: " + response.body().getResponse().getData());
 
-                                    //update status app status send apk
-                                    AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
-                                    Log.d(Settings.TAG, "appInfo1");
-                                    appInfo.setAppStatus(Constants.APP_STATUS_SEND_APK);
-                                    AppRealm.update(appInfo);
+                if (response.body().getResponse().getData() == null){
+                    startHomeActivity();
+                    return;
+                }
 
-                                } else {
-                                    warningApps.add(model);
+                Log.d(Settings.TAG, "getReport onResponse body getResponse getData size: " + response.body().getResponse().getData().size());
 
-                                    // update status app warning
-                                    AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
-                                    Log.d(Settings.TAG, "appInfo2");
-                                    if (percent > 25){
-                                        appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
-                                    } else if (percent > 50){
-                                        appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
-                                    } else if (percent > 75){
-                                        appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
-                                    }
+                if (response.body().getResponse().getData().size() <= 0){ // size = 0 because safe all
+                    startHomeActivity();
+                    return;
+                }
 
-                                    AppRealm.update(appInfo);
+                ArrayList<ReportModel> reportModels = response.body().getResponse().getData();
 
-                                }
-                            }
-                        }
-                    }
+                ArrayList<ReportModel> sendApkApps = new ArrayList<>();
+                ArrayList<ReportModel> safeApps = new ArrayList<>();
+                ArrayList<ReportModel> warningApps = new ArrayList<>();
 
-                    mAPKSize = sendApkApps.size();
+                for (ReportModel model : reportModels){
 
-                    Log.d(Settings.TAG, "sendApkApps size : " + sendApkApps.size());
-                    Log.d(Settings.TAG, "safeApps size    : " + safeApps.size());
-                    Log.d(Settings.TAG, "warningApps size : " + warningApps.size());
+                    int percent = model.getDetectionPercentage();
 
-                    // upload apk for check again
-                    if (sendApkApps.size() > 0){
-                        for (ReportModel apk : safeApps){
-                            sendApk(apk);
-                        }
+                    if (percent == 0){
+                        sendApkApps.add(model);
+
+                        //update status app status send apk
+                        AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+                        appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
+                        AppRealm.update(appInfo);
+
                     } else {
-                        startHomeActivity();
+                        warningApps.add(model);
+
+                        // update status app warning
+                        AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+                        if (percent > 25){
+                            appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+                        } else if (percent > 50){
+                            appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
+                        } else if (percent > 75){
+                            appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
+                        }
+
+                        AppRealm.update(appInfo);
+
                     }
+                }
+
+                mAPKSize = sendApkApps.size();
+
+                Log.d(Settings.TAG, "sendApkApps size : " + sendApkApps.size());
+                Log.d(Settings.TAG, "safeApps size    : " + safeApps.size());
+                Log.d(Settings.TAG, "warningApps size : " + warningApps.size());
+
+                // upload apk for check again
+                if (sendApkApps.size() > 0){
+                    for (ReportModel apk : safeApps){
+                        sendApk(apk);
+                    }
+                } else {
+                    startHomeActivity();
                 }
             }
 
@@ -319,7 +314,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                             if (reportModel.getResponse().getData().getResponseCode() == 0){
                                 // update status app warning
                                 AppsInfo appInfo = AppRealm.getAppWithHash(reportModel.getResponse().getData().getResource());
-                                appInfo.setAppStatus(Constants.APP_STATUS_SEND_HASH);
+                                appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_HASH);
                                 AppRealm.update(appInfo);
                             }
                         }
@@ -373,10 +368,12 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
                 mAppInfos.add(app);
 
-                //Log.d(Settings.TAG, app.getPackageName() +  " hash: " + app.getHash());
+                Log.d(Settings.TAG, app.getName() + ":" + app.getPackageName() +  " hash: " + app.getHash());
             }
         }
-        //Log.d(Settings.TAG, "hash: " + hashs);
+
+        Log.d(Settings.TAG, hashs);
+
         return hashs;
     }
 

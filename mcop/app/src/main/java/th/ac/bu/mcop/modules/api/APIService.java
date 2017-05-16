@@ -23,7 +23,7 @@ public interface APIService {
     );
 
     @Multipart
-    @POST("/api/virustotal.php/file")
+    @POST("api/virustotal.php/file")
     Call<ResponseModel<ResponseDataModel<ReportModel>>> uploadAPK(
             @Part("file\"; filename=\"file.apk\" ") RequestBody file
             );

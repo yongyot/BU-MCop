@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,7 +28,6 @@ import th.ac.bu.mcop.models.AppsInfo;
 import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Constants;
-import th.ac.bu.mcop.utils.Settings;
 
 
 public class AppInfoActivity extends AppCompatActivity implements View.OnClickListener{
