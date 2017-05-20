@@ -6,10 +6,11 @@
 
     <ImageView
         android:id="@+id/icon_imageview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:src="@mipmap/ic_launcher"
         android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_alignParentLeft="true"
         />
 
     <RelativeLayout
@@ -38,7 +39,7 @@
             android:textSize="@dimen/row_desc_text_size"
             android:text="Package name"
             android:layout_toLeftOf="@+id/icon_status_imageview"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/initialization_margin"
             android:ellipsize="end"
             />
 
@@ -48,6 +49,16 @@
             android:layout_height="match_parent"
             android:src="@drawable/tag_safe"
             android:layout_alignParentRight="true"
+            />
+
+        <ImageView
+            android:id="@+id/icon_level_imageview"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@color/colorTagHigh"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             />
 
     </RelativeLayout>

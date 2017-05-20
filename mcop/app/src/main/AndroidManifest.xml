@@ -83,12 +83,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.InitializationActivity" />
-        <activity android:name=".activities.HomeActivity"/>
-        <activity android:name=".activities.AboutActivity"/>
-        <activity android:name=".activities.ApplistActivity"/>
-        <activity android:name=".activities.AppInfoActivity"/>
-        <activity android:name=".android.spy.ConfiguratingActivity" />
+        <activity android:name=".activities.InitializationActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.HomeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.AboutActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ApplistActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.AppInfoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".android.spy.ConfiguratingActivity" android:screenOrientation="portrait"/>
 
         <!-- ======== receiver ========== -->
         <receiver android:name=".broadcastreceiver.IntenetReceiver">

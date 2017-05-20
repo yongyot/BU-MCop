@@ -29,7 +29,6 @@ public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPa
     private PagerSlidingTabStrip mPagerSlidingTabStrip;
     private Button mBackButton;
 
-    ArrayList<ApplicationInfo> mApplicationInfosInstall;
     private int INDEX_TAB_SAFE = 0;
     private int INDEX_TAB_SUSPICIOUS = 1;
 
@@ -37,8 +36,6 @@ public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPa
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applist);
-
-        mApplicationInfosInstall = ApplicationInfoManager.getTotalApplicationUsingInternet(this);
 
         mViewPager = (ViewPager) findViewById(R.id.app_viewpager);
         mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);

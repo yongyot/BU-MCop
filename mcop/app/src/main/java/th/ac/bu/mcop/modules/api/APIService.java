@@ -1,5 +1,7 @@
 package th.ac.bu.mcop.modules.api;
 
+import java.util.ArrayList;
+
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,9 +19,9 @@ import th.ac.bu.mcop.models.response.ResponseUpload;
 public interface APIService {
 
     @GET("api/virustotal.php/hash")
-    Call<ResponseModel<ReportHeaderModel<ReportModel>>> getReport(
+    Call<ResponseModel<ReportHeaderModel<ArrayList<ReportModel>>>> getReport(
             @Query("apikey") String apiKey,
-            @Query("resource[]") String resources
+            @Query("md5") String resources
     );
 
     @Multipart

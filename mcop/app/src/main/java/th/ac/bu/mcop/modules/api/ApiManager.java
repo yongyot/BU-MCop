@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -22,7 +23,7 @@ import th.ac.bu.mcop.models.response.ResponseUpload;
 
 public class ApiManager {
 
-    public static final String API_KEY = "78660282aeaedccc679bb9b2e33095916ff8d356be6e77d05ef04a284c42deff";;
+    public static final String API_KEY = "78660282aeaedccc679bb9b2e33095916ff8d356be6e77d05ef04a284c42deff";
     private final String BASE_API = "http://mobile-monitoring.bu.ac.th/";
     private static ApiManager sApiManger;
     private Gson mGson;
@@ -40,8 +41,8 @@ public class ApiManager {
     public ApiManager(){
 
         mOkHttpClient = new OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60*3, TimeUnit.SECONDS)
+                .connectTimeout(60*3, TimeUnit.SECONDS)
                 .build();
 
         mGson = new GsonBuilder()
@@ -56,9 +57,9 @@ public class ApiManager {
         mApiService = mRetrofit.create(APIService.class);
     }
 
-    public void getReport(Callback<ResponseModel<ReportHeaderModel<ReportModel>>> callback, String resources){
+    public void getReport(Callback<ResponseModel<ReportHeaderModel<ArrayList<ReportModel>>>> callback, String resources){
 
-        Call<ResponseModel<ReportHeaderModel<ReportModel>>> call = mApiService.getReport(API_KEY, resources);
+        Call<ResponseModel<ReportHeaderModel<ArrayList<ReportModel>>>> call = mApiService.getReport(API_KEY, resources);
         call.enqueue(callback);
     }
 

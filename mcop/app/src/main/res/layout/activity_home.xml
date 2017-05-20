@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/radar"
+                android:src="@drawable/radar_green"
                 />
             <ImageView
                 android:layout_width="match_parent"

@@ -20,7 +20,6 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
 
     private Button mStartMonitoringButton;
     private CheckBox mAccpetCheckBox;
-    private AlertDialog mAlertDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,10 +65,10 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
                 mAccpetCheckBox.setChecked(true);
             } else {
                 mAccpetCheckBox.setChecked(false);
-                mAlertDialog = new AlertDialog
+                new AlertDialog
                         .Builder(this)
                         .setTitle(getString(R.string.app_name))
-                        .setMessage("Please turn on usage access first.")
+                        .setMessage(getString(R.string.label_msg_tern_on_usage))
                         .setCancelable(false)
                         .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {
                             @Override

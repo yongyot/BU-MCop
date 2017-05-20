@@ -48,7 +48,7 @@ public class HashGenManager {
 
             for (ApplicationInfo appInfo : packs) {
                 if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                    AppsInfo app = getPackageInfo(appInfo.packageName, context);
+                    AppsInfo app = getPackageInfo(appInfo, context);
 
                     Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
                     calendar.setTimeInMillis(app.getLastUpdate());
@@ -62,18 +62,20 @@ public class HashGenManager {
     }
 
 
-    public AppsInfo getPackageInfo(String packageName,Context context) {
+    public AppsInfo getPackageInfo(ApplicationInfo applicationInfo, Context context) {
         AppsInfo appInfo = new AppsInfo();
 
         PackageManager pm = context.getPackageManager();
         try {
-            PackageInfo packageInfo = pm.getPackageInfo(packageName, 0);
+            PackageInfo packageInfo = pm.getPackageInfo(applicationInfo.packageName, 0);
             long millis = packageInfo.lastUpdateTime;
             appInfo.setHash(getHash(packageInfo.applicationInfo.sourceDir));
             appInfo.setLastUpdate(millis);
-            appInfo.setPackageName(packageName);
+            appInfo.setPackageName(applicationInfo.packageName);
             appInfo.setVersionName(packageInfo.versionName);
             appInfo.setVersionCode(packageInfo.versionCode + "");
+            String applicationName = (String) (applicationInfo != null ? pm.getApplicationLabel(applicationInfo) : "(unknown)");
+            appInfo.setName(applicationName);
             return appInfo;
 
         } catch (Exception ex) {

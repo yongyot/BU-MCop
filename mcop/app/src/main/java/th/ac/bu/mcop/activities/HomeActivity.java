@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,8 +29,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.android.monitor.AndroidWatchdogService;
 import th.ac.bu.mcop.android.monitor.core.AndroidEvent;
@@ -53,7 +61,13 @@ import th.ac.bu.mcop.android.spy.reporter.SpyReporter;
 import th.ac.bu.mcop.broadcastreceiver.IntenetReceiver;
 import th.ac.bu.mcop.mobile.monitor.core.Event;
 import th.ac.bu.mcop.mobile.monitor.core.Watchdog;
+import th.ac.bu.mcop.models.AppsInfo;
 import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.models.response.ReportHeaderModel;
+import th.ac.bu.mcop.models.response.ReportModel;
+import th.ac.bu.mcop.models.response.ResponseDataModel;
+import th.ac.bu.mcop.models.response.ResponseModel;
+import th.ac.bu.mcop.modules.api.ApiManager;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Constants;
@@ -114,15 +128,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             initSMSWatch();
         }
-
-        animateScal();
-        animateRatate();
     }
 
     @Override
     protected void onDestroy() {
-        //mWatchdog.clear();
-        //unregisterReceiver(mReceiver);
+        mWatchdog.clear();
+        unregisterReceiver(mReceiver);
         super.onDestroy();
     }
 
@@ -138,6 +149,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setAppSafeOrNotView();
 
         startCollection();
+
+        animateScal();
+        //animateRatate();
+
+        //findAppForSendAPK();
+        findAppForSendHash();
     }
 
     @Override
@@ -146,7 +163,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             unregisterReceiver(mMessageRecevier);
             unregisterReceiver(mIntenetReceiver);
         } catch (Exception ex) {
-            Log.d(Settings.TAG, ex.getMessage());
+            ex.printStackTrace();
         }
         super.onStop();
     }
@@ -173,6 +190,162 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         AnimatorSet animator = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.rotate);
         animator.setTarget(mCircleImageview);
         animator.start();
+    }
+
+    /***********************************************
+     Recheck APK and Hassh
+     ************************************************/
+
+    private void findAppForSendHash(){
+        Log.d(Settings.TAG, "findAppForSendHash");
+        ArrayList<AppRealm> apps = AppRealm.getSendHashApps();
+        String resource = "";
+        for (AppRealm app : apps){
+            resource += app.getHash() + ",";
+        }
+
+        sendHash(resource);
+    }
+
+    private void findAppForSendAPK(){
+        ArrayList<AppRealm> waitingSendAPK = AppRealm.getSendApkApps();
+        for (AppRealm app : waitingSendAPK){
+            sendApk(app.getHash());
+        }
+    }
+
+    private void sendHash(String resource){
+
+        ApiManager.getInstance().getReport(new Callback<ResponseModel<ReportHeaderModel<ArrayList<ReportModel>>>>() {
+            @Override
+            public void onResponse(Call<ResponseModel<ReportHeaderModel<ArrayList<ReportModel>>>> call, Response<ResponseModel<ReportHeaderModel<ArrayList<ReportModel>>>> response) {
+
+                Log.d(Settings.TAG, "sendHash: " + response);
+
+                if (response == null){
+                    return;
+                }
+
+                if (response.body() == null){
+                    return;
+                }
+
+                if (response.body().getResponse() == null){
+                    return;
+                }
+
+                if (response.body().getResponse().getData() == null){
+                    return;
+                }
+
+                if (response.body().getResponse().getData().size() <= 0){ // size = 0 because safe all
+                    return;
+                }
+
+                ArrayList<ReportModel> reportModels = response.body().getResponse().getData();
+
+                ArrayList<ReportModel> sendApkApps = new ArrayList<>();
+                ArrayList<ReportModel> safeApps = new ArrayList<>();
+                ArrayList<ReportModel> warningApps = new ArrayList<>();
+
+                for (ReportModel model : reportModels){
+
+                    float percent = model.getDetectionPercentage();
+
+                    if (percent == 0){
+                        sendApkApps.add(model);
+
+                        //update status app status send apk
+                        AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+                        if (appInfo != null) {
+                            appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
+                            AppRealm.update(appInfo);
+                        }
+
+                    } else {
+                        warningApps.add(model);
+                        // update status app warning
+                        AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+
+                        if (appInfo != null) {
+                            if (percent > 25){
+                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+                            } else if (percent > 50){
+                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
+                            } else if (percent > 75){
+                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
+                            }
+
+                            AppRealm.update(appInfo);
+                        }
+                    }
+                }
+
+                Log.d(Settings.TAG, "sendApkApps size : " + sendApkApps.size());
+                Log.d(Settings.TAG, "safeApps size    : " + safeApps.size());
+                Log.d(Settings.TAG, "warningApps size : " + warningApps.size());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<ReportHeaderModel<ArrayList<ReportModel>>>> call, Throwable t) {
+                Log.d(Settings.TAG, "onFailure: " + t.getLocalizedMessage());
+            }
+        }, resource);
+    }
+
+    private void sendApk(String packageName){
+        Log.d(Settings.TAG, "sendApk");
+
+        Log.d(Settings.TAG, "packageName: " + packageName);
+        PackageManager packageManager = getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
+            String pathString = packageInfo.applicationInfo.sourceDir;
+            File file = new File(pathString);
+
+            Log.d(Settings.TAG, "file exists: " + file.exists());
+
+            // create RequestBody instance from file
+            Uri uri = Uri.fromFile(file);
+            Log.d(Settings.TAG, "uri: " + uri);
+
+            final RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+            ApiManager.getInstance().uploadAPK(new Callback<ResponseModel<ResponseDataModel<ReportModel>>>() {
+                @Override
+                public void onResponse(Call<ResponseModel<ResponseDataModel<ReportModel>>> call, Response<ResponseModel<ResponseDataModel<ReportModel>>> response) {
+                    Log.d(Settings.TAG, "sendApk onResponse");
+
+                    ResponseModel<ResponseDataModel<ReportModel>> reportModel = response.body();
+
+                    if (reportModel != null){
+
+                        Log.d(Settings.TAG, "sendApk isResult: " + reportModel.isResult());
+                        Log.d(Settings.TAG, "sendApk getError: " + reportModel.getError());
+
+                        Log.d(Settings.TAG, "sendApk data: " + reportModel.getResponse().getData());
+
+                        if (reportModel.getResponse().getData() != null){
+
+                            if (reportModel.getResponse().getData().getResponseCode() == 0){
+                                // update status app warning
+                                AppsInfo appInfo = AppRealm.getAppWithHash(reportModel.getResponse().getData().getResource());
+                                appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_HASH);
+                                AppRealm.update(appInfo);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseModel<ResponseDataModel<ReportModel>>> call, Throwable t) {
+                    Log.d(Settings.TAG, "sendApk onFailure: " + t.getMessage());
+                }
+            }, requestBody);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /***********************************************
@@ -215,7 +388,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             mContainerWarningLenearLayout.setVisibility(View.INVISIBLE);
             mStatusSafeTextView.setVisibility(View.VISIBLE);
-            mCircleImageview.setImageResource(R.drawable.radar);
+            mCircleImageview.setImageResource(R.drawable.radar_red);
             mRadarCircleImage1.setImageResource(R.drawable.inner_circle_green);
             mRadarCircleImage2.setImageResource(R.drawable.inner_circle_green);
             mRadarCircleImage3.setImageResource(R.drawable.inner_circle_green);
@@ -254,16 +427,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        requestFineLocationPermission();
-    }
-
-    private void requestFineLocationPermission(){
-        int hasLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (hasLocationPermission != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Constants.REQUEST_ACCESS_FINE_LOCATION);
-            return;
-        }
-
         initSMSWatch();
     }
 
@@ -290,8 +453,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED  is allow
         if (requestCode == Constants.REQUEST_READ_SMS){
-            requestFineLocationPermission();
-        } else if (requestCode == Constants.REQUEST_ACCESS_FINE_LOCATION){
             requestReadPhoneStatePermission();
         } else if (requestCode == Constants.REQUEST_READ_PHONE_STATE){
             requestReadCallLog();
@@ -328,7 +489,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         String password = settings.getString(PASSWORD_FIELD, "");
         SpyReporter.getSpyLogger().setAuthCredentials(username, password);
         // Monitor all interesting events
-        register(new AndroidGpsWatcher(new GpsSpyReporter(), 480000), filter);
         register(new AndroidSmsWatcher(new SmsSpyReporter()), filter);
         register(new AndroidEmailWatcher(new MailSpyReporter()), filter);
         register(new AndroidCallWatcher(new CallSpyReporter()), filter);

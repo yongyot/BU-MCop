@@ -62,14 +62,20 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
             }
         });
 
+        holder.iconStatusImageView.setVisibility(View.INVISIBLE);
         if (mApps.get(position).getAppStatus() == Constants.APP_STATUS_WARNING_RED){
             holder.iconStatusImageView.setImageResource(R.drawable.tag_high);
+            holder.iconLevelImgeView.setBackgroundResource(R.drawable.dot_red);
         } else if (mApps.get(position).getAppStatus() == Constants.APP_STATUS_WARNING_ORANGE){
             holder.iconStatusImageView.setImageResource(R.drawable.tag_medium);
+            holder.iconLevelImgeView.setBackgroundResource(R.drawable.dot_orange);
         } else if (mApps.get(position).getAppStatus() == Constants.APP_STATUS_WARNING_YELLOW){
             holder.iconStatusImageView.setImageResource(R.drawable.tag_low);
+            holder.iconLevelImgeView.setBackgroundResource(R.drawable.dot_yellow);
         } else {
+            holder.iconLevelImgeView.setBackgroundResource(R.drawable.dot_green);
             holder.iconStatusImageView.setVisibility(View.INVISIBLE);
+            holder.iconLevelImgeView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -96,6 +102,7 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
         private ImageView iconStatusImageView;
         private TextView appNameTextView;
         private TextView packageNameTextView;
+        private ImageView iconLevelImgeView;
 
         public ViewHolder(View view){
             super(view);
@@ -104,6 +111,7 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
             appNameTextView = (TextView) view.findViewById(R.id.app_name_textview);
             packageNameTextView = (TextView) view.findViewById(R.id.package_name_textview);
             iconStatusImageView = (ImageView) view.findViewById(R.id.icon_status_imageview);
+            iconLevelImgeView = (ImageView) view.findViewById(R.id.icon_level_imageview);
         }
     }
 }

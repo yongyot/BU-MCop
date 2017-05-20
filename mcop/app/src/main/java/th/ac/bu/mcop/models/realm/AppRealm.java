@@ -1,5 +1,7 @@
 package th.ac.bu.mcop.models.realm;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import io.realm.Realm;
@@ -10,6 +12,7 @@ import io.realm.RealmResults;
 import io.realm.annotations.PrimaryKey;
 import th.ac.bu.mcop.models.AppsInfo;
 import th.ac.bu.mcop.utils.Constants;
+import th.ac.bu.mcop.utils.Settings;
 
 public class AppRealm extends RealmObject{
 
@@ -103,18 +106,35 @@ public class AppRealm extends RealmObject{
 
     public static void update(AppsInfo appsInfo){
         Realm realm = Realm.getDefaultInstance();
+
+        AppRealm app = realm.where(AppRealm.class)
+                .equalTo("packageName", appsInfo.getPackageName())
+                .findFirst();
         realm.beginTransaction();
+        if (app == null) {
 
-        AppRealm appRealm = realm.createObject(AppRealm.class);
-        appRealm.setHash(appsInfo.getHash());
-        appRealm.setLastUpdate(appsInfo.getLastUpdate());
-        appRealm.setPackageName(appsInfo.getPackageName());
-        appRealm.setVersionName(appsInfo.getVersionName());
-        appRealm.setVersionCode(appsInfo.getVersionCode());
-        appRealm.setAppStatus(appsInfo.getAppStatus());
-        appRealm.setName(appsInfo.getName());
+            AppRealm appRealm = realm.createObject(AppRealm.class);
+            appRealm.setHash(appsInfo.getHash());
+            appRealm.setLastUpdate(appsInfo.getLastUpdate());
+            appRealm.setVersionName(appsInfo.getVersionName());
+            appRealm.setVersionCode(appsInfo.getVersionCode());
+            appRealm.setAppStatus(appsInfo.getAppStatus());
+            appRealm.setName(appsInfo.getName());
 
-        realm.copyToRealmOrUpdate(appRealm);
+//            realm.copyToRealmOrUpdate(appRealm);
+
+        } else {
+
+//            app.setHash(appsInfo.getHash());
+//            app.setLastUpdate(appsInfo.getLastUpdate());
+//            app.setVersionName(appsInfo.getVersionName());
+//            app.setVersionCode(appsInfo.getVersionCode());
+            app.setAppStatus(appsInfo.getAppStatus());
+//            app.setName(appsInfo.getName());
+//
+//            realm.copyToRealmOrUpdate(app);
+        }
+
         realm.commitTransaction();
     }
 
@@ -136,18 +156,21 @@ public class AppRealm extends RealmObject{
     public static AppsInfo getAppWithHash(final String hash){
         Realm realm = Realm.getDefaultInstance();
         AppRealm appRealm = realm.where(AppRealm.class).equalTo("hash", hash).findFirst();
+        if (appRealm != null){
+            AppsInfo appsInfo = new AppsInfo();
+            appsInfo.setAppStatus(appRealm.getAppStatus());
+            appsInfo.setHash(appRealm.getHash());
+            appsInfo.setVersionCode(appRealm.getVersionCode());
+            appsInfo.setVersionName(appRealm.getVersionName());
+            appsInfo.setLastUpdate(appRealm.getLastUpdate());
+            appsInfo.setPackageName(appRealm.getPackageName());
+            appsInfo.setAppStatus(appRealm.getAppStatus());
+            appsInfo.setName(appRealm.getName());
 
-        AppsInfo appsInfo = new AppsInfo();
-        appsInfo.setAppStatus(appRealm.getAppStatus());
-        appsInfo.setHash(appRealm.getHash());
-        appsInfo.setVersionCode(appRealm.getVersionCode());
-        appsInfo.setVersionName(appRealm.getVersionName());
-        appsInfo.setLastUpdate(appRealm.getLastUpdate());
-        appsInfo.setPackageName(appRealm.getPackageName());
-        appsInfo.setAppStatus(appRealm.getAppStatus());
-        appsInfo.setName(appRealm.getName());
+            return appsInfo;
+        }
 
-        return appsInfo;
+        return null;
     }
 
     public static AppsInfo getAppWithPackageName(final String packageName){

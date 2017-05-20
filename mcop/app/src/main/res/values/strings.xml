@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">mCOP</string>
     <string name="label_terms">Terms &amp; Condition</string>
+    <string name="label_msg_tern_on_usage">Please turn on usage access first.</string>
     <string name="label_button_start_monitoring">Start Monitoring</string>
     <string name="label_accept_service">I accept terms of service</string>
     <string name="label_analysing">Analysing your device for suspicious application, Please wait.</string>
@@ -23,6 +24,10 @@
     <string name="label_storage">Storage</string>
     <string name="label_permission">Permission</string>
     <string name="label_about_desc">mCOP by NBTC เตือนภัยแอปพลิเคชั่นอันตรายบนโทรศัพท์เคลื่อนที่</string>
+    <string name="label_safe">Safe</string>
+    <string name="label_high">High</string>
+    <string name="label_medium">Medium</string>
+    <string name="label_Low">Low</string>
     <string name="label_terms_detail">Terms and Conditions
 
 Welcome to mCop. Before using this application, you must agree to comply with and be bound by the following terms and conditions of use, which together with our privacy policy govern the relationship of mCop with you in relation to this application. If you disagree with any part of these terms and conditions, please do not use our application.

@@ -7,4 +7,10 @@
     <color name="colorGreenSafe">#239B56</color>
     <color name="colorTextSafe">#0dccb4</color>
     <color name="colorTextWarning">#d4484e</color>
+
+    <color name="colorTagSafe">#2cbb9f</color>
+    <color name="colorTagMedium">#eb6e0f</color>
+    <color name="colorTagLow">#efb311</color>
+    <color name="colorTagHigh">#cd0a11</color>
+
 </resources>

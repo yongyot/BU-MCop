@@ -81,7 +81,7 @@ public class BackgroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(Settings.TAG, "BackgroundService onStartCommand");
 
-        startAsForeground();
+        //startAsForeground();
 
         mHandler.postDelayed(mRunnable = new Runnable() {
             @Override
@@ -96,7 +96,7 @@ public class BackgroundService extends Service {
 
                 sendBroadcast();
                 checkUpdateHashGen();
-                startAsForeground();
+                //startAsForeground();
                 StatsExtractor.saveStats(mContext);
                 Log.d(Settings.TAG, "File size: " + StatsFileManager.getFileSize());
                 if (StatsFileManager.getFileSize() > Settings.sUploadSize){

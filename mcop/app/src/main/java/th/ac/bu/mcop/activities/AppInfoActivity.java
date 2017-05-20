@@ -32,7 +32,7 @@ import th.ac.bu.mcop.utils.Constants;
 
 public class AppInfoActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button mUninstallAppButton, mIgnoreButton, mBackButton;
+    private Button mUninstallAppButton, mIgnoreButton, mBackButton, mLeveButton;
     private ApplicationInfo mApplicationInfo;
     private TextView mAppNameTextView, mPackageNameTextView, mVersionTextView, mUpdatedTextView;
     private Button mSafeButton, mLowButton, mMediumButton, mHightButton;
@@ -62,6 +62,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         mLowButton = (Button) findViewById(R.id.low_button);
         mMediumButton = (Button) findViewById(R.id.medium_button);
         mHightButton = (Button) findViewById(R.id.high_button);
+        mLeveButton = (Button) findViewById(R.id.level_button);
 
         mIgnoreButton.setOnClickListener(this);
         mUninstallAppButton.setOnClickListener(this);
@@ -124,6 +125,9 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                         mMediumButton.setTextColor(Color.GRAY);
                         mHightButton.setTextColor(Color.GRAY);
 
+                        mLeveButton.setBackgroundResource(R.drawable.risk_safe);
+                        mLeveButton.setText(R.string.label_safe);
+
                     } else if (mAppStatus == Constants.APP_STATUS_WARNING_YELLOW){
 
                         mSafeButton.setBackgroundResource(R.drawable.empty);
@@ -133,6 +137,9 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                         mSafeButton.setTextColor(Color.GRAY);
                         mMediumButton.setTextColor(Color.GRAY);
                         mHightButton.setTextColor(Color.GRAY);
+
+                        mLeveButton.setBackgroundResource(R.drawable.risk_low);
+                        mLeveButton.setText(R.string.label_Low);
 
                     } else if (mAppStatus == Constants.APP_STATUS_WARNING_ORANGE){
 
@@ -144,6 +151,9 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                         mLowButton.setTextColor(Color.GRAY);
                         mHightButton.setTextColor(Color.GRAY);
 
+                        mLeveButton.setBackgroundResource(R.drawable.risk_medium);
+                        mLeveButton.setText(R.string.label_medium);
+
                     } else if (mAppStatus == Constants.APP_STATUS_WARNING_RED){
 
                         mSafeButton.setBackgroundResource(R.drawable.empty);
@@ -153,6 +163,9 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                         mSafeButton.setTextColor(Color.GRAY);
                         mLowButton.setTextColor(Color.GRAY);
                         mMediumButton.setTextColor(Color.GRAY);
+
+                        mLeveButton.setBackgroundResource(R.drawable.risk_high);
+                        mLeveButton.setText(R.string.label_high);
                     }
 
                 } catch (PackageManager.NameNotFoundException e) {

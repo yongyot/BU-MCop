@@ -11,7 +11,7 @@ public class ReportHeaderModel<T extends Object>{
     @SerializedName("error")
     String error;
     @SerializedName("data")
-    ArrayList<T> data;
+    T data;
 
     public boolean isResult() {
         return result;
@@ -29,11 +29,11 @@ public class ReportHeaderModel<T extends Object>{
         this.error = error;
     }
 
-    public ArrayList<T> getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(ArrayList<T> data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

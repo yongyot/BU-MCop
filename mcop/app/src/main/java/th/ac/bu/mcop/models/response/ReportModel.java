@@ -2,7 +2,7 @@ package th.ac.bu.mcop.models.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ReportModel{
+public class ReportModel {
 
     @SerializedName("resource")
     String resource;
@@ -11,10 +11,10 @@ public class ReportModel{
     String detectionRatio;
 
     @SerializedName("detection_percentage")
-    int detectionPercentage;
+    float detectionPercentage;
 
-    @SerializedName("scan")
-    String scan;
+//    @SerializedName("scan")
+//    String scan;
 
     @SerializedName("response_code")
     int responseCode;
@@ -38,7 +38,7 @@ public class ReportModel{
         this.detectionRatio = detectionRatio;
     }
 
-    public int getDetectionPercentage() {
+    public float getDetectionPercentage() {
         return detectionPercentage;
     }
 
@@ -46,13 +46,13 @@ public class ReportModel{
         this.detectionPercentage = detectionPercentage;
     }
 
-    public String getScan() {
-        return scan;
-    }
-
-    public void setScan(String scan) {
-        this.scan = scan;
-    }
+//    public String getScan() {
+//        return scan;
+//    }
+//
+//    public void setScan(String scan) {
+//        this.scan = scan;
+//    }
 
     public int getResponseCode() {
         return responseCode;
