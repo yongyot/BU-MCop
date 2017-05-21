@@ -73,7 +73,6 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
             holder.iconStatusImageView.setImageResource(R.drawable.tag_low);
             holder.iconLevelImgeView.setBackgroundResource(R.drawable.dot_yellow);
         } else {
-            holder.iconLevelImgeView.setBackgroundResource(R.drawable.dot_green);
             holder.iconStatusImageView.setVisibility(View.INVISIBLE);
             holder.iconLevelImgeView.setVisibility(View.INVISIBLE);
         }

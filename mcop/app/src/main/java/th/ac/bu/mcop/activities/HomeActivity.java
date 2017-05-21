@@ -151,9 +151,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         startCollection();
 
         animateScal();
-        //animateRatate();
-
-        //findAppForSendAPK();
         findAppForSendHash();
     }
 
@@ -249,28 +246,29 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 ArrayList<ReportModel> warningApps = new ArrayList<>();
 
                 for (ReportModel model : reportModels){
-
                     AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
-
                     // response code 0 is need send apk again
                     // response code 1 is scan success
-                    if (model.getResponseCode() == 2){
-                        appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
-                    } else {
-                        float percent = model.getDetectionPercentage();
-                        if (percent < 25){
-                            appInfo.setAppStatus(Constants.APP_STATUS_SAFE);
-                        } else if (appInfo != null) {
-                            appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
-                        } else if (percent > 25){
-                            appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
-                        } else if (percent > 50){
-                            appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
-                        } else if (percent > 75){
-                            appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
-                        }
 
-                        AppRealm.update(appInfo);
+                    if (appInfo != null){
+                        if (model.getResponseCode() == 2){
+                            appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
+                        } else {
+                            float percent = model.getDetectionPercentage();
+                            if (percent < 25){
+                                appInfo.setAppStatus(Constants.APP_STATUS_SAFE);
+                            } else if (appInfo != null) {
+                                appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
+                            } else if (percent > 25){
+                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+                            } else if (percent > 50){
+                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
+                            } else if (percent > 75){
+                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
+                            }
+
+                            AppRealm.update(appInfo);
+                        }
                     }
                 }
 

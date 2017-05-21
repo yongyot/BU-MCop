@@ -28,9 +28,6 @@ public class MCOPApplication extends Application {
         String cacheVersionCode = SharePrefs.getPreferenceString(this, Constants.KEY_VERSION_CODE, "");
         String currentVersionCode = BuildConfig.VERSION_CODE + "";
 
-        Log.d(Settings.TAG, "cacheVersionCode: " + cacheVersionCode);
-        Log.d(Settings.TAG, "currentVersionCode: " + currentVersionCode);
-
         if (!cacheVersionCode.equals(currentVersionCode)){
             SharePrefs.setPreference(this, Constants.KEY_VERSION_CODE, BuildConfig.VERSION_CODE+"");
 
