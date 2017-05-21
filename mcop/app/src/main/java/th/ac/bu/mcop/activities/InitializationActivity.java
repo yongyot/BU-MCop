@@ -186,36 +186,38 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
                 ArrayList<ReportModel> reportModels = response.body().getResponse().getData();
 
-                ArrayList<ReportModel> sendApkApps = new ArrayList<>();
-                ArrayList<ReportModel> safeApps = new ArrayList<>();
-                ArrayList<ReportModel> warningApps = new ArrayList<>();
+                int countSendApkApp = 0;
+                int countSafeApps = 0;
+                int countWarning = 0;
 
                 for (ReportModel model : reportModels){
 
-                    float percent = model.getDetectionPercentage();
+                    AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
 
-                    if (percent == 0){
-                        sendApkApps.add(model);
-
-                        //update status app status send apk
-                        AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
+                    // response code 0 is need send apk again
+                    // response code 1 is scan success
+                    if (model.getResponseCode() == 0){
                         if (appInfo != null) {
                             appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
-                            AppRealm.update(appInfo);
+                            countSendApkApp++;
                         }
-
                     } else {
-                        warningApps.add(model);
-                        // update status app warning
-                        AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
 
                         if (appInfo != null) {
-                            if (percent > 25){
-                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+
+                            float percent = model.getDetectionPercentage();
+                            if (percent > 75){
+                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
+                                countWarning++;
                             } else if (percent > 50){
                                 appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
-                            } else if (percent > 75){
-                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
+                                countWarning++;
+                            } else if (percent > 25){
+                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+                                countWarning++;
+                            } else {
+                                appInfo.setAppStatus(Constants.APP_STATUS_SAFE);
+                                countSafeApps++;
                             }
 
                             AppRealm.update(appInfo);
@@ -223,9 +225,9 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                     }
                 }
 
-                Log.d(Settings.TAG, "init sendApkApps size : " + sendApkApps.size());
-                Log.d(Settings.TAG, "init safeApps size    : " + safeApps.size());
-                Log.d(Settings.TAG, "init warningApps size : " + warningApps.size());
+                Log.d(Settings.TAG, "sendApkApps : " + countSendApkApp);
+                Log.d(Settings.TAG, "safeApps    : " + countSafeApps);
+                Log.d(Settings.TAG, "warningApps : " + countWarning);
 
                 startHomeActivity();
             }

@@ -67,7 +67,7 @@ public class TermsActivity extends AppCompatActivity implements View.OnClickList
                 mAccpetCheckBox.setChecked(false);
                 new AlertDialog
                         .Builder(this)
-                        .setTitle(getString(R.string.app_name))
+                        .setTitle(getString(R.string.label_title_tern_on_usage))
                         .setMessage(getString(R.string.label_msg_tern_on_usage))
                         .setCancelable(false)
                         .setPositiveButton(getString(R.string.label_ok), new DialogInterface.OnClickListener() {

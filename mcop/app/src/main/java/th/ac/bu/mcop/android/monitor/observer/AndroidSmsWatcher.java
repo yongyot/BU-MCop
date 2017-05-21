@@ -8,7 +8,10 @@ import th.ac.bu.mcop.http.core.Logger;
 import th.ac.bu.mcop.mobile.monitor.core.Event;
 import th.ac.bu.mcop.mobile.monitor.core.Reporter;
 import th.ac.bu.mcop.mobile.monitor.report.SMS;
+import th.ac.bu.mcop.models.AppsInfo;
+import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.utils.Settings;
+import th.ac.bu.mcop.widgets.NotificationView;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -164,7 +167,13 @@ public final class AndroidSmsWatcher extends AndroidWatcher {
 
 			Log.d(Settings.TAG, "SMS: " + str);
 
-			HomeActivity.mTestSMSTextView.append(str);
+			//HomeActivity.mTestSMSTextView.append(str);
+			AppsInfo appInfo = AppRealm.getAppWithPackageName(cursor.getString(creator));
+			if (appInfo != null ){
+				String messageBody = cursor.getString(bodyColumn).length() < 10?cursor.getString(bodyColumn):cursor.getString(bodyColumn).substring(0, 10) + "...";
+				String forShowNoti = "Found " + appInfo.getName() + " sent " + messageBody + " to " + cursor.getString(addressColumn);
+				NotificationView.show(context, forShowNoti);
+			}
 
 			Log.d("Lattapol", str);
 

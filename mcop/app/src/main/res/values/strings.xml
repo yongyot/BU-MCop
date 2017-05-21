@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">mCOP</string>
     <string name="label_terms">Terms &amp; Condition</string>
-    <string name="label_msg_tern_on_usage">Please turn on usage access first.</string>
+    <string name="label_title_tern_on_usage">Permit usage acces for mCOP</string>
+    <string name="label_msg_tern_on_usage">Please turn on "usage "access" button</string>
     <string name="label_button_start_monitoring">Start Monitoring</string>
     <string name="label_accept_service">I accept terms of service</string>
     <string name="label_analysing">Analysing your device for suspicious application, Please wait.</string>
     <string name="label_initializing">Initializing</string>
     <string name="label_get_hashcode_report">Get hashcode report</string>
-    <string name="label_device_safe">Your device\nis safe</string>
+    <string name="label_device_safe">Your device\nis SAFE</string>
     <string name="label_device_have">Your device have</string>
     <string name="label_warning">warning</string>
     <string name="label_device_warning">Your device have\n %d waning</string>

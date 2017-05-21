@@ -250,34 +250,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 for (ReportModel model : reportModels){
 
-                    float percent = model.getDetectionPercentage();
+                    AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
 
-                    if (percent == 0){
-                        sendApkApps.add(model);
-
-                        //update status app status send apk
-                        AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
-                        if (appInfo != null) {
-                            appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
-                            AppRealm.update(appInfo);
-                        }
-
+                    // response code 0 is need send apk again
+                    // response code 1 is scan success
+                    if (model.getResponseCode() == 2){
+                        appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
                     } else {
-                        warningApps.add(model);
-                        // update status app warning
-                        AppsInfo appInfo = AppRealm.getAppWithHash(model.getResource());
-
-                        if (appInfo != null) {
-                            if (percent > 25){
-                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
-                            } else if (percent > 50){
-                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
-                            } else if (percent > 75){
-                                appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
-                            }
-
-                            AppRealm.update(appInfo);
+                        float percent = model.getDetectionPercentage();
+                        if (percent < 25){
+                            appInfo.setAppStatus(Constants.APP_STATUS_SAFE);
+                        } else if (appInfo != null) {
+                            appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
+                        } else if (percent > 25){
+                            appInfo.setAppStatus(Constants.APP_STATUS_WARNING_YELLOW);
+                        } else if (percent > 50){
+                            appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
+                        } else if (percent > 75){
+                            appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
                         }
+
+                        AppRealm.update(appInfo);
                     }
                 }
 
@@ -388,7 +381,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             mContainerWarningLenearLayout.setVisibility(View.INVISIBLE);
             mStatusSafeTextView.setVisibility(View.VISIBLE);
-            mCircleImageview.setImageResource(R.drawable.radar_red);
+            mCircleImageview.setImageResource(R.drawable.radar_green);
             mRadarCircleImage1.setImageResource(R.drawable.inner_circle_green);
             mRadarCircleImage2.setImageResource(R.drawable.inner_circle_green);
             mRadarCircleImage3.setImageResource(R.drawable.inner_circle_green);

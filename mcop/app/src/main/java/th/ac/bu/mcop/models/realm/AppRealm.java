@@ -9,7 +9,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import io.realm.annotations.PrimaryKey;
 import th.ac.bu.mcop.models.AppsInfo;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
@@ -110,6 +109,7 @@ public class AppRealm extends RealmObject{
         AppRealm app = realm.where(AppRealm.class)
                 .equalTo("packageName", appsInfo.getPackageName())
                 .findFirst();
+
         realm.beginTransaction();
         if (app == null) {
 
