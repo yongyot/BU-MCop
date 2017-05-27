@@ -3,6 +3,7 @@ package th.ac.bu.mcop.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,7 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import th.ac.bu.mcop.R;
 import th.ac.bu.mcop.activities.InitializationActivity;
@@ -49,10 +54,21 @@ public class AppsRecycleViewAdapter extends RecyclerView.Adapter<AppsRecycleView
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.iconImageView.setImageDrawable(mDrawables.get(position));
+        PackageManager pm = mContext.getPackageManager();
+        try {
+            ApplicationInfo appInfo = pm.getApplicationInfo(mApps.get(position).getPackageName(), 0);
+            String appFile = appInfo.sourceDir;
+            long installed = new File(appFile).lastModified();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            String stringDate = dateFormat.format( new Date( installed));
+            holder.packageNameTextView.setText(stringDate);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            holder.packageNameTextView.setText(mApps.get(position).getPackageName());
+        }
 
+        holder.iconImageView.setImageDrawable(mDrawables.get(position));
         holder.appNameTextView.setText(mApps.get(position).getName());
-        holder.packageNameTextView.setText(mApps.get(position).getPackageName());
         holder.containerAppsRelative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

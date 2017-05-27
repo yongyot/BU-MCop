@@ -154,7 +154,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         animateScal();
         findAppForSendHash();
-        findAppForSendAPK();
+        //findAppForSendAPK();
         findNewApp();
     }
 
