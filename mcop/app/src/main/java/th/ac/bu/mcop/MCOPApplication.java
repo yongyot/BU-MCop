@@ -29,6 +29,9 @@ public class MCOPApplication extends Application {
         String currentVersionCode = BuildConfig.VERSION_CODE + "";
 
         if (!cacheVersionCode.equals(currentVersionCode)){
+            // cache flag for open first app and initialization again
+            SharePrefs.setPreference(this, Constants.KEY_ACCEPT_TERM, false);
+            // cache current version code
             SharePrefs.setPreference(this, Constants.KEY_VERSION_CODE, BuildConfig.VERSION_CODE+"");
 
             Realm realm = null;
@@ -37,11 +40,13 @@ public class MCOPApplication extends Application {
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
+                        realm.close();
                         Realm.deleteRealm(realm.getConfiguration());
                     }
                 });
             } catch (Exception e){
-                Log.d(Settings.TAG, "Delete Realm " + e.getMessage());
+                Log.d(Settings.TAG, "Exception Delete Realm " + e.getMessage());
+                e.printStackTrace();
             } finally {
                 if(realm != null) {
                     realm.close();

@@ -9,8 +9,8 @@ repositories {
 android {
 
     def mVersionMajor = "1"
-    def mVersionMinor = "0.3"
-    def mVersionCode = 1
+    def mVersionMinor = "0.0.4"
+    def mVersionCode = 2
     def mVersionName = mVersionMajor + "." + mVersionMinor
 
     compileSdkVersion 25
@@ -59,8 +59,10 @@ android {
 
             applicationVariants.all { variant ->
                 def apk = variant.outputs[0].outputFile;
-                def newName = "";
-                newName = apk.name.replace(".apk", "-" + mVersionName + ".apk");
+                def newName = apk.name;
+                //newName = apk.name.replace(".apk", "-" + mVersionName + ".apk");
+                newName = newName.replace("release-1", "release");
+                newName = newName.replace("app-release", "mCOP release");
                 variant.outputs[0].outputFile = new File(apk.parentFile, newName);
             }
         }

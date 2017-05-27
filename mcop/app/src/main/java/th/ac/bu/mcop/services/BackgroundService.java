@@ -160,7 +160,7 @@ public class BackgroundService extends Service {
         byte bytes[] = new byte[size];
         byte tmpBuff[] = new byte[size];
 
-        FileInputStream fis= new FileInputStream(f);;
+        FileInputStream fis= new FileInputStream(f);
         try {
 
             int read = fis.read(bytes, 0, size);

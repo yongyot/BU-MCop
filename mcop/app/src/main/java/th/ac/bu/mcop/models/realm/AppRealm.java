@@ -101,7 +101,25 @@ public class AppRealm extends RealmObject{
         realm.commitTransaction();
     }
 
-    public static void update(AppsInfo appsInfo){
+    public static void save(AppsInfo appsInfo){
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+
+        AppRealm appRealm = realm.createObject(AppRealm.class);
+        appRealm.setHash(appsInfo.getHash());
+        appRealm.setLastUpdate(appsInfo.getLastUpdate());
+        appRealm.setPackageName(appsInfo.getPackageName());
+        appRealm.setVersionName(appsInfo.getVersionName());
+        appRealm.setVersionCode(appsInfo.getVersionCode());
+        appRealm.setAppStatus(appsInfo.getAppStatus());
+        appRealm.setName(appsInfo.getName());
+
+        realm.copyFromRealm(appRealm);
+        realm.commitTransaction();
+    }
+
+    public static void update(AppsInfo appsInfo) {
         Realm realm = Realm.getDefaultInstance();
 
         AppRealm app = realm.where(AppRealm.class)
@@ -118,19 +136,8 @@ public class AppRealm extends RealmObject{
             appRealm.setVersionCode(appsInfo.getVersionCode());
             appRealm.setAppStatus(appsInfo.getAppStatus());
             appRealm.setName(appsInfo.getName());
-
-//            realm.copyToRealmOrUpdate(appRealm);
-
         } else {
-
-//            app.setHash(appsInfo.getHash());
-//            app.setLastUpdate(appsInfo.getLastUpdate());
-//            app.setVersionName(appsInfo.getVersionName());
-//            app.setVersionCode(appsInfo.getVersionCode());
             app.setAppStatus(appsInfo.getAppStatus());
-//            app.setName(appsInfo.getName());
-//
-//            realm.copyToRealmOrUpdate(app);
         }
 
         realm.commitTransaction();
@@ -309,6 +316,19 @@ public class AppRealm extends RealmObject{
         });
     }
 
+    public static boolean isExising(String packageName) {
+
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmQuery<AppRealm> query = realm.where(AppRealm.class);
+        query.equalTo("packageName", packageName);
+
+        if (query.findAll().size() > 0) {
+            return true;
+        }
+
+        return false;
+    }
 
     public static void deleteAll(){
         Realm realm = Realm.getDefaultInstance();

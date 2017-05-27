@@ -67,13 +67,15 @@ import th.ac.bu.mcop.models.response.ReportHeaderModel;
 import th.ac.bu.mcop.models.response.ReportModel;
 import th.ac.bu.mcop.models.response.ResponseDataModel;
 import th.ac.bu.mcop.models.response.ResponseModel;
+import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.api.ApiManager;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.services.BackgroundService;
 import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
+import th.ac.bu.mcop.utils.SharePrefs;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button mAboutButton, mManageAppButton, mStartLogButton;
     private TextView mTotalInstalledAppTextView, mAppUsingInternetTextView, mMessageTextView;
@@ -152,6 +154,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         animateScal();
         findAppForSendHash();
+        findAppForSendAPK();
+        findNewApp();
     }
 
     @Override
@@ -208,6 +212,45 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ArrayList<AppRealm> waitingSendAPK = AppRealm.getSendApkApps();
         for (AppRealm app : waitingSendAPK){
             sendApk(app.getHash());
+        }
+    }
+
+    private void findNewApp() {
+        ArrayList<ApplicationInfo> applicationInfos = ApplicationInfoManager.getTotalApplicationUsingInternet(this);
+        int appIndevice = applicationInfos.size();
+        int appInRealm = SharePrefs.getPreferenceInt(this, Constants.KEY_TOTAL_APP, 0);
+
+        Log.d(Settings.TAG, "app in device size: " + appIndevice);
+        Log.d(Settings.TAG, "app in database size: " + appInRealm);
+        Log.d(Settings.TAG, "app in realm: " + AppRealm.getAll().size());
+
+        if (appIndevice <= appInRealm) {
+            return;
+        }
+
+        for (ApplicationInfo applicationInfo : applicationInfos) {
+
+            if (!AppRealm.isExising(applicationInfo.packageName)) {
+
+                Log.d(Settings.TAG, "new app name : " + applicationInfo.packageName);
+
+                // insert new app to realm
+                AppsInfo tempApp = new HashGenManager().getPackageInfo(applicationInfo, getBaseContext());
+                tempApp.setName(applicationInfo.loadLabel(getPackageManager()).toString());
+                tempApp.setAppStatus(Constants.APP_STATUS_SAFE); // set default
+                AppRealm.save(tempApp);
+
+                // save total app in device
+                int count = SharePrefs.getPreferenceInt(this, Constants.KEY_TOTAL_APP, 0);
+                SharePrefs.setPreference(this, Constants.KEY_TOTAL_APP, ++count);
+
+                // genarate hash for scan
+                HashGenManager hashGen = new HashGenManager();
+                AppsInfo app = hashGen.getPackageInfo(applicationInfo, getBaseContext());
+
+                // scan with virus total
+                sendHash(app.getHash());
+            }
         }
     }
 
@@ -357,7 +400,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void setAppSafeOrNotView(){
+    private void setAppSafeOrNotView() {
 
         ArrayList<AppRealm> yellowApps = AppRealm.getWarningYellowApps();
         ArrayList<AppRealm> orangeApps = AppRealm.getWarningOrangeApps();

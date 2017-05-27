@@ -102,6 +102,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                     }
 
                     AppRealm.save(appsInfos);
+                    SharePrefs.setPreference(InitializationActivity.this, Constants.KEY_TOTAL_APP, appsInfos.size());
                 }
 
                 initHasFile();

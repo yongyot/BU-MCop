@@ -18,6 +18,7 @@ public class Constants {
     public static final String KEY_FIRST_TIME = "key_first_time";
     public static final String KEY_ACCEPT_TERM = "key_accept_term";
     public static final String KEY_VERSION_CODE = "key_version_code";
+    public static final String KEY_TOTAL_APP = "key_total_app";
 
     public static final int REQUEST_CODE_APP_INFO = 1001;
     public static final int RESULT_DELETE = 2001;
