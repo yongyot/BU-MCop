@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import th.ac.bu.mcop.adapters.AppsRecycleViewAdapter;
 import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
 import th.ac.bu.mcop.utils.Constants;
+import th.ac.bu.mcop.utils.Settings;
 
 public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdapter.OnAppListener{
     private static ArrayList<AppRealm> mApps;
@@ -27,9 +29,8 @@ public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdap
     private RecyclerView mRecyclerView;
     private AppsRecycleViewAdapter mAppsRecycleViewAdapter;
 
-    public static WarningAppsFragment newInstance(ArrayList<AppRealm> apps){
+    public static WarningAppsFragment newInstance(){
         WarningAppsFragment appsFragment = new WarningAppsFragment();
-        mApps = apps;
         return appsFragment;
     }
 
@@ -37,17 +38,32 @@ public class WarningAppsFragment extends Fragment implements AppsRecycleViewAdap
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_apps, container, false);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.app_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        ArrayList<AppRealm> yellowApps = AppRealm.getWarningYellowApps();
+        ArrayList<AppRealm> orangeApps = AppRealm.getWarningOrangeApps();
+        ArrayList<AppRealm> redApps = AppRealm.getWarningRedApps();
+
+        mApps = new ArrayList<>();
+        mApps.addAll(redApps);
+        mApps.addAll(orangeApps);
+        mApps.addAll(yellowApps);
 
         mDrawables = getDrawable();
-        mAppsRecycleViewAdapter = new AppsRecycleViewAdapter(container.getContext(), mApps, mDrawables);
+        mAppsRecycleViewAdapter = new AppsRecycleViewAdapter(getContext(), mApps, mDrawables);
         mAppsRecycleViewAdapter.setOnAppListener(this);
+        mAppsRecycleViewAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(mAppsRecycleViewAdapter);
-
-        return view;
     }
 
     private ArrayList<Drawable> getDrawable(){

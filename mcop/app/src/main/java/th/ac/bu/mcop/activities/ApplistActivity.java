@@ -45,18 +45,7 @@ public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPa
         mBackButton = (Button) findViewById(R.id.back_button);
         mBackButton.setOnClickListener(this);
 
-        ArrayList<AppRealm> safeApps = AppRealm.getSafeApps();
-
-        ArrayList<AppRealm> yellowApps = AppRealm.getWarningYellowApps();
-        ArrayList<AppRealm> orangeApps = AppRealm.getWarningOrangeApps();
-        ArrayList<AppRealm> redApps = AppRealm.getWarningRedApps();
-
-        ArrayList<AppRealm> warningApps = new ArrayList<>();
-        warningApps.addAll(redApps);
-        warningApps.addAll(orangeApps);
-        warningApps.addAll(yellowApps);
-
-        mAppsViewPagerAdapter = new AppsViewPagerAdapter(getSupportFragmentManager(), safeApps, warningApps);
+        mAppsViewPagerAdapter = new AppsViewPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAppsViewPagerAdapter);
         mPagerSlidingTabStrip.setViewPager(mViewPager);
 
@@ -72,27 +61,11 @@ public class ApplistActivity extends AppCompatActivity implements ViewPager.OnPa
         }
     }
 
-    private void setAdapter(){
-        ArrayList<AppRealm> safeApps = AppRealm.getSafeApps();
-
-        ArrayList<AppRealm> yellowApps = AppRealm.getWarningYellowApps();
-        ArrayList<AppRealm> orangeApps = AppRealm.getWarningOrangeApps();
-        ArrayList<AppRealm> redApps = AppRealm.getWarningRedApps();
-
-        ArrayList<AppRealm> warning = new ArrayList<>();
-        warning.addAll(redApps);
-        warning.addAll(orangeApps);
-        warning.addAll(yellowApps);
-
-        mAppsViewPagerAdapter.setAdapter(safeApps, warning);
-        mAppsViewPagerAdapter.notifyDataSetChanged();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.REQUEST_CODE_APP_INFO){
-            setAdapter();
+            mAppsViewPagerAdapter.notifyDataSetChanged();
         }
     }
 

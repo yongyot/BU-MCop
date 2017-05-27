@@ -16,18 +16,9 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
     private final String SUSPICIOUS_TITLE = "Suspicious";
 
     private final int NUM_ITEMS = 2;
-    private ArrayList<AppRealm> mSafeApps;
-    private ArrayList<AppRealm> mWarningApps;
 
-    public AppsViewPagerAdapter(FragmentManager fragmentManager, ArrayList<AppRealm> safeApps, ArrayList<AppRealm> warningApps){
+    public AppsViewPagerAdapter(FragmentManager fragmentManager){
         super(fragmentManager);
-        mSafeApps = safeApps;
-        mWarningApps = warningApps;
-    }
-
-    public void setAdapter(ArrayList<AppRealm> safeApps, ArrayList<AppRealm> warningApps){
-        mSafeApps = safeApps;
-        mWarningApps = warningApps;
     }
 
     @Override
@@ -35,9 +26,9 @@ public class AppsViewPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return SalfAppsFragment.newInstance(mSafeApps);
+                return SalfAppsFragment.newInstance();
             case 1:
-                return WarningAppsFragment.newInstance(mWarningApps);
+                return WarningAppsFragment.newInstance();
             default:
                 return null;
         }
