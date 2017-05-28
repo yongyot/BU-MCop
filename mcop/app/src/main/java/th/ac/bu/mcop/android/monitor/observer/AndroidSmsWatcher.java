@@ -1,5 +1,6 @@
 package th.ac.bu.mcop.android.monitor.observer;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import th.ac.bu.mcop.activities.HomeActivity;
@@ -10,6 +11,7 @@ import th.ac.bu.mcop.mobile.monitor.core.Reporter;
 import th.ac.bu.mcop.mobile.monitor.report.SMS;
 import th.ac.bu.mcop.models.AppsInfo;
 import th.ac.bu.mcop.models.realm.AppRealm;
+import th.ac.bu.mcop.utils.Constants;
 import th.ac.bu.mcop.utils.Settings;
 import th.ac.bu.mcop.widgets.NotificationView;
 
@@ -173,6 +175,12 @@ public final class AndroidSmsWatcher extends AndroidWatcher {
 				String messageBody = cursor.getString(bodyColumn).length() < 10?cursor.getString(bodyColumn):cursor.getString(bodyColumn).substring(0, 10) + "...";
 				String forShowNoti = "Found " + appInfo.getName() + " sent " + messageBody + " to " + cursor.getString(addressColumn);
 				NotificationView.show(context, forShowNoti);
+
+				SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				String date = df.format(new Date());
+				appInfo.setAppStatus(Constants.APP_STATUS_WARNING_ORANGE);
+				appInfo.setScan("SMS : " + date);
+				AppRealm.update(appInfo);
 			}
 
 			Log.d("Lattapol", str);
