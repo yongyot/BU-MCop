@@ -1,6 +1,5 @@
 package th.ac.bu.mcop.models.realm;
 
-
 import java.util.ArrayList;
 
 import io.realm.Realm;
@@ -18,7 +17,7 @@ public class AppRealm extends RealmObject{
     private String packageName;
     private String versionName;
     private String versionCode;
-//    private String scan;
+    private String scan;
     private long lastUpdate;
     private int appStatus;
 
@@ -79,13 +78,13 @@ public class AppRealm extends RealmObject{
     }
 
 
-//    public String getScan() {
-//        return scan;
-//    }
-//
-//    public void setScan(String scan) {
-//        this.scan = scan;
-//    }
+    public String getScan() {
+        return scan;
+    }
+
+    public void setScan(String scan) {
+        this.scan = scan;
+    }
 
     public static void save(ArrayList<AppsInfo> appsInfos){
 
@@ -103,7 +102,7 @@ public class AppRealm extends RealmObject{
             appRealm.setVersionCode(appsInfo.getVersionCode());
             appRealm.setAppStatus(appsInfo.getAppStatus());
             appRealm.setName(appsInfo.getName());
-//            appRealm.setScan(appsInfo.getScan());
+            appRealm.setScan(appsInfo.getScan());
 
             appRealms.add(appRealm);
         }
@@ -125,7 +124,7 @@ public class AppRealm extends RealmObject{
         appRealm.setVersionCode(appsInfo.getVersionCode());
         appRealm.setAppStatus(appsInfo.getAppStatus());
         appRealm.setName(appsInfo.getName());
-//        appRealm.setScan(appsInfo.getScan());
+        appRealm.setScan(appsInfo.getScan());
 
         realm.copyFromRealm(appRealm);
         realm.commitTransaction();
@@ -148,9 +147,10 @@ public class AppRealm extends RealmObject{
             appRealm.setVersionCode(appsInfo.getVersionCode());
             appRealm.setAppStatus(appsInfo.getAppStatus());
             appRealm.setName(appsInfo.getName());
-//            appRealm.setScan(appsInfo.getScan());
+            appRealm.setScan(appsInfo.getScan());
         } else {
             app.setAppStatus(appsInfo.getAppStatus());
+            app.setScan(appsInfo.getScan());
         }
 
         realm.commitTransaction();
@@ -184,7 +184,7 @@ public class AppRealm extends RealmObject{
             appsInfo.setPackageName(appRealm.getPackageName());
             appsInfo.setAppStatus(appRealm.getAppStatus());
             appsInfo.setName(appRealm.getName());
-//            appRealm.setScan(appRealm.getScan());
+            appsInfo.setScan(appRealm.getScan());
 
             return appsInfo;
         }
@@ -205,8 +205,7 @@ public class AppRealm extends RealmObject{
         appsInfo.setPackageName(appRealm.getPackageName());
         appsInfo.setAppStatus(appRealm.getAppStatus());
         appsInfo.setName(appRealm.getName());
-//        appRealm.setScan(appRealm.getScan());
-
+        appsInfo.setScan(appRealm.getScan());
         return appsInfo;
     }
 

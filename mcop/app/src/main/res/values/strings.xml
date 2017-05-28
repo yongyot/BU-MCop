@@ -25,6 +25,7 @@
     <string name="label_storage">Storage</string>
     <string name="label_permission">Permission</string>
     <string name="label_about_desc">mCOP by NBTC เตือนภัยแอปพลิเคชั่นอันตรายบนโทรศัพท์เคลื่อนที่</string>
+    <string name="label_detect">Detected by:</string>
     <string name="label_safe">Safe</string>
     <string name="label_high">High</string>
     <string name="label_medium">Medium</string>

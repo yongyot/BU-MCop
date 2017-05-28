@@ -230,6 +230,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                             for (Scan scan : model.getScan()) {
                                 scanString += scan.getEngien() + " : " + scan.getFound() + ",";
                             }
+                            Log.d(Settings.TAG, "scanString: " + scanString);
                             appInfo.setScan(scanString);
                             AppRealm.update(appInfo);
                         }
