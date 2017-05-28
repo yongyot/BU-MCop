@@ -12,6 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ import th.ac.bu.mcop.models.realm.AppRealm;
 import th.ac.bu.mcop.models.response.ReportHeaderModel;
 import th.ac.bu.mcop.models.response.ReportModel;
 import th.ac.bu.mcop.models.response.ResponseModel;
+import th.ac.bu.mcop.models.response.Scan;
 import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.api.ApiManager;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
@@ -221,6 +226,11 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                                 countSafeApps++;
                             }
 
+                            String scanString = "";
+                            for (Scan scan : model.getScan()) {
+                                scanString += scan.getEngien() + " : " + scan.getFound() + ",";
+                            }
+                            appInfo.setScan(scanString);
                             AppRealm.update(appInfo);
                         }
                     }

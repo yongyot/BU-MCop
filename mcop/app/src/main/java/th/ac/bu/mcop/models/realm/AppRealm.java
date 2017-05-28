@@ -18,6 +18,7 @@ public class AppRealm extends RealmObject{
     private String packageName;
     private String versionName;
     private String versionCode;
+//    private String scan;
     private long lastUpdate;
     private int appStatus;
 
@@ -77,6 +78,15 @@ public class AppRealm extends RealmObject{
         this.lastUpdate = lastUpdate;
     }
 
+
+//    public String getScan() {
+//        return scan;
+//    }
+//
+//    public void setScan(String scan) {
+//        this.scan = scan;
+//    }
+
     public static void save(ArrayList<AppsInfo> appsInfos){
 
         RealmList<AppRealm> appRealms = new RealmList<>();
@@ -93,6 +103,7 @@ public class AppRealm extends RealmObject{
             appRealm.setVersionCode(appsInfo.getVersionCode());
             appRealm.setAppStatus(appsInfo.getAppStatus());
             appRealm.setName(appsInfo.getName());
+//            appRealm.setScan(appsInfo.getScan());
 
             appRealms.add(appRealm);
         }
@@ -114,6 +125,7 @@ public class AppRealm extends RealmObject{
         appRealm.setVersionCode(appsInfo.getVersionCode());
         appRealm.setAppStatus(appsInfo.getAppStatus());
         appRealm.setName(appsInfo.getName());
+//        appRealm.setScan(appsInfo.getScan());
 
         realm.copyFromRealm(appRealm);
         realm.commitTransaction();
@@ -136,6 +148,7 @@ public class AppRealm extends RealmObject{
             appRealm.setVersionCode(appsInfo.getVersionCode());
             appRealm.setAppStatus(appsInfo.getAppStatus());
             appRealm.setName(appsInfo.getName());
+//            appRealm.setScan(appsInfo.getScan());
         } else {
             app.setAppStatus(appsInfo.getAppStatus());
         }
@@ -171,6 +184,7 @@ public class AppRealm extends RealmObject{
             appsInfo.setPackageName(appRealm.getPackageName());
             appsInfo.setAppStatus(appRealm.getAppStatus());
             appsInfo.setName(appRealm.getName());
+//            appRealm.setScan(appRealm.getScan());
 
             return appsInfo;
         }
@@ -191,6 +205,7 @@ public class AppRealm extends RealmObject{
         appsInfo.setPackageName(appRealm.getPackageName());
         appsInfo.setAppStatus(appRealm.getAppStatus());
         appsInfo.setName(appRealm.getName());
+//        appRealm.setScan(appRealm.getScan());
 
         return appsInfo;
     }

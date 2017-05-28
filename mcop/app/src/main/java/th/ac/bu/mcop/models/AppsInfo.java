@@ -7,6 +7,7 @@ public class AppsInfo {
     private String packageName;
     private String versionName;
     private String versionCode;
+    private String scan;
     private long lastUpdate;
     private int appStatus;
 
@@ -64,5 +65,13 @@ public class AppsInfo {
 
     public void setVersionCode(String versionCode) {
         this.versionCode = versionCode;
+    }
+
+    public String getScan() {
+        return scan;
+    }
+
+    public void setScan(String scan) {
+        this.scan = scan;
     }
 }

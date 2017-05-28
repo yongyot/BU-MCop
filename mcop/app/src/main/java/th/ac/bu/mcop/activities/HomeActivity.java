@@ -67,6 +67,7 @@ import th.ac.bu.mcop.models.response.ReportHeaderModel;
 import th.ac.bu.mcop.models.response.ReportModel;
 import th.ac.bu.mcop.models.response.ResponseDataModel;
 import th.ac.bu.mcop.models.response.ResponseModel;
+import th.ac.bu.mcop.models.response.Scan;
 import th.ac.bu.mcop.modules.HashGenManager;
 import th.ac.bu.mcop.modules.api.ApiManager;
 import th.ac.bu.mcop.modules.api.ApplicationInfoManager;
@@ -294,7 +295,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     // response code 1 is scan success
 
                     if (appInfo != null){
-                        if (model.getResponseCode() == 2){
+                        if (model.getResponseCode() == 2){ // 2 is mean send apk already
                             appInfo.setAppStatus(Constants.APP_STATUS_WAIT_FOR_SEND_APK);
                         } else {
                             float percent = model.getDetectionPercentage();
@@ -310,6 +311,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
                             }
 
+                            String scanString = "";
+                            for (Scan scan : model.getScan()) {
+                                scanString += scan.getEngien() + " : " + scan.getFound() + ",";
+                            }
+                            appInfo.setScan(scanString);
                             AppRealm.update(appInfo);
                         }
                     }

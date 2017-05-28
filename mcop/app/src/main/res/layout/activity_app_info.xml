@@ -137,6 +137,65 @@
         android:layout_below="@+id/update_value_textview"
         />
 
+    <TextView
+        android:id="@+id/deteched_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/level_button"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:textStyle="bold"
+        android:text="Deteched by:"
+        />
+
+    <TextView
+        android:id="@+id/scan1_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/deteched_textview"
+        />
+    <TextView
+        android:id="@+id/scan2_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/scan1_textview"
+        />
+    <TextView
+        android:id="@+id/scan3_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/scan2_textview"
+        />
+
+    <TextView
+        android:id="@+id/scan4_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/scan3_textview"
+        />
+
+    <TextView
+        android:id="@+id/scan5_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/scan4_textview"
+        />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

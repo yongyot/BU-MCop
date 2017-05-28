@@ -38,6 +38,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     private Button mSafeButton, mLowButton, mMediumButton, mHightButton;
     private RelativeLayout mContainerButton;
     private ImageView mAppIconImageview;
+    private TextView mSan1TextView, mSan2TextView, mSan3TextView, mSan4TextView, mSan5TextView;
 
     private String mPackageName;
     private int mAppStatus;
@@ -63,6 +64,12 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         mMediumButton = (Button) findViewById(R.id.medium_button);
         mHightButton = (Button) findViewById(R.id.high_button);
         mLeveButton = (Button) findViewById(R.id.level_button);
+
+        mSan1TextView = (TextView) findViewById(R.id.scan1_textview);
+        mSan2TextView = (TextView) findViewById(R.id.scan2_textview);
+        mSan3TextView = (TextView) findViewById(R.id.scan3_textview);
+        mSan4TextView = (TextView) findViewById(R.id.scan4_textview);
+        mSan5TextView = (TextView) findViewById(R.id.scan5_textview);
 
         mIgnoreButton.setOnClickListener(this);
         mUninstallAppButton.setOnClickListener(this);
@@ -171,6 +178,39 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
+            }
+
+            AppsInfo appInfo = AppRealm.getAppWithPackageName(mPackageName);
+
+            if (appInfo == null) {
+                return;
+            }
+
+            if (appInfo.getScan() == null) {
+                return;
+            }
+
+            String[] apps = appInfo.getScan().split(",");
+            if (apps.length > 4) {
+                mSan1TextView.setText(apps[0]);
+                mSan2TextView.setText(apps[1]);
+                mSan3TextView.setText(apps[2]);
+                mSan4TextView.setText(apps[3]);
+                mSan5TextView.setText(apps[4]);
+            } else if (apps.length > 3) {
+                mSan1TextView.setText(apps[0]);
+                mSan2TextView.setText(apps[1]);
+                mSan3TextView.setText(apps[2]);
+                mSan4TextView.setText(apps[3]);
+            } else if (apps.length > 2) {
+                mSan1TextView.setText(apps[0]);
+                mSan2TextView.setText(apps[1]);
+                mSan3TextView.setText(apps[2]);
+            } else if (apps.length > 1) {
+                mSan1TextView.setText(apps[0]);
+                mSan2TextView.setText(apps[1]);
+            } else if (appInfo.getScan().length() > 0) {
+                mSan1TextView.setText(appInfo.getScan().replace(",", ""));
             }
         }
     }
