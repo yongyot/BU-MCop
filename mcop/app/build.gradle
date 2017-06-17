@@ -8,8 +8,8 @@ repositories {
 
 android {
 
-    def mVersionMajor = "1"
-    def mVersionMinor = "0.0.4"
+    def mVersionMajor = "0"
+    def mVersionMinor = "0.3"
     def mVersionCode = 2
     def mVersionName = mVersionMajor + "." + mVersionMinor
 
@@ -17,7 +17,7 @@ android {
     buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "th.ac.bu.mcop"
+        applicationId "ac.bu.mcop"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode mVersionCode
