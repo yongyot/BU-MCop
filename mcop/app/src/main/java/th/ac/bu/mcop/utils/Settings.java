@@ -94,7 +94,7 @@ public class Settings {
                 }
             } catch (Exception ex) {
                 Log.d(Settings.TAG,"Can not retrieve mac address on Marshmallow");
-                NotificationView.show(context, "Error getting mac address.");
+                //NotificationView.show(context, "Error getting mac address.");
             }
 
             return null;

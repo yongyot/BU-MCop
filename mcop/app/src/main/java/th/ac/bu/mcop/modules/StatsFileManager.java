@@ -74,7 +74,7 @@ public class StatsFileManager {
         } catch (IOException ex) {
             Log.d(Settings.TAG, "Error occurred while compressing file. Details: " + ex.toString());
             ex.printStackTrace();
-            NotificationView.show(context, "Data compression error.");
+            //NotificationView.show(context, "Data compression error.");
         }
         return result;
     }

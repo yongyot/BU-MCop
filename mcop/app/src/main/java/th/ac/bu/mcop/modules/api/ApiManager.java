@@ -41,8 +41,8 @@ public class ApiManager {
     public ApiManager(){
 
         mOkHttpClient = new OkHttpClient.Builder()
-                .readTimeout(60*3, TimeUnit.SECONDS)
-                .connectTimeout(60*3, TimeUnit.SECONDS)
+                .readTimeout(60*5, TimeUnit.SECONDS)
+                .connectTimeout(60*5, TimeUnit.SECONDS)
                 .build();
 
         mGson = new GsonBuilder()

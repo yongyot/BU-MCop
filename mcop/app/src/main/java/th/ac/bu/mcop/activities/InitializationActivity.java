@@ -121,7 +121,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
 
             try {
                 if (NetworkInterface.getByName("rmnet0") == null) {
-                    NotificationView.show(this, "Data interface error.");
+                    //NotificationView.show(this, "Data interface error.");
                 }
             } catch(Exception ex) {
                 Log.d(Settings.TAG, "Can not find data interface name. Details: " + ex.toString());
@@ -212,6 +212,7 @@ public class InitializationActivity extends AppCompatActivity implements HashGen
                         if (appInfo != null) {
 
                             float percent = model.getDetectionPercentage();
+                            Log.d(Settings.TAG, model.getResource() + " : percent : " + percent);
                             if (percent > 75){
                                 appInfo.setAppStatus(Constants.APP_STATUS_WARNING_RED);
                                 countWarning++;

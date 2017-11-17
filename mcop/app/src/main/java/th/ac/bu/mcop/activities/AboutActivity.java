@@ -13,7 +13,7 @@ import th.ac.bu.mcop.R;
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button mRateButton, mBackButton;
-    private String URL = "https://play.google.com/store/apps/details?id=th.ac.bu.mcop";
+    private String URL = "https://play.google.com/store/apps/details?id=ac.bu.mcop";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
