@@ -9,8 +9,8 @@ repositories {
 android {
 
     def mVersionMajor = "0"
-    def mVersionMinor = "0.4"
-    def mVersionCode = 3
+    def mVersionMinor = "0.5"
+    def mVersionCode = 4
     def mVersionName = mVersionMajor + "." + mVersionMinor
 
     compileSdkVersion 25

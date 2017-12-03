@@ -24,10 +24,12 @@ public class ApplicationInfoManager {
         }
 
         for (ApplicationInfo info : applicationInfos) {
-            String[] nativeLibraryDirs = info.nativeLibraryDir.split("/");
-            if (nativeLibraryDirs.length > 0){
-                if (!nativeLibraryDirs[0].equals("system")){
-                    applicationInfosInstall.add(info);
+            if (info != null && info.nativeLibraryDir != null) {
+                String[] nativeLibraryDirs = info.nativeLibraryDir.split("/");
+                if (nativeLibraryDirs.length > 0){
+                    if (!nativeLibraryDirs[0].equals("system")){
+                        applicationInfosInstall.add(info);
+                    }
                 }
             }
         }
